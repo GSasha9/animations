@@ -7,7 +7,6 @@
     <style>
 
         body {
-            height: 800px;
             margin: 0 auto;
         }
 
@@ -25,6 +24,10 @@
             position: fixed;
             z-index: -1;
             background-repeat: no-repeat;
+
+            left: 0;
+            right: 0;
+            margin: 0 auto;
         }
 
         .layer-01 {
@@ -45,6 +48,7 @@
 
         .layer-05 {
             background-image: url(./img/ilu_man.png);
+            top: -150px;
         }
 
     </style>
@@ -60,7 +64,7 @@
 
     <script>
         window.addEventListener('scroll', (event) => {
-            topDistance = window.pageYOffset;
+            let topDistance = window.pageYOffset;
             const layers = document.querySelectorAll('.layer');
 
             for(layer of layers) {

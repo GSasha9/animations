@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landing</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background-color: rgb(246, 234, 220);
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 0;
+    padding: 0px 20px;
+}
+
+li:hover {
+    cursor: pointer;
+}
+
+header{
+    position: relative;
+    width: 100%;
+    height: 80px;
+}
+
+.header-content {
+    position: fixed;
+    display:grid;
+    grid-template-columns: 400px 1fr 400px;
+    justify-content:space-evenly;
+    align-items:center;
+    padding: 20px 20px;
+    width: calc(100% - 40px);
+}
+
+.header-content:hover {
+    background-color: #fff;
+}
+
+.logo-div {
+    display: block;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-wrapper {
+    position: fixed;
+}
+
+.logo{
+    justify-self: center;
+    position: relative;
+    top: 104px;
+    height: 185px;
+}
+
+.section{
+    max-width:1200px;
+    margin: 170px auto;
+    padding:0 20px;
+
+    display:flex;
+    align-items:center;
+    gap:40px;
+}
+
+.text{
+    flex:1;
+}
+
+.text h1{
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+.text p{
+    font-size:18px;
+    line-height:1.6;
+}
+
+.image{
+    flex:1;
+}
+
+.image img{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+            <ul>
+        <li class="list-item">Home</li>
+        <li class="list-item">Blog</li>
+    </ul>
+    <div class="logo-div">
+        <div class="logo-wrapper">
+        <img src="./img/The logo.png" alt="logo" class="logo">
+    </div>
+    </div>
+    <ul>
+        <li class="list-item">Sale</li>
+        <li class="list-item">Contacts</li>
+    </ul>
+    </div>
+</header>
+
+<section class="section">
+
+    <div class="text">
+        <h1>Awesome Product</h1>
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Quasi veniam cupiditate molestias molestiae sit.
+        </p>
+    </div>
+
+    <div class="image">
+        <img src="./img/57383673_9347800.jpg" alt="image">
+    </div>
+
+</section>
+
+<script>
+    window.addEventListener('scroll', (event) => {
+        const logo = document.querySelector('.logo');
+        const header = document.querySelector('header');
+
+        const topDistance = window.pageYOffset;
+
+        const maxHeight = 150;
+        const minHeight = 40;
+
+        const maxTop = 100;
+        const minTop = 3;
+
+        const height = logo.offsetHeight;
+        const topPos = logo.offsetTop;
+
+        let newHeight = maxHeight - topDistance * 0.5;
+
+        let newTop = maxTop - topDistance * 0.5;
+
+        if(newHeight < minHeight){
+            newHeight = minHeight;
+        }
+
+        if(newTop < minTop){
+            newTop = minTop;
+        }
+
+        logo.style.height = `${newHeight}px`;
+        logo.style.top = `${newTop}px`;
+    })
+</script>
+</body>
+</html>
