@@ -1,83 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      body {
+        margin: 0 auto;
+      }
 
-        body {
-            margin: 0 auto;
-        }
+      #container {
+        height: 800px;
+        overflow: hidden;
+        position: relative;
+      }
 
-        #container {
-            height: 800px;
-            overflow: hidden;
-            position: relative;
-        }
+      .layer {
+        height: 800px;
+        width: 70%;
+        background-position: bottom center;
+        background-size: auto;
+        position: fixed;
+        z-index: -1;
+        background-repeat: no-repeat;
 
-        .layer {
-            height: 800px;
-            width: 70%;
-            background-position: bottom center;
-            background-size: auto;
-            position: fixed;
-            z-index: -1;
-            background-repeat: no-repeat;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+      }
 
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-        }
+      .layer-01 {
+        background-image: url(./img/ilu_bg.jpg);
+      }
 
-        .layer-01 {
-            background-image: url(./img/ilu_bg.jpg);
-        }
+      .layer-02 {
+        background-image: url(./img/ilu_01.png);
+      }
 
-        .layer-02 {
-            background-image: url(./img/ilu_01.png);
-        }
+      .layer-03 {
+        background-image: url(./img/ilu_02.png);
+      }
 
-        .layer-03 {
-            background-image: url(./img/ilu_02.png);
-        }
+      .layer-04 {
+        background-image: url(./img/ilu_03.png);
+      }
 
-        .layer-04 {
-            background-image: url(./img/ilu_03.png);
-        }
-
-        .layer-05 {
-            background-image: url(./img/ilu_man.png);
-            top: -150px;
-        }
-
+      .layer-05 {
+        background-image: url(./img/ilu_man.png);
+        top: -150px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="container">
-        <div class="layer layer-01" data-depth = "0.90"></div>
-        <div class="layer layer-02" data-depth = "0.70"></div>
-        <div class="layer layer-03" data-depth = "0.50"></div>
-        <div class="layer layer-04" data-depth = "0.30"></div>
-        <div class="layer layer-05" data-depth = "0.10"></div>
+      <div class="layer layer-01" data-depth="0.90"></div>
+      <div class="layer layer-02" data-depth="0.70"></div>
+      <div class="layer layer-03" data-depth="0.50"></div>
+      <div class="layer layer-04" data-depth="0.30"></div>
+      <div class="layer layer-05" data-depth="0.10"></div>
     </div>
 
     <script>
-        window.addEventListener('scroll', (event) => {
-            let topDistance = window.pageYOffset;
-            const layers = document.querySelectorAll('.layer');
+      window.addEventListener('scroll', (event) => {
+        let topDistance = window.pageYOffset;
+        const layers = document.querySelectorAll('.layer');
 
-            for(layer of layers) {
-                const depth = layer.getAttribute("data-depth");
-                const movement = -(topDistance * depth);
-                const translate3d = `translate3d(0, ${movement}px, 0)`;
-                layer.style['-webkit-transform'] = translate3d
-                layer.style['-moz-transform'] = translate3d
-                layer.style['-ms-transform'] = translate3d
-                layer.style['-o-transform'] = translate3d
-                layer.style.transform = translate3d
-            }
-        })
+        for (layer of layers) {
+          const depth = layer.getAttribute('data-depth');
+          const movement = -(topDistance * depth);
+          const translate3d = `translate3d(0, ${movement}px, 0)`;
+          layer.style['-webkit-transform'] = translate3d;
+          layer.style['-moz-transform'] = translate3d;
+          layer.style['-ms-transform'] = translate3d;
+          layer.style['-o-transform'] = translate3d;
+          layer.style.transform = translate3d;
+        }
+      });
     </script>
-</body>
+  </body>
 </html>

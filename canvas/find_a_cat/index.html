@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Find The Cat</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #000;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+      }
+
+      canvas {
+        border: 2px solid #333;
+      }
+
+      .info {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        color: white;
+        font-size: 22px;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="info">Найди кота 🔦</div>
+
+    <canvas id="game" width="1000" height="600"></canvas>
+
+    <script>
+      const canvas = document.getElementById('game');
+      const ctx = canvas.getContext('2d');
+
+      //координаты курсора относительно canvas (при загрузке - по середине canvas)
+      const mouse = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+      };
+
+      const room = new Image();
+      const cat = new Image();
+
+      room.src = './room.jpg';
+      cat.src = './cat.png';
+
+      const catData = {
+        x: Math.random() * (canvas.width - 80),
+        y: Math.random() * (canvas.height - 80),
+        width: 80,
+        height: 80,
+      };
+
+      let loaded = 0;
+
+      function checkLoaded() {
+        loaded++;
+        if (loaded === 2) {
+          requestAnimationFrame(render);
+        }
+      }
+
+      room.onload = checkLoaded;
+      cat.onload = checkLoaded;
+
+      canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+
+      canvas.addEventListener('click', () => {
+        const dx = mouse.x - (catData.x + catData.width / 2);
+        const dy = mouse.y - (catData.y + catData.height / 2);
+
+        //вычисляем расстояние между точкой клика и центром кота
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 60) {
+          alert('Ты нашел кота 😺');
+
+          catData.x = Math.random() * (canvas.width - catData.width);
+          catData.y = Math.random() * (canvas.height - catData.height);
+        }
+      });
+
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // фон
+        ctx.drawImage(room, 0, 0, canvas.width, canvas.height);
+
+        // кот
+        ctx.drawImage(cat, catData.x, catData.y, catData.width, catData.height);
+
+        // тьма + мягкий фонарик
+        const gradient = ctx.createRadialGradient(mouse.x, mouse.y, 20, mouse.x, mouse.y, 60);
+
+        gradient.addColorStop(0, 'rgba(0,0,0,0)');
+        gradient.addColorStop(1, 'rgba(0,0,0,0.95)');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        requestAnimationFrame(render);
+      }
+    </script>
+  </body>
+</html>
