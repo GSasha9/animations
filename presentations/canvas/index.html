@@ -1,488 +1,2366 @@
 <!doctype html>
 <html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Canvas — интерактивная графика в браузере</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas — интерактивная графика в браузере</title>
 
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
 
-  <style>
-    :root {
-      --navy: #233d70;
-      --orange: #c96b21;
-      --text: #111111;
-      --muted: #5f6368;
-      --line: #e4e7eb;
-    }
+    <style>
+      :root {
+        --navy: #233d70;
+        --orange: #c96b21;
+        --text: #111111;
+        --muted: #5f6368;
+        --line: #e4e7eb;
+      }
 
-    * { box-sizing: border-box; }
+      * {
+        box-sizing: border-box;
+      }
 
-    body {
-      background: #ffffff;
-      color: var(--text);
-    }
+      body {
+        background: #ffffff;
+        color: var(--text);
+      }
 
-    p {
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-    }
-
-    .reveal {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 26px;
-      color: var(--text);
-    }
-
-    .reveal .slides {
-      text-align: left;
-      overflow: scroll;
-      width: 1000px;
-    }
-
-    .reveal .slides section {
-      padding: 0.8em 1em 1em;
-      box-sizing: border-box;
-    }
-
-    .reveal .slides section > * {
-      max-width: 1000px;
-    }
-
-    .reveal h1,
-    .reveal h2,
-    .reveal h3 {
-      color: var(--navy);
-      text-transform: none;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .reveal h1 {
-      font-size: 2.05em;
-      margin-bottom: 0.7em;
-    }
-
-    .reveal h2 {
-      font-size: 1.65em;
-      margin-bottom: 0.65em;
-    }
-
-    .reveal h3 {
-      font-size: 1.05em;
-    }
-
-    .reveal p,
-    .reveal li {
-      line-height: 1.35;
-    }
-
-    .reveal ul,
-    .reveal ol {
-      margin-top: 0.25em;
-    }
-
-    .reveal li {
-      margin-bottom: 0.25em;
-    }
-
-    .reveal strong,
-    .accent {
-      color: var(--navy);
-    }
-
-    .slide {
-      position: relative;
-      padding-top: 0.55em;
-    }
-
-    .subtitle {
-      color: var(--navy);
-      font-size: 1.05em;
-      margin-bottom: 0.55em;
-    }
-
-    .lead {
-      font-size: 1.12em;
-    }
-
-    .conclusion {
-      margin-top: 0.8em;
-      font-size: 0.95em;
-    }
-
-    .conclusion strong {
-      color: var(--navy);
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.1em;
-      align-items: start;
-    }
-
-    .box {
-      border: 1px solid var(--line);
-      padding: 0.65em 0.8em;
-      border-radius: 8px;
-    }
-
-    .box h3 {
-      margin-top: 0;
-    }
-
-    .small {
-      font-size: 0.72em;
-      color: var(--muted);
-    }
-
-    .code-wrap {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      overflow: hidden;
-      margin-top: 0.5em;
-    }
-
-    pre {
-      margin: 0;
-      box-shadow: none;
-      background: #f7f7f7;
-      padding: 0.7em;
-    }
-
-    code {
-      font-family: "SFMono-Regular", Consolas, monospace;
-      font-size: 0.72em;
-      line-height: 1.4;
-    }
-
-    .demo-layout {
-      display: grid;
-      grid-template-columns: 0.9fr 1.5fr;
-      gap: 0.8em;
-      align-items: center;
-    }
-
-    .demo-text {
-      font-size: 0.82em;
-    }
-
-    canvas.demo {
-      display: block;
-      width: 100%;
-      height: auto;
-      border: 1px solid #cfd3d8;
-      border-radius: 8px;
-      background: #fafafa;
-    }
-
-    .demo-note {
-      margin-top: 0.35em;
-      color: var(--muted);
-      font-size: 0.62em;
-    }
-
-    .diagram {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.3em;
-      margin: 1em 0;
-      flex-wrap: wrap;
-    }
-
-    .diagram .node {
-      border: 2px solid var(--navy);
-      color: var(--navy);
-      padding: 0.45em 0.7em;
-      border-radius: 6px;
-      font-size: 0.8em;
-      text-align: center;
-    }
-
-    .diagram .arrow {
-      color: var(--orange);
-      font-size: 1.3em;
-    }
-
-    .timeline {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.4em;
-      margin-top: 1em;
-    }
-
-    .timeline > div {
-      border-top: 3px solid var(--orange);
-      padding-top: 0.35em;
-      font-size: 0.7em;
-    }
-
-    .number {
-      color: var(--orange);
-      font-weight: bold;
-    }
-
-    .task {
-      border-left: 5px solid var(--orange);
-      padding-left: 0.8em;
-      margin-top: 0.7em;
-    }
-
-    .footer-note {
-      position: absolute;
-      bottom: -0.25em;
-      right: 0;
-      color: var(--muted);
-      font-size: 0.48em;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.72em;
-    }
-
-    th, td {
-      border-bottom: 1px solid var(--line);
-      padding: 0.5em;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    th {
-      color: var(--navy);
-    }
-
-    @media (max-width: 900px) {
-      .two-col,
-      .demo-layout {
-        grid-template-columns: 1fr;
+      p {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
       }
 
       .reveal {
-        font-size: 22px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 26px;
+        color: var(--text);
       }
-    }
-  </style>
-</head>
 
-<body>
-<div class="reveal">
-<div class="slides">
+      .reveal .slides {
+        text-align: left;
+        width: 1000px;
+      }
 
-<!-- 1 -->
-<section class="slide">
-  <h1>Элемент &lt;canvas&gt;</h1>
+      .reveal .slides section {
+        padding: 0.8em 1em 1em;
+        box-sizing: border-box;
+      }
 
-  <p class="lead">
-    &lt;canvas&gt; — специальная область на веб-странице,
-    предназначенная для рисования с помощью JavaScript.
-  </p>
+      .reveal .slides section > * {
+        max-width: 1000px;
+      }
 
-  <p>
-    Внешне он похож на &lt;img&gt;, однако между ними есть
-    важное различие:
-  </p>
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        color: var(--navy);
+        text-transform: none;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
 
-  <ul>
-    <li>
-      &lt;img&gt; отображает готовое изображение из файла
-      через атрибут src
-    </li>
-    <li>
-      &lt;canvas&gt; изначально пуст
-    </li>
-    <li>
-      всё содержимое создаётся программно через <strong>Canvas API</strong>
-    </li>
-  </ul>
+      .reveal h1 {
+        font-size: 2.05em;
+        margin-bottom: 0.7em;
+      }
 
-</section>
+      .reveal h2 {
+        font-size: 1.65em;
+        margin-bottom: 0.5em;
+        margin-top: 0.4em;
+      }
 
+      .reveal h3 {
+        font-size: 1.05em;
+      }
 
-<!-- 2 -->
-<section class="slide">
-  <h1>Размеры и доступ к Canvas</h1>
+      .reveal p,
+      .reveal li {
+        line-height: 1.35;
+      }
 
-  <p>
-    У элемента &lt;canvas&gt; есть два собственных атрибута:
-  </p>
+      .reveal ul,
+      .reveal ol {
+        margin-top: 0.25em;
+      }
 
-  <ul>
-    <li><strong>width</strong> — ширина области рисования</li>
-    <li><strong>height</strong> — высота области рисования</li>
-  </ul>
+      .reveal li {
+        margin-bottom: 0.25em;
+      }
 
-  <p>
-    Если размеры не указать, браузер создаст холст
-    размером <strong>300 × 150 пикселей</strong>.
-  </p>
+      .reveal strong,
+      .accent {
+        color: var(--navy);
+      }
 
-  <pre><code class="html">
+      .slide {
+        position: relative;
+        padding-top: 0.55em;
+      }
+
+      .subtitle {
+        color: var(--navy);
+        font-size: 1.05em;
+        margin-bottom: 0.55em;
+      }
+
+      .lead {
+        font-size: 1.12em;
+      }
+
+      .conclusion {
+        margin-top: 0.8em;
+        font-size: 0.95em;
+      }
+
+      .conclusion strong {
+        color: var(--navy);
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.1em;
+        align-items: start;
+      }
+
+      .box {
+        border: 1px solid var(--line);
+        padding: 0.65em 0.8em;
+        border-radius: 8px;
+      }
+
+      .box h3 {
+        margin-top: 0;
+      }
+
+      .small {
+        font-size: 0.72em;
+        color: var(--muted);
+      }
+
+      .code-wrap {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-top: 0.5em;
+      }
+
+      pre {
+        margin: 0;
+        box-shadow: none;
+        background: #f7f7f7;
+        padding: 0.7em;
+      }
+
+      code {
+        font-family: 'SFMono-Regular', Consolas, monospace;
+        font-size: 0.72em;
+        line-height: 1.4;
+      }
+
+      .demo-layout {
+        display: grid;
+        grid-template-columns: 0.9fr 1.5fr;
+        gap: 0.8em;
+        align-items: center;
+      }
+
+      .demo-text {
+        font-size: 0.82em;
+      }
+
+      canvas.demo {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid #cfd3d8;
+        border-radius: 8px;
+        background: #fafafa;
+      }
+
+      .demo-note {
+        margin-top: 0.35em;
+        color: var(--muted);
+        font-size: 0.62em;
+      }
+
+      .diagram {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.3em;
+        margin: 1em 0;
+        flex-wrap: wrap;
+      }
+
+      .diagram .node {
+        border: 2px solid var(--navy);
+        color: var(--navy);
+        padding: 0.45em 0.7em;
+        border-radius: 6px;
+        font-size: 0.8em;
+        text-align: center;
+      }
+
+      .diagram .arrow {
+        color: var(--orange);
+        font-size: 1.3em;
+      }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.4em;
+        margin-top: 1em;
+      }
+
+      .timeline > div {
+        border-top: 3px solid var(--orange);
+        padding-top: 0.35em;
+        font-size: 0.7em;
+      }
+
+      .number {
+        color: var(--orange);
+        font-weight: bold;
+      }
+
+      .task {
+        border-left: 5px solid var(--orange);
+        padding-left: 0.8em;
+        margin-top: 0.7em;
+      }
+
+      .footer-note {
+        position: absolute;
+        bottom: -0.25em;
+        right: 0;
+        color: var(--muted);
+        font-size: 0.48em;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.72em;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 0.5em;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--navy);
+      }
+
+      @media (max-width: 900px) {
+        .two-col,
+        .demo-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .reveal {
+          font-size: 22px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- 1 -->
+        <section class="slide">
+          <h1>Элемент &lt;canvas&gt;</h1>
+
+          <p class="lead">
+            &lt;canvas&gt; — специальная область на веб-странице, предназначенная для рисования с
+            помощью JavaScript.
+          </p>
+
+          <p>Внешне он похож на &lt;img&gt;, однако между ними есть важное различие:</p>
+
+          <ul>
+            <li>&lt;img&gt; отображает готовое изображение из файла через атрибут src</li>
+            <li>
+              &lt;canvas&gt; изначально пуст. всё содержимое создаётся программно через
+              <strong>Canvas API</strong>
+            </li>
+          </ul>
+        </section>
+
+        <!-- 2 -->
+        <section class="slide">
+          <p>У элемента &lt;canvas&gt; есть два собственных атрибута:</p>
+
+          <ul>
+            <li><strong>width</strong> — ширина области рисования</li>
+            <li><strong>height</strong> — высота области рисования</li>
+          </ul>
+
+          <p>
+            Если размеры не указать, браузер создаст холст размером
+            <strong>300 × 150 пикселей</strong>.
+          </p>
+
+          <pre><code class="html">
 &lt;canvas width="600" height="400"&gt;&lt;/canvas&gt;
   </code></pre>
 
-  <p>
-    Для удобного обращения из JavaScript рекомендуется добавить
-    обычный HTML-атрибут <strong>id</strong>.
-  </p>
+          <p>
+            Для удобного обращения из JavaScript рекомендуется добавить обычный HTML-атрибут
+            <strong>id</strong>.
+          </p>
 
-  <pre><code class="html">
+          <pre><code class="html">
 &lt;canvas id="myCanvas" width="600" height="400"&gt;
 &lt;/canvas&gt;
   </code></pre>
+        </section>
 
+        <!-- 3 -->
+        <section class="slide">
+          <p>
+            Размер холста можно изменить не только через атрибуты <strong>width</strong> и
+            <strong>height</strong>, но и с помощью CSS.
+          </p>
+
+          <p>Однако важно понимать разницу между этими способами.</p>
+
+          <p>
+            Атрибуты <strong>width</strong> и <strong>height</strong> задают
+            <strong>реальный размер области рисования</strong>.
+          </p>
+
+          <pre><code class="html"> &lt;canvas width="600" height="400"&gt;&lt;/canvas&gt; </code></pre>
+
+          <p>
+            Если изменить размеры только через CSS, изменится лишь отображение элемента на странице,
+            а внутреннее разрешение холста останется прежним.
+          </p>
+        </section>
+
+        <!-- 4 -->
+        <section class="slide">
+          <p>
+            Рассмотрим разницу между изменением
+            <strong>размера холста</strong> и его <strong>размером на странице</strong>.
+          </p>
+
+          <div style="display: flex; gap: 30px; align-items: flex-start">
+            <!-- Правильный вариант -->
+            <div style="flex: 1">
+              <p><strong>Размер задан через HTML</strong></p>
+
+              <canvas id="canvasCorrect" width="300" height="150" style="border: 2px solid #333">
+              </canvas>
+
+              <p>
+                Внутренний размер:
+                <strong>300 × 150 px</strong>
+              </p>
+            </div>
+
+            <!-- CSS -->
+            <div style="flex: 1">
+              <p><strong>Размер изменён через CSS</strong></p>
+
+              <canvas
+                id="canvasCss"
+                width="300"
+                height="150"
+                style="width: 600px; height: 300px; border: 2px solid #333"
+              >
+              </canvas>
+
+              <p>
+                Внутренний размер:
+                <strong>300 × 150 px</strong><br />
+                Размер на странице:
+                <strong>600 × 300 px</strong>
+              </p>
+            </div>
+          </div>
+
+          <script>
+            function drawPicture(canvas) {
+              const ctx = canvas.getContext('2d');
+
+              // Фон
+              ctx.fillStyle = '#ffffff';
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+              // Сетка
+              ctx.strokeStyle = '#dddddd';
+              ctx.lineWidth = 1;
+
+              for (let x = 0; x <= canvas.width; x += 20) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+              }
+
+              for (let y = 0; y <= canvas.height; y += 20) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+              }
+
+              // Синий круг
+              ctx.beginPath();
+              ctx.arc(canvas.width / 2, canvas.height / 2, 45, 0, Math.PI * 2);
+
+              ctx.fillStyle = '#4a90e2';
+              ctx.fill();
+
+              // Красный квадрат
+              ctx.fillStyle = '#e74c3c';
+
+              ctx.fillRect(canvas.width / 2 - 25, canvas.height / 2 - 25, 50, 50);
+
+              // Текст
+              ctx.fillStyle = '#222';
+              ctx.font = 'bold 18px Arial';
+              ctx.textAlign = 'center';
+
+              ctx.fillText('CANVAS', canvas.width / 2, canvas.height - 15);
+            }
+
+            // Рисуем одинаковое изображение
+            drawPicture(document.getElementById('canvasCorrect'));
+
+            drawPicture(document.getElementById('canvasCss'));
+          </script>
+        </section>
+
+        <!-- 5 -->
+        <section class="slide">
+          <p>
+            Изменение размера Canvas только через CSS может привести к ухудшению качества
+            изображения.
+          </p>
+
+          <p>
+            Рисунок может стать <strong>размытым или искажённым</strong>, поскольку внутренний
+            размер области рисования не изменяется.
+          </p>
+
+          <p>
+            Поэтому для Canvas рекомендуется задавать размеры именно через
+            <strong>HTML-атрибуты</strong>, а CSS использовать для внешнего оформления.
+          </p>
+
+          <pre><code class="html"> &lt;canvas width="600" height="400"&gt;&lt;/canvas&gt; </code></pre>
+        </section>
+
+        <!-- 6 -->
+        <section class="slide">
+          <p>
+            Как и любой другой HTML-элемент, <strong>&lt;canvas&gt;</strong> можно оформлять с
+            помощью CSS.
+          </p>
+
+          <p>Например, можно добавить рамку, фон, внешние отступы и другие стили:</p>
+
+          <pre><code class="css"> canvas { border: 2px solid #333; background: #f5f5f5; margin: 20px; } </code></pre>
+        </section>
+
+        <!-- 7 -->
+        <section class="slide">
+          <h2>Доступность (Accessibility)</h2>
+          <p>
+            Элемент <strong>&lt;canvas&gt;</strong>, как и <strong>&lt;img&gt;</strong> или
+            <strong>&lt;video&gt;</strong>, должен оставаться доступным для всех пользователей.
+          </p>
+
+          <p>
+            Содержимое Canvas создаётся с помощью JavaScript, поэтому его не могут напрямую
+            «увидеть» некоторые вспомогательные инструменты, например
+            <strong>screen readers</strong> и поисковые роботы.
+          </p>
+
+          <p>
+            Чтобы сделать Canvas доступнее, рекомендуется добавлять
+            <strong>альтернативное содержимое</strong> внутрь элемента.
+          </p>
+
+          <p>
+            Оно используется, если браузер не поддерживает Canvas или пользователь не может получить
+            доступ к содержимому холста.
+          </p>
+        </section>
+
+        <!-- 8 -->
+        <section class="slide">
+          <p>
+            В качестве альтернативного содержимого можно использовать
+            <strong>текстовое описание</strong>:
+          </p>
+
+          <pre><code class="html">
+&lt;canvas id="stockGraph" width="150" height="150"&gt;
+  Текущая стоимость акции: 3.15 $
+&lt;/canvas&gt;
+  </code></pre>
+
+          <p>Или добавить <strong>статичное изображение</strong>:</p>
+
+          <pre><code class="html">
+&lt;canvas id="clock" width="150" height="150"&gt;
+  &lt;img src="clock.png" alt="Изображение часов"&gt;
+&lt;/canvas&gt;
+  </code></pre>
+
+          <p>
+            Такой подход делает страницу более
+            <strong>доступной</strong> и соответствует современным требованиям веб-разработки.
+          </p>
+        </section>
+
+        <!-- 9 -->
+        <section class="slide">
+          <p>В реальном проекте альтернативное содержимое может выглядеть так:</p>
+
+          <div style="display: flex; gap: 30px; align-items: center; margin: 25px 0">
+            <!-- Canvas -->
+            <div style="display: flex; flex-direction: column; align-items: center">
+              <p><strong>Что видит обычный пользователь:</strong></p>
+
+              <canvas
+                id="stockCanvas"
+                width="300"
+                height="180"
+                style="border: 2px solid #333; background: white"
+              >
+                Текущая стоимость акции: 3.15 $
+              </canvas>
+            </div>
+
+            <!-- Описание -->
+            <div style="max-width: 400px; padding: 20px; background: #f5f5f5; border-radius: 8px">
+              <p><strong>Альтернативное содержимое:</strong></p>
+
+              <p>
+                Текущая стоимость акции:
+                <strong>3.15 $</strong>
+              </p>
+
+              <p style="font-size: 14px; color: #666">
+                Этот текст находится внутри Canvas и может быть использован как альтернатива.
+              </p>
+            </div>
+          </div>
+
+          <pre><code class="html">
+&lt;canvas id="stockCanvas" width="300" height="180"&gt;
+  Текущая стоимость акции: 3.15 $
+&lt;/canvas&gt;
+  </code></pre>
+
+          <p>
+            Canvas отображает график, а текст внутри него содержит
+            <strong>описание информации</strong>, которую представляет график.
+          </p>
+
+          <script>
+            const canvas = document.getElementById('stockCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Оси
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+
+            ctx.beginPath();
+            ctx.moveTo(40, 20);
+            ctx.lineTo(40, 145);
+            ctx.lineTo(280, 145);
+            ctx.stroke();
+
+            // График стоимости
+            ctx.beginPath();
+
+            ctx.moveTo(40, 120);
+            ctx.lineTo(80, 100);
+            ctx.lineTo(120, 115);
+            ctx.lineTo(160, 70);
+            ctx.lineTo(200, 85);
+            ctx.lineTo(240, 45);
+            ctx.lineTo(280, 55);
+
+            ctx.strokeStyle = '#4a90e2';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            // Точки
+            const points = [
+              [40, 120],
+              [80, 100],
+              [120, 115],
+              [160, 70],
+              [200, 85],
+              [240, 45],
+              [280, 55],
+            ];
+
+            ctx.fillStyle = '#e74c3c';
+
+            points.forEach(([x, y]) => {
+              ctx.beginPath();
+              ctx.arc(x, y, 5, 0, Math.PI * 2);
+              ctx.fill();
+            });
+
+            // Подпись
+            ctx.fillStyle = '#222';
+            ctx.font = 'bold 16px Arial';
+
+            ctx.fillText('3.15 $', 220, 35);
+          </script>
+        </section>
+
+        <!-- 10 -->
+        <section class="slide">
+          <p>
+            В отличие от элемента <strong>&lt;img&gt;</strong>, элемент
+            <strong>&lt;canvas&gt;</strong> обязательно должен иметь закрывающий тег.
+          </p>
+
+          <pre><code class="html">
+&lt;canvas id="myCanvas"&gt;&lt;/canvas&gt;
+  </code></pre>
+
+          <p>
+            Всё содержимое между <strong>&lt;canvas&gt;</strong> и
+            <strong>&lt;/canvas&gt;</strong> считается
+            <strong>резервным (fallback) содержимым</strong>.
+          </p>
+
+          <pre><code class="html">
+&lt;canvas id="stockGraph"&gt;
+  Текущая стоимость акции: 3.15 $
+&lt;/canvas&gt;
+  </code></pre>
+
+          <p>
+            Если закрывающий тег отсутствует, браузер может воспринять последующий HTML-код страницы
+            как содержимое Canvas.
+          </p>
+
+          <p>Это приведёт к <strong>ошибкам отображения страницы</strong>.</p>
+        </section>
+
+        <!-- 11 -->
+        <section class="slide">
+          <p>
+            Если Canvas используется только как
+            <strong>декоративный элемент</strong> и не содержит важной информации, резервное
+            содержимое добавлять не обязательно.
+          </p>
+
+          <pre><code class="html">
+&lt;canvas
+  id="background"
+  role="presentation"&gt;
+&lt;/canvas&gt;
+  </code></pre>
+
+          <p>
+            Атрибут <strong>role="presentation"</strong> сообщает вспомогательным технологиям, что
+            элемент используется исключительно для оформления страницы.
+          </p>
+        </section>
+
+        <!-- 12 -->
+        <section class="slide">
+          <h2>Контекст рисования (Rendering Context)</h2>
+          <p>
+            Сам элемент <strong>&lt;canvas&gt;</strong> — это только
+            <strong>область для рисования</strong>.
+          </p>
+
+          <p>
+            Сам по себе Canvas не содержит инструментов для создания графики. Чтобы начать рисовать,
+            необходимо получить
+            <strong>контекст рисования</strong>
+            (<em>rendering context</em>).
+          </p>
+
+          <p>Контекст — это объект, который предоставляет методы для работы с графикой:</p>
+
+          <ul>
+            <li>рисования линий</li>
+            <li>создания фигур</li>
+            <li>добавления текста</li>
+            <li>работa с изображениями и др.</li>
+          </ul>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 20px;
+              margin-top: 25px;
+            "
+          >
+            <div
+              style="
+                padding: 25px;
+                border: 2px solid #333;
+                border-radius: 10px;
+                background: #f5f5f5;
+                text-align: center;
+              "
+            >
+              <strong>&lt;canvas&gt;</strong>
+              <br />
+              область для рисования
+            </div>
+
+            <div style="font-size: 30px">→</div>
+
+            <div
+              style="
+                padding: 25px;
+                border: 2px solid #4a90e2;
+                border-radius: 10px;
+                background: #eef6ff;
+                text-align: center;
+              "
+            >
+              <strong>Контекст</strong>
+              <br />
+              инструменты рисования
+            </div>
+          </div>
+        </section>
+
+        <!-- 13 -->
+        <section class="slide">
+          <p>
+            Canvas поддерживает несколько типов контекста. В этом курсе мы будем использовать
+            <strong>двумерный контекст (2d)</strong>.
+          </p>
+
+          <p>
+            Чтобы получить 2D-контекст, сначала получаем сам Canvas, а затем вызываем метод
+            <strong>getContext()</strong>:
+          </p>
+
+          <pre><code class="javascript">
+const canvas = document.getElementById("myCanvas");
+
+const ctx = canvas.getContext("2d");
+  </code></pre>
+
+          <p>
+            Теперь переменная <strong>ctx</strong> содержит контекст, через который мы сможем
+            рисовать на Canvas.
+          </p>
+
+          <pre><code class="javascript">
+ctx.fillRect(50, 30, 150, 100);
+  </code></pre>
+        </section>
+
+        <!-- 14 -->
+        <section class="slide">
+          <h2>Получение контекста</h2>
+
+          <p>
+            Работа с Canvas всегда начинается с
+            <strong>двух шагов</strong>:
+          </p>
+
+          <ol>
+            <li>
+              Получить элемент <strong>&lt;canvas&gt;</strong>
+              из HTML-документа.
+            </li>
+            <li>Получить его <strong>контекст рисования</strong>.</li>
+          </ol>
+
+          <pre><code class="javascript">
+const canvas = document.getElementById("canvas");
+
+const ctx = canvas.getContext("2d");
+  </code></pre>
+
+          <p>
+            В первой строке JavaScript находит Canvas по его
+            <strong>id</strong> с помощью метода <strong>document.getElementById()</strong>.
+          </p>
+
+          <p>
+            Во второй строке вызывается
+            <strong>getContext("2d")</strong>. Он возвращает объект
+            <strong>CanvasRenderingContext2D</strong>.
+          </p>
+
+          <p>
+            Именно через этот объект выполняются
+            <strong>все операции рисования</strong>.
+          </p>
+        </section>
+
+        <!-- 15 -->
+        <section class="slide">
+          <p>
+            После получения контекста практически весь код рисования будет использовать переменную
+            <strong>ctx</strong>.
+          </p>
+
+          <pre><code class="javascript">
+ctx.fillRect(20, 20, 100, 50);
+
+ctx.beginPath();
+
+ctx.arc(
+  100,
+  100,
+  40,
+  0,
+  Math.PI * 2
+);
+  </code></pre>
+
+          <p>
+            Например, с помощью <strong>ctx</strong> можно создавать прямоугольники, линии,
+            окружности и другие элементы.
+          </p>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 20px;
+              margin: 25px 0;
+            "
+          >
+            <div style="padding: 20px; border: 2px solid #333; border-radius: 8px">
+              <strong>&lt;canvas&gt;</strong>
+            </div>
+
+            <div style="font-size: 28px">→</div>
+
+            <div
+              style="
+                padding: 20px;
+                border: 2px solid #4a90e2;
+                border-radius: 8px;
+                background: #eef6ff;
+              "
+            >
+              <strong>ctx</strong>
+            </div>
+
+            <div style="font-size: 28px">→</div>
+
+            <div
+              style="
+                padding: 20px;
+                border: 2px solid #27ae60;
+                border-radius: 8px;
+                background: #eefaf2;
+              "
+            >
+              <strong>Рисование</strong>
+            </div>
+          </div>
+
+          <p>
+            <strong>Важно:</strong> без получения контекста Canvas остаётся пустой областью, и
+            рисовать на нём невозможно.
+          </p>
+        </section>
+
+        <!-- 16 -->
+        <section class="slide">
+          <h2>Координатная система Canvas</h2>
+
+          <p>
+            Прежде чем рисовать, важно понять, как устроена
+            <strong>система координат Canvas</strong>.
+          </p>
+
+          <p>
+            Каждый холст представляет собой сетку, в которой
+            <strong>1 единица соответствует 1 пикселю</strong>.
+          </p>
+
+          <p>
+            Начало координат находится в
+            <strong>левом верхнем углу</strong> и имеет координаты <strong>(0, 0)</strong>.
+          </p>
+
+          <div
+            style="
+              position: relative;
+              width: 500px;
+              height: 250px;
+              margin: 0px auto;
+              border: 2px solid #333;
+              background:
+                linear-gradient(#ddd 1px, transparent 1px),
+                linear-gradient(90deg, #ddd 1px, transparent 1px);
+              background-size: 25px 25px;
+            "
+          >
+            <!-- Ось X -->
+            <div
+              style="
+                position: absolute;
+                left: 0;
+                top: 25px;
+                width: 470px;
+                height: 2px;
+                background: #e74c3c;
+              "
+            ></div>
+
+            <!-- Ось Y -->
+            <div
+              style="
+                position: absolute;
+                left: 25px;
+                top: 0;
+                width: 2px;
+                height: 225px;
+                background: #3498db;
+              "
+            ></div>
+
+            <span style="position: absolute; left: 5px; top: 3px; font-weight: bold"> (0, 0) </span>
+
+            <span
+              style="position: absolute; right: 10px; top: 5px; color: #e74c3c; font-weight: bold"
+            >
+              X →
+            </span>
+
+            <span
+              style="position: absolute; left: 35px; bottom: 5px; color: #3498db; font-weight: bold"
+            >
+              Y ↓
+            </span>
+          </div>
+
+          <ul>
+            <li>Ось <strong>X</strong> направлена вправо.</li>
+            <li>Ось <strong>Y</strong> направлена вниз.</li>
+          </ul>
+        </section>
+
+        <!-- 17 -->
+        <section class="slide">
+          <p>
+            Любой объект размещается относительно начала координат
+            <strong>(0, 0)</strong>.
+          </p>
+
+          <p>
+            Например, если фигура начинается в координатах
+            <strong>(50, 30)</strong>, это означает:
+          </p>
+
+          <ul>
+            <li><strong>50 пикселей</strong> от левого края;</li>
+            <li><strong>30 пикселей</strong> от верхнего края.</li>
+          </ul>
+
+          <div
+            style="
+              position: relative;
+              width: 500px;
+              height: 250px;
+              margin: 25px auto;
+              border: 2px solid #333;
+              background:
+                linear-gradient(#eee 1px, transparent 1px),
+                linear-gradient(90deg, #eee 1px, transparent 1px);
+              background-size: 25px 25px;
+            "
+          >
+            <!-- Начало координат -->
+            <div
+              style="position: absolute; left: 0; top: 0; width: 2px; height: 2px; background: #333"
+            ></div>
+
+            <span style="position: absolute; left: 8px; top: 8px; font-size: 14px"> (0, 0) </span>
+
+            <!-- Фигура -->
+            <div
+              style="
+                position: absolute;
+                left: 50px;
+                top: 30px;
+                width: 120px;
+                height: 80px;
+                background: #4a90e2;
+                border: 3px solid #1f5f9e;
+                box-sizing: border-box;
+              "
+            ></div>
+
+            <!-- Подпись -->
+            <span
+              style="position: absolute; left: 55px; top: 115px; color: #1f5f9e; font-weight: bold"
+            >
+              (50, 30)
+            </span>
+          </div>
+
+          <p>
+            Позже мы рассмотрим, как изменять систему координат:
+            <strong>переносить начало координат, поворачивать и масштабировать</strong> холст.
+          </p>
+
+          <p>
+            Пока будем использовать
+            <strong>стандартную систему координат</strong>.
+          </p>
+        </section>
+
+        <!-- 18 -->
+        <section class="slide">
+          <h2>Первые фигуры: прямоугольники</h2>
+
+          <p>
+            Canvas не содержит готовых фигур, как SVG. Основными графическими примитивами являются
+            <strong>прямоугольники</strong> и <strong>контуры (paths)</strong>.
+          </p>
+
+          <p>
+            Более сложные объекты — окружности, звёзды, многоугольники и другие фигуры — создаются
+            на основе контуров.
+          </p>
+
+          <p>
+            Для работы с прямоугольниками Canvas предоставляет
+            <strong>три основных метода</strong>:
+          </p>
+
+          <pre><code class="javascript">
+ctx.fillRect(x, y, width, height);
+ctx.strokeRect(x, y, width, height);
+ctx.clearRect(x, y, width, height);
+  </code></pre>
+
+          <ul>
+            <li><strong>fillRect()</strong> — рисует закрашенный прямоугольник.</li>
+            <li><strong>strokeRect()</strong> — рисует только контур.</li>
+            <li><strong>clearRect()</strong> — очищает указанную область.</li>
+          </ul>
+        </section>
+
+        <!-- 19 -->
+        <section class="slide">
+          <h2>Параметры прямоугольника</h2>
+
+          <p>Все три метода используют одинаковые четыре параметра:</p>
+
+          <pre><code class="javascript">
+ctx.fillRect(x, y, width, height);
+  </code></pre>
+
+          <ul>
+            <li><strong>x</strong> — координата левого верхнего угла по оси X;</li>
+            <li><strong>y</strong> — координата левого верхнего угла по оси Y;</li>
+            <li><strong>width</strong> — ширина прямоугольника;</li>
+            <li><strong>height</strong> — высота прямоугольника.</li>
+          </ul>
+
+          <div
+            style="
+              position: relative;
+              width: 500px;
+              height: 220px;
+              margin: 25px auto;
+              border: 2px solid #333;
+              background:
+                linear-gradient(#eee 1px, transparent 1px),
+                linear-gradient(90deg, #eee 1px, transparent 1px);
+              background-size: 25px 25px;
+            "
+          >
+            <!-- Прямоугольник -->
+            <div
+              style="
+                position: absolute;
+                left: 100px;
+                top: 50px;
+                width: 200px;
+                height: 100px;
+                border: 3px solid #4a90e2;
+                background: rgba(74, 144, 226, 0.15);
+              "
+            ></div>
+
+            <span
+              style="position: absolute; left: 105px; top: 55px; font-weight: bold; color: #1f5f9e"
+            >
+              (x, y)
+            </span>
+
+            <span style="position: absolute; left: 175px; top: 160px; color: #1f5f9e"> width </span>
+
+            <span
+              style="
+                position: absolute;
+                left: 310px;
+                top: 85px;
+                color: #1f5f9e;
+                transform: rotate(90deg);
+              "
+            >
+              height
+            </span>
+          </div>
+
+          <p>
+            Именно с этих методов обычно начинается знакомство с Canvas API: они позволяют быстро
+            понять принцип работы
+            <strong>координат и размеров объектов</strong>.
+          </p>
+        </section>
+
+        <!-- 20 -->
+        <section class="slide">
+          <h3>Пример работы с прямоугольниками</h3>
+
+          <p>Используем все три метода для последовательного изменения Canvas:</p>
+
+          <pre><code class="javascript">
+const canvas = document.getElementById("rectExample");
+const ctx = canvas.getContext("2d");
+
+ctx.fillRect(25, 25, 100, 100);
+
+ctx.clearRect(45, 45, 60, 60);
+
+ctx.strokeRect(50, 50, 50, 50);
+  </code></pre>
+
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 15px;
+              margin-top: 25px;
+            "
+          >
+            <div style="padding: 15px; background: #f5f5f5; border-radius: 8px; font-size: 1.5rem">
+              <strong>1. fillRect()</strong>
+              <p>
+                Рисует чёрный квадрат
+                <strong>100 × 100 px</strong>.
+              </p>
+            </div>
+
+            <div style="padding: 15px; background: #f5f5f5; border-radius: 8px; font-size: 1.5rem">
+              <strong>2. clearRect()</strong>
+              <p>
+                Очищает центральную область
+                <strong>60 × 60 px</strong>.
+              </p>
+            </div>
+
+            <div style="padding: 15px; background: #f5f5f5; border-radius: 8px; font-size: 1.5rem">
+              <strong>3. strokeRect()</strong>
+              <p>Рисует внутри области прямоугольник с контуром.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 21 -->
+        <section class="slide">
+          <h3>Результат работы методов</h3>
+
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 60px;
+              margin-top: 30px;
+            "
+          >
+            <div style="text-align: center">
+              <p>
+                <strong>До выполнения кода</strong>
+              </p>
+
+              <canvas width="160" height="160" style="border: 2px solid #333; background: white">
+              </canvas>
+            </div>
+
+            <div style="font-size: 40px; color: #294a80">→</div>
+
+            <div style="text-align: center">
+              <p>
+                <strong>После выполнения кода</strong>
+              </p>
+
+              <canvas
+                id="rectExample"
+                width="160"
+                height="160"
+                style="border: 2px solid #333; background: white"
+              >
+              </canvas>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin: 30px auto 0;
+              max-width: 700px;
+              padding: 20px;
+              background: #f5f5f5;
+              border-radius: 10px;
+            "
+          >
+            <p>
+              <strong>Что произошло?</strong>
+            </p>
+
+            <ol>
+              <li>Создали закрашенный квадрат.</li>
+              <li>Вырезали прозрачную область в центре.</li>
+              <li>Нарисовали рамку внутри вырезанной области.</li>
+            </ol>
+          </div>
+
+          <script>
+            const canvas1 = document.getElementById('rectExample');
+            const ctx1 = canvas1.getContext('2d');
+
+            ctx1.fillRect(25, 25, 100, 100);
+
+            ctx1.clearRect(45, 45, 60, 60);
+
+            ctx1.strokeRect(50, 50, 50, 50);
+          </script>
+        </section>
+
+        <!-- 22 -->
+        <section class="slide">
+          <h3>Прямоугольники рисуются сразу</h3>
+
+          <p>
+            Методы <strong>fillRect()</strong>, <strong>strokeRect()</strong> и
+            <strong>clearRect()</strong> сразу выполняют операцию на Canvas.
+          </p>
+
+          <p>
+            В отличие от контуров (<strong>Path</strong>), их не нужно дополнительно завершать или
+            отображать специальным методом.
+          </p>
+
+          <p>
+            Поэтому прямоугольники — один из самых простых способов познакомиться с
+            <strong>Canvas API</strong> и понять, как координаты определяют положение объекта на
+            холсте.
+          </p>
+        </section>
+
+        <!-- 23 -->
+        <section class="slide">
+          <h2>Контуры (Paths)</h2>
+
+          <p>
+            Помимо прямоугольников, Canvas позволяет создавать практически любые фигуры с помощью
+            <strong>контуров (paths)</strong>.
+          </p>
+
+          <p>
+            Контур — это набор соединённых элементов:
+            <strong>точек, линий, дуг и кривых</strong>.
+          </p>
+
+          <p>
+            С помощью контуров можно создавать многоугольники, окружности, кривые Безье, сложные
+            фигуры и другие изображения.
+          </p>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: start;
+              gap: 20px;
+              margin-top: 25px;
+            "
+          >
+            <div
+              style="
+                padding: 20px 30px;
+                border: 2px solid #233d70;
+                border-radius: 8px;
+                background: #eef3fb;
+                text-align: center;
+              "
+            >
+              <strong>Path</strong>
+              <br />
+              набор элементов
+            </div>
+
+            <div style="font-size: 30px; color: #c96b21">→</div>
+
+            <div
+              style="
+                padding: 20px 30px;
+                border: 2px solid #27ae60;
+                border-radius: 8px;
+                background: #eefaf2;
+                text-align: center;
+              "
+            >
+              <strong>Фигура</strong>
+              <br />
+              на Canvas
+            </div>
+          </div>
+        </section>
+
+        <!-- 24 -->
+        <section class="slide">
+          <h2>Основные методы работы с контуром</h2>
+
+          <p>
+            Для создания и отображения контуров используются несколько
+            <strong>основных методов</strong>.
+          </p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 25px">
+            <div
+              style="
+                padding: 18px;
+                background: #f5f5f5;
+                border-radius: 8px;
+                border-left: 5px solid #233d70;
+              "
+            >
+              <code style="font-size: 1em; color: #233d70"> ctx.beginPath(); </code>
+
+              <p style="font-size: 0.82em; margin-bottom: 0">
+                Создаёт новый контур. Обычно именно с этого метода начинается рисование каждой новой
+                фигуры.
+              </p>
+            </div>
+
+            <div
+              style="
+                padding: 18px;
+                background: #f5f5f5;
+                border-radius: 8px;
+                border-left: 5px solid #233d70;
+              "
+            >
+              <code style="font-size: 1em; color: #233d70"> ctx.closePath(); </code>
+
+              <p style="font-size: 0.82em; margin-bottom: 0">
+                Замыкает контур, соединяя последнюю точку с первой прямой линией.
+              </p>
+            </div>
+
+            <div
+              style="
+                padding: 18px;
+                background: #f5f5f5;
+                border-radius: 8px;
+                border-left: 5px solid #c96b21;
+              "
+            >
+              <code style="font-size: 1em; color: #c96b21"> ctx.stroke(); </code>
+
+              <p style="font-size: 0.82em; margin-bottom: 0">
+                Рисует только
+                <strong>контур</strong> фигуры.
+              </p>
+            </div>
+
+            <div
+              style="
+                padding: 18px;
+                background: #f5f5f5;
+                border-radius: 8px;
+                border-left: 5px solid #c96b21;
+              "
+            >
+              <code style="font-size: 1em; color: #c96b21"> ctx.fill(); </code>
+
+              <p style="font-size: 0.82em; margin-bottom: 0">
+                Заполняет внутреннюю область фигуры выбранным цветом.
+              </p>
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 22px; padding: 15px 20px; background: #eef3fb; border-radius: 8px"
+          >
+            <strong>Последовательность работы:</strong>
+
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                margin-top: 12px;
+                font-family: monospace;
+                font-size: 0.9em;
+              "
+            >
+              <span>beginPath()</span>
+              <span style="color: #c96b21">→</span>
+              <span>построение</span>
+              <span style="color: #c96b21">→</span>
+              <span>stroke() / fill()</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 25 -->
+        <section class="slide">
+          <h2>Важное отличие fill() и stroke()</h2>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 25px 0">
+            <div style="padding: 20px; background: #eef3fb; border-radius: 8px; text-align: center">
+              <code style="font-size: 1.15em; color: #233d70"> ctx.fill(); </code>
+
+              <p>Заполняет внутреннюю область фигуры.</p>
+
+              <div
+                style="
+                  margin-top: 15px;
+                  padding: 12px;
+                  background: white;
+                  border-radius: 6px;
+                  color: #233d70;
+                "
+              >
+                <strong>closePath()</strong><br />
+                можно не вызывать
+              </div>
+            </div>
+
+            <div style="padding: 20px; background: #fff3e8; border-radius: 8px; text-align: center">
+              <code style="font-size: 1.15em; color: #c96b21"> ctx.stroke(); </code>
+
+              <p>Рисует только линии контура.</p>
+
+              <div
+                style="
+                  margin-top: 15px;
+                  padding: 12px;
+                  background: white;
+                  border-radius: 6px;
+                  color: #c96b21;
+                "
+              >
+                <strong>closePath()</strong><br />
+                нужен для замыкания
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 25px;
+              padding: 20px;
+              background: #f5f5f5;
+              border-left: 5px solid #c96b21;
+              border-radius: 8px;
+            "
+          >
+            <p style="margin-top: 0">
+              <strong>Важно:</strong>
+            </p>
+
+            <p style="margin-bottom: 0">
+              Метод <strong>fill()</strong> автоматически замыкает контур перед заливкой, поэтому
+              вызывать <strong>closePath()</strong>
+              необязательно.
+            </p>
+
+            <p style="margin-bottom: 0">
+              Метод <strong>stroke()</strong> этого не делает, поэтому при рисовании замкнутой
+              фигуры <strong>closePath()</strong>
+              часто приходится вызывать самостоятельно.
+            </p>
+          </div>
+        </section>
+
+        <!-- 26 -->
+        <section class="slide">
+          <h2>Метод moveTo() — перемещение пера</h2>
+
+          <p>
+            При построении контуров часто возникает необходимость перейти в новую точку,
+            <strong>не рисуя линию</strong>.
+          </p>
+
+          <p>Для этого используется метод <strong>moveTo()</strong>.</p>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 25px;
+              margin: 25px 0;
+            "
+          >
+            <div
+              style="
+                padding: 18px 25px;
+                background: #f5f5f5;
+                border-radius: 8px;
+                text-align: center;
+              "
+            >
+              <div style="font-size: 1em">✏️</div>
+              <strong>Поднять перо</strong>
+              <p style="font-size: 0.75em; margin-bottom: 0">
+                переместить его<br />
+                в новую точку
+              </p>
+            </div>
+
+            <div style="font-size: 35px; color: #c96b21">→</div>
+
+            <div
+              style="
+                padding: 18px 25px;
+                background: #eef3fb;
+                border-radius: 8px;
+                text-align: center;
+              "
+            >
+              <code style="font-size: 1.1em"> ctx.moveTo(x, y); </code>
+
+              <p style="font-size: 0.75em; margin-bottom: 0">
+                линия между точками<br />
+                <strong>не создаётся</strong>
+              </p>
+            </div>
+          </div>
+
+          <pre><code class="javascript">ctx.moveTo(50, 50);</code></pre>
+
+          <p class="conclusion">
+            <strong>Важно:</strong>
+            moveTo() не рисует ничего на холсте — он только изменяет положение текущей точки.
+          </p>
+        </section>
+
+        <!-- 27 -->
+        <section class="slide">
+          <h2>Метод lineTo() — рисование линий</h2>
+
+          <p>
+            После того как начальная точка задана с помощью
+            <strong>moveTo()</strong>, можно рисовать линии методом <strong>lineTo()</strong>.
+          </p>
+
+          <pre><code class="javascript">ctx.lineTo(x, y);</code></pre>
+
+          <p>
+            Метод проводит прямую линию
+            <strong>от текущей точки</strong> к указанным координатам <strong>(x, y)</strong>.
+          </p>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 18px;
+              margin: 25px 0;
+            "
+          >
+            <div
+              style="
+                padding: 18px 25px;
+                border: 2px solid #233d70;
+                border-radius: 8px;
+                background: #eef3fb;
+                text-align: center;
+              "
+            >
+              <strong>Текущая точка</strong>
+            </div>
+
+            <div style="font-size: 35px; color: #c96b21">→</div>
+
+            <div
+              style="
+                padding: 18px 25px;
+                border: 2px solid #c96b21;
+                border-radius: 8px;
+                background: #fff3e8;
+                text-align: center;
+              "
+            >
+              <strong>lineTo(x, y)</strong>
+            </div>
+
+            <div style="font-size: 35px; color: #c96b21">→</div>
+
+            <div
+              style="
+                padding: 18px 25px;
+                border: 2px solid #233d70;
+                border-radius: 8px;
+                background: #eef3fb;
+                text-align: center;
+              "
+            >
+              <strong>Новая точка</strong>
+            </div>
+          </div>
+
+          <p>
+            После вызова <strong>lineTo()</strong> указанная точка становится
+            <strong>текущей</strong>. Следующая линия начнётся уже из неё.
+          </p>
+
+          <div
+            style="
+              margin-top: 20px;
+              padding: 15px 20px;
+              background: #f5f5f5;
+              border-left: 5px solid #c96b21;
+              border-radius: 6px;
+            "
+          >
+            <strong>Важно:</strong>
+            lineTo() только добавляет линию в контур. Сам контур пока не отображается.
+          </div>
+        </section>
+
+        <!-- 28 -->
+        <section class="slide">
+          <h3>Пример: закрашенный и контурный треугольник</h3>
+
+          <p>Рассмотрим два способа отображения одного и того же контура.</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px">
+            <!-- Закрашенный -->
+            <div style="padding: 18px; background: #eef3fb; border-radius: 8px">
+              <h3 style="margin-top: 0">Закрашенный треугольник</h3>
+
+              <pre><code class="javascript">ctx.beginPath();
+
+ctx.moveTo(25, 25);
+ctx.lineTo(105, 25);
+ctx.lineTo(25, 105);
+
+ctx.fill();</code></pre>
+
+              <canvas
+                id="filledTriangle"
+                width="150"
+                height="150"
+                style="
+                  display: block;
+                  margin: 15px auto;
+                  border: 2px solid #333;
+                  background: white;
+                  border-radius: 8px;
+                "
+              ></canvas>
+
+              <p style="font-size: 0.7em">
+                <strong>fill()</strong> автоматически замыкает контур перед заливкой.
+              </p>
+            </div>
+
+            <!-- Контурный -->
+            <div style="padding: 18px; background: #fff3e8; border-radius: 8px">
+              <h3 style="margin-top: 0">Контурный треугольник</h3>
+
+              <pre><code class="javascript">ctx.beginPath();
+
+ctx.moveTo(125, 125);
+ctx.lineTo(125, 45);
+ctx.lineTo(45, 125);
+
+ctx.closePath();
+ctx.stroke();</code></pre>
+
+              <canvas
+                id="outlinedTriangle"
+                width="150"
+                height="150"
+                style="
+                  display: block;
+                  margin: 15px auto;
+                  border: 2px solid #333;
+                  background: white;
+                  border-radius: 8px;
+                "
+              ></canvas>
+
+              <p style="font-size: 0.7em">
+                <strong>stroke()</strong> не замыкает контур автоматически.
+              </p>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 20px;
+              padding: 16px 20px;
+              background: #f5f5f5;
+              border-left: 5px solid #c96b21;
+              border-radius: 8px;
+            "
+          >
+            <strong>Запомните:</strong>
+
+            <span style="margin-left: 8px">
+              fill() автоматически замыкает контур, а stroke() — нет.
+            </span>
+          </div>
+
+          <script>
+            // Закрашенный треугольник
+            {
+              const canvas = document.getElementById('filledTriangle');
+              const ctx = canvas.getContext('2d');
+
+              ctx.beginPath();
+
+              ctx.moveTo(25, 25);
+              ctx.lineTo(105, 25);
+              ctx.lineTo(25, 105);
+
+              ctx.fillStyle = '#233d70';
+              ctx.fill();
+            }
+
+            // Контурный треугольник
+            {
+              const canvas = document.getElementById('outlinedTriangle');
+              const ctx = canvas.getContext('2d');
+
+              ctx.beginPath();
+
+              ctx.moveTo(125, 125);
+              ctx.lineTo(125, 45);
+              ctx.lineTo(45, 125);
+
+              ctx.closePath();
+
+              ctx.strokeStyle = '#c96b21';
+              ctx.lineWidth = 5;
+              ctx.stroke();
+            }
+          </script>
+        </section>
+
+        <!-- 29 -->
+        <section class="slide">
+          <h2>Рисование дуг и окружностей</h2>
+
+          <p>
+            Для создания окружностей, дуг и округлых элементов в Canvas используются методы
+            <strong>arc()</strong> и <strong>arcTo()</strong>.
+          </p>
+
+          <p>
+            На практике чаще всего применяется именно <strong>arc()</strong>, так как он позволяет
+            рисовать как полные окружности, так и отдельные дуги.
+          </p>
+
+          <pre><code class="javascript">ctx.arc(x,y,radius,startAngle,endAngle,counterclockwise);</code></pre>
+
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1.15fr 1fr;
+              gap: 30px;
+              align-items: center;
+              margin-top: 20px;
+            "
+          >
+            <div>
+              <p><strong>Параметры:</strong></p>
+
+              <ul style="font-size: 0.82em">
+                <li><strong>x, y</strong> — координаты центра окружности</li>
+                <li><strong>radius</strong> — радиус</li>
+                <li><strong>startAngle</strong> — угол начала дуги</li>
+                <li><strong>endAngle</strong> — угол окончания дуги</li>
+                <li><strong>counterclockwise</strong> — направление рисования</li>
+              </ul>
+            </div>
+
+            <div style="padding: 15px; background: #f5f5f5; border-radius: 8px; text-align: center">
+              <canvas
+                id="arcParameters"
+                width="300"
+                height="220"
+                style="
+                  width: 100%;
+                  border: 1px solid #cfd3d8;
+                  background: white;
+                  border-radius: 8px;
+                "
+              ></canvas>
+            </div>
+          </div>
+
+          <script>
+            const canvas2 = document.getElementById('arcParameters');
+            const ctx2 = canvas2.getContext('2d');
+
+            const centerX = 150;
+            const centerY = 115;
+            const radius = 75;
+
+            // Окружность
+            ctx2.beginPath();
+            ctx2.arc(centerX, centerY, radius, 0, Math.PI * 2);
+
+            ctx2.strokeStyle = '#233d70';
+            ctx2.lineWidth = 3;
+            ctx2.stroke();
+
+            // Центр
+            ctx2.beginPath();
+            ctx2.arc(centerX, centerY, 5, 0, Math.PI * 2);
+
+            ctx2.fillStyle = '#c96b21';
+            ctx2.fill();
+
+            // Радиус
+            ctx2.beginPath();
+            ctx2.moveTo(centerX, centerY);
+            ctx2.lineTo(centerX + radius, centerY);
+
+            ctx2.strokeStyle = '#c96b21';
+            ctx2.lineWidth = 2;
+            ctx2.stroke();
+
+            // Подпись центра
+            ctx2.fillStyle = '#233d70';
+            ctx2.font = 'bold 16px Arial';
+            ctx2.fillText('(x, y)', centerX - 28, centerY + 28);
+
+            // Подпись радиуса
+            ctx2.fillStyle = '#c96b21';
+            ctx2.fillText('radius', centerX + 20, centerY - 10);
+          </script>
+        </section>
+
+        <!-- 30 -->
+        <section class="slide">
+          <div
+            style="
+              margin-top: 18px;
+              padding: 14px 18px;
+              background: #eef3fb;
+              border-left: 5px solid #233d70;
+              border-radius: 7px;
+            "
+          >
+            Перед использованием <strong>arc()</strong>, как и при рисовании линий, необходимо
+            создать новый контур с помощью <strong>beginPath()</strong>.
+          </div>
+
+          <pre
+            style="margin-top: 25px"
+          ><code class="javascript">const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+
+ctx.beginPath();
+
+ctx.arc(100, 75, 50, 0, Math.PI * 2);
+
+ctx.stroke();</code></pre>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 25px;
+              margin-top: 20px;
+            "
+          >
+            <div style="padding: 15px 20px; background: #f5f5f5; border-radius: 8px">
+              <strong>beginPath()</strong>
+              <br />
+              <span style="font-size: 0.8em">создаём новый контур</span>
+            </div>
+
+            <div style="font-size: 30px; color: #c96b21">→</div>
+
+            <div style="padding: 15px 20px; background: #f5f5f5; border-radius: 8px">
+              <strong>arc()</strong>
+              <br />
+              <span style="font-size: 0.8em">добавляем окружность</span>
+            </div>
+
+            <div style="font-size: 30px; color: #c96b21">→</div>
+
+            <div style="padding: 15px 20px; background: #f5f5f5; border-radius: 8px">
+              <strong>stroke()</strong>
+              <br />
+              <span style="font-size: 0.8em">рисуем контур</span>
+            </div>
+          </div>
+
+          <canvas
+            id="myCanvas"
+            width="200"
+            height="150"
+            style="
+              display: block;
+              margin: 20px auto 0;
+              border: 2px solid #333;
+              background: white;
+              border-radius: 8px;
+            "
+          ></canvas>
+
+          <script>
+            const canvas3 = document.getElementById('myCanvas');
+            const ctx3 = canvas3.getContext('2d');
+
+            ctx3.beginPath();
+
+            ctx3.arc(100, 75, 50, 0, Math.PI * 2);
+
+            ctx3.strokeStyle = '#233d70';
+            ctx3.lineWidth = 4;
+            ctx3.stroke();
+          </script>
+        </section>
+
+        <!-- 31 -->
+        <section class="slide">
+          <h2>Практическое задание: «Домик»</h2>
+
+          <p class="lead">
+            Нарисуйте простой <strong>домик</strong> на Canvas, используя изученные методы.
+          </p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px">
+            <div style="padding: 20px; background: #eef3fb; border-radius: 8px">
+              <h3>Что должно быть на рисунке?</h3>
+
+              <ul style="font-size: 0.85em">
+                <li>🏠 стены дома — прямоугольник</li>
+                <li>🔺 крыша — треугольник</li>
+                <li>🚪 дверь — прямоугольник</li>
+                <li>⭕ окно — окружность</li>
+              </ul>
+            </div>
+
+            <div style="padding: 20px; background: #fff3e8; border-radius: 8px">
+              <h3>Обязательно используйте</h3>
+
+              <ul style="font-size: 0.85em">
+                <li><code>fillRect()</code> — для стен и двери</li>
+                <li><code>arc()</code> — для круглого окна</li>
+                <li><code>moveTo()</code> — начало крыши</li>
+                <li><code>lineTo()</code> — стороны крыши</li>
+              </ul>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 25px;
+              padding: 16px 20px;
+              background: #f5f5f5;
+              border-left: 5px solid #c96b21;
+              border-radius: 7px;
+            "
+          >
+            <strong>Задача:</strong>
+            самостоятельно выбрать координаты, размеры и цвета всех элементов.
+          </div>
+
+          <p class="small" style="margin-top: 20px">
+            Не используйте изображения или SVG. Домик должен быть полностью нарисован средствами
+            Canvas API.
+          </p>
+        </section>
+
+        <!-- 32 -->
+        <section class="slide">
+          <h3>Подсказки</h3>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px">
+            <div class="box">
+              <h3 style="margin-top: 10px; margin-bottom: 10px; font-size: 1.3rem">
+                1. Стены дома
+              </h3>
+
+              <pre><code class="javascript" style="font-size: 14px;">ctx.fillRect(
+  150, 180, 250, 150
+);</code></pre>
+
+              <p style="font-size: 14px">
+                Укажите координаты левого верхнего угла, затем ширину и высоту.
+              </p>
+            </div>
+
+            <div class="box">
+              <h3 style="margin-top: 10px; margin-bottom: 10px; font-size: 1.3rem">2. Крыша</h3>
+
+              <pre><code class="javascript" style="font-size: 14px;">ctx.beginPath();
+
+ctx.moveTo(130, 180);
+ctx.lineTo(275, 70);
+ctx.lineTo(420, 180);
+ctx.closePath();
+ctx.fill();</code></pre>
+
+              <p style="font-size: 14px">Три точки образуют треугольник.</p>
+            </div>
+
+            <div class="box">
+              <h3 style="margin-top: 10px; margin-bottom: 10px; font-size: 1.3rem">3. Дверь</h3>
+
+              <pre><code class="javascript" style="font-size: 14px;">ctx.fillRect(
+  245, 240, 60, 90
+);</code></pre>
+
+              <p style="font-size: 14px">Дверь — обычный прямоугольник внутри стен дома.</p>
+            </div>
+
+            <div class="box">
+              <h3 style="margin-top: 10px; margin-bottom: 10px; font-size: 1.3rem">
+                4. Круглое окно
+              </h3>
+
+              <pre><code class="javascript" style="font-size: 14px;">ctx.beginPath();
+ctx.arc(210, 230, 30,0, Math.PI * 2);
+ctx.fill();</code></pre>
+
+              <p style="font-size: 14px">Первые два значения — центр, третье — радиус.</p>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 18px;
+              padding: 14px 18px;
+              background: #eefaf2;
+              border-left: 5px solid #27ae60;
+              border-radius: 7px;
+            "
+          >
+            <strong>Попробуйте сами:</strong>
+            измените координаты, размеры и цвета, чтобы получить свой вариант домика.
+          </div>
+        </section>
+
+        <!-- 33 -->
+        <section>
+          <h2>Как оформить код?</h2>
+          <p>Перед рисованием нужно получить Canvas и его контекст.</p>
+          <div style="display: flex; gap: 25px; align-items: stretch">
+            <div class="box" style="flex: 1">
+              <h3>1. Находим Canvas</h3>
+              <pre><code class="javascript"> const canvas = document.querySelector('#canvas'); </code></pre>
+            </div>
+            <div class="box" style="flex: 1">
+              <h3>2. Получаем контекст</h3>
+              <pre><code class="javascript"> const ctx = canvas.getContext('2d'); </code></pre>
+            </div>
+          </div>
+          <div style="margin-top: 20px; padding: 15px; background: #eef7ff; border-radius: 8px">
+            <strong>Теперь через ctx можно рисовать на Canvas.</strong>
+          </div>
+        </section>
+
+        <!-- 34 -->
+        <section>
+          <h2>Отдельная функция для каждого элемента</h2>
+
+          <p>Чтобы код было легче читать, каждый элемент можно вынести в отдельную функцию.</p>
+
+          <pre><code class="javascript">function drawHouse() {
+  // стены
+}
+
+function drawRoof() {
+  // крыша
+}
+
+function drawDoor() {
+  // дверь
+}
+
+function drawWindow() {
+  // окно
+}</code></pre>
+
+          <div style="margin-top: 15px; padding: 15px; background: #fff3e8; border-radius: 8px">
+            <strong>Одна функция — один элемент рисунка.</strong>
+          </div>
+        </section>
+
+        <!-- 35 -->
+        <section>
+          <h2>Вызываем функции</h2>
+
+          <p>После создания функций нужно их вызвать.</p>
+
+          <pre><code class="javascript">drawHouse();
+drawRoof();
+drawDoor();
+drawWindow();</code></pre>
+
+          <div style="margin-top: 20px; padding: 18px; background: #eef7ff; border-radius: 8px">
+            <h3 style="margin-top: 0px">Порядок работы</h3>
+
+            <p style="font-size: 0.9em">
+              <strong>Canvas</strong>
+              →
+              <strong>контекст</strong>
+              →
+              <strong>функции</strong>
+              →
+              <strong>вызов функций</strong>
+            </p>
+          </div>
+        </section>
+
+<!-- 36 -->
+<section>
+  <h2>Результат</h2>
+
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      margin-top: 30px;
+    "
+  >
+    <!-- Рисунок домика -->
+    <div>
+      <canvas
+        width="500"
+        height="350"
+        style="
+          border: 2px solid #ddd;
+          border-radius: 10px;
+          background: white;
+        "
+      ></canvas>
+
+      <script>
+        (() => {
+          const canvas = document.currentScript.previousElementSibling;
+          const ctx = canvas.getContext('2d');
+
+          // Стены
+          ctx.strokeRect(125, 150, 250, 150);
+
+          // Крыша
+          ctx.beginPath();
+          ctx.moveTo(105, 150);
+          ctx.lineTo(250, 50);
+          ctx.lineTo(395, 150);
+          ctx.closePath();
+          ctx.stroke();
+
+          // Дверь
+          ctx.strokeRect(220, 210, 60, 90);
+
+          // Круглое окно
+          ctx.beginPath();
+          ctx.arc(170, 200, 30, 0, Math.PI * 2);
+          ctx.stroke();
+        })();
+      </script>
+    </div>
+
+    <!-- Информация о сдаче -->
+    <div
+      style="
+        padding: 25px;
+        background: #f5f5f5;
+        border-radius: 12px;
+        text-align: left;
+        max-width: 380px;
+      "
+    >
+      <h3>📤 Сдача задания</h3>
+
+      <p style="font-size: 0.85em;">
+        Готовое задание нужно сдать
+        <strong>на учебном портале</strong>
+        в теме <strong>«Canvas»</strong>.
+      </p>
+    </div>
+  </div>
 </section>
 
 
+      </div>
+    </div>
 
-</div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide',
+        backgroundTransition: 'none',
+      });
 
-<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
-<script>
-  Reveal.initialize({
-    hash: true,
-    slideNumber: true,
-    transition: 'slide',
-    backgroundTransition: 'none'
-  });
-
-  function setupCanvas(id) {
-    const canvas = document.getElementById(id);
-    const ctx = canvas.getContext('2d');
-    return { canvas, ctx };
-  }
-
-  // Rectangle
-  {
-    const { canvas, ctx } = setupCanvas('rectangleCanvas');
-    ctx.fillStyle = '#c96b21';
-    ctx.fillRect(140, 100, 300, 130);
-  }
-
-  // Circle
-  {
-    const { canvas, ctx } = setupCanvas('circleCanvas');
-    ctx.beginPath();
-    ctx.arc(400, 175, 90, 0, Math.PI * 2);
-    ctx.fillStyle = '#233d70';
-    ctx.fill();
-  }
-
-  // Animation
-  {
-    const { canvas, ctx } = setupCanvas('animationCanvas');
-    let x = -40;
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      ctx.beginPath();
-      ctx.arc(x, 175, 38, 0, Math.PI * 2);
-      ctx.fillStyle = '#c96b21';
-      ctx.fill();
-
-      x += 3;
-
-      if (x > canvas.width + 40) {
-        x = -40;
+      function setupCanvas(id) {
+        const canvas = document.getElementById(id);
+        const ctx = canvas.getContext('2d');
+        return { canvas, ctx };
       }
 
-      requestAnimationFrame(animate);
-    }
+      // Rectangle
+      {
+        const { canvas, ctx } = setupCanvas('rectangleCanvas');
+        ctx.fillStyle = '#c96b21';
+        ctx.fillRect(140, 100, 300, 130);
+      }
 
-    animate();
-  }
-
-  // Mouse interaction
-  {
-    const { canvas, ctx } = setupCanvas('mouseCanvas');
-
-    let mouseX = 400;
-    let mouseY = 175;
-
-    canvas.addEventListener('mousemove', (event) => {
-      mouseX = event.offsetX;
-      mouseY = event.offsetY;
-    });
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      ctx.beginPath();
-      ctx.arc(mouseX, mouseY, 48, 0, Math.PI * 2);
-      ctx.fillStyle = '#233d70';
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.arc(mouseX, mouseY, 65, 0, Math.PI * 2);
-      ctx.strokeStyle = '#c96b21';
-      ctx.lineWidth = 3;
-      ctx.stroke();
-
-      requestAnimationFrame(draw);
-    }
-
-    draw();
-  }
-
-  // Particles
-  {
-    const { canvas, ctx } = setupCanvas('particleCanvas');
-
-    const particles = [];
-    let mouseX = canvas.width / 2;
-    let mouseY = canvas.height / 2;
-
-    canvas.addEventListener('mousemove', (event) => {
-      mouseX = event.offsetX;
-      mouseY = event.offsetY;
-    });
-
-    for (let i = 0; i < 110; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 1.5,
-        vy: (Math.random() - 0.5) * 1.5,
-        radius: Math.random() * 3 + 2
-      });
-    }
-
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach((p) => {
-        const dx = p.x - mouseX;
-        const dy = p.y - mouseY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 130 && distance > 0) {
-          p.x += (dx / distance) * 1.8;
-          p.y += (dy / distance) * 1.8;
-        }
-
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
+      // Circle
+      {
+        const { canvas, ctx } = setupCanvas('circleCanvas');
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.arc(400, 175, 90, 0, Math.PI * 2);
         ctx.fillStyle = '#233d70';
         ctx.fill();
-      });
+      }
 
-      requestAnimationFrame(animateParticles);
-    }
+      // Animation
+      {
+        const { canvas, ctx } = setupCanvas('animationCanvas');
+        let x = -40;
 
-    animateParticles();
-  }
-</script>
-</body>
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          ctx.beginPath();
+          ctx.arc(x, 175, 38, 0, Math.PI * 2);
+          ctx.fillStyle = '#c96b21';
+          ctx.fill();
+
+          x += 3;
+
+          if (x > canvas.width + 40) {
+            x = -40;
+          }
+
+          requestAnimationFrame(animate);
+        }
+
+        animate();
+      }
+
+      // Mouse interaction
+      {
+        const { canvas, ctx } = setupCanvas('mouseCanvas');
+
+        let mouseX = 400;
+        let mouseY = 175;
+
+        canvas.addEventListener('mousemove', (event) => {
+          mouseX = event.offsetX;
+          mouseY = event.offsetY;
+        });
+
+        function draw() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          ctx.beginPath();
+          ctx.arc(mouseX, mouseY, 48, 0, Math.PI * 2);
+          ctx.fillStyle = '#233d70';
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(mouseX, mouseY, 65, 0, Math.PI * 2);
+          ctx.strokeStyle = '#c96b21';
+          ctx.lineWidth = 3;
+          ctx.stroke();
+
+          requestAnimationFrame(draw);
+        }
+
+        draw();
+      }
+
+      // Particles
+      {
+        const { canvas, ctx } = setupCanvas('particleCanvas');
+
+        const particles = [];
+        let mouseX = canvas.width / 2;
+        let mouseY = canvas.height / 2;
+
+        canvas.addEventListener('mousemove', (event) => {
+          mouseX = event.offsetX;
+          mouseY = event.offsetY;
+        });
+
+        for (let i = 0; i < 110; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: (Math.random() - 0.5) * 1.5,
+            radius: Math.random() * 3 + 2,
+          });
+        }
+
+        function animateParticles() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          particles.forEach((p) => {
+            const dx = p.x - mouseX;
+            const dy = p.y - mouseY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 130 && distance > 0) {
+              p.x += (dx / distance) * 1.8;
+              p.y += (dy / distance) * 1.8;
+            }
+
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#233d70';
+            ctx.fill();
+          });
+
+          requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+      }
+    </script>
+  </body>
 </html>
