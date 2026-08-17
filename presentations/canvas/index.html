@@ -817,11 +817,9 @@ const ctx = canvas.getContext("2d");
             <strong>ctx</strong>.
           </p>
 
-          <pre><code class="javascript">
+          <pre style="font-size: 0.8em"><code class="javascript">
 ctx.fillRect(20, 20, 100, 50);
-
 ctx.beginPath();
-
 ctx.arc(
   100,
   100,
@@ -1661,11 +1659,9 @@ ctx.strokeRect(50, 50, 50, 50);
               <h3 style="margin-top: 0">Закрашенный треугольник</h3>
 
               <pre><code class="javascript">ctx.beginPath();
-
 ctx.moveTo(25, 25);
 ctx.lineTo(105, 25);
 ctx.lineTo(25, 105);
-
 ctx.fill();</code></pre>
 
               <canvas
@@ -1691,11 +1687,9 @@ ctx.fill();</code></pre>
               <h3 style="margin-top: 0">Контурный треугольник</h3>
 
               <pre><code class="javascript">ctx.beginPath();
-
 ctx.moveTo(125, 125);
 ctx.lineTo(125, 45);
 ctx.lineTo(45, 125);
-
 ctx.closePath();
 ctx.stroke();</code></pre>
 
@@ -2220,15 +2214,12 @@ ctx.fill();</code></pre>
           <pre><code class="javascript">function drawHouse() {
   // стены
 }
-
 function drawRoof() {
   // крыша
 }
-
 function drawDoor() {
   // дверь
 }
-
 function drawWindow() {
   // окно
 }</code></pre>
@@ -2626,13 +2617,10 @@ ctx.stroke();</code></pre>
 
 // Прямоугольник
 ctx.rect(40, 50, 220, 120);
-
 // Переходим к началу окружности
 ctx4.moveTo(180, 135);
-
 // Круг
 ctx.arc(150, 135, 30, 0, Math.PI * 2);
-
 // Рисуем весь контур
 ctx.stroke();</code></pre>
 
@@ -2677,17 +2665,6 @@ ctx.stroke();</code></pre>
                 ctx4.stroke();
               </script>
             </div>
-          </div>
-
-          <div
-            style="margin-top: 20px; padding: 15px 20px; background: #fff3e8; border-radius: 8px"
-          >
-            <strong>Главная идея:</strong>
-
-            <span style="font-size: 0.8em">
-              <code>rect()</code> не рисует сразу. Он добавляет прямоугольник в текущий путь,
-              поэтому его можно объединить с другими фигурами.
-            </span>
           </div>
         </section>
 
@@ -2875,7 +2852,7 @@ ctx.fill();</code></pre>
           >
             <strong>По умолчанию:</strong>
 
-            <ul style="font-size: 0.8em; margin-top: 10px">
+            <ul style="font-size: 0.8em; margin-top: 10px; margin-bottom: 10px">
               <li>цвет заливки — <strong>#000000</strong> (чёрный);</li>
               <li>цвет контура — <strong>#000000</strong> (чёрный).</li>
             </ul>
@@ -4461,6 +4438,1106 @@ ctx.shadowOffsetY = 10;</code></pre>
               ctx.fillRect(160, 25, 180, 70);
             }
           </script>
+        </section>
+
+        <!-- 83 -->
+        <section class="slide">
+          <h2>Рисование текста</h2>
+          <p>Canvas позволяет рисовать <strong>текст прямо на холсте</strong>.</p>
+          <div style="display: flex; justify-content: center; gap: 25px; margin-top: 35px">
+            <div
+              style="
+                padding: 25px 35px;
+                background: #eaf4ff;
+                border-radius: 10px;
+                text-align: center;
+              "
+            >
+              <h3 style="margin-top: 0"><strong>fillText()</strong></h3>
+              <p style="font-size: 0.7em; margin-bottom: 0">Текст с <strong>заливкой</strong></p>
+            </div>
+            <div
+              style="
+                padding: 25px 35px;
+                background: #fff3e8;
+                border-radius: 10px;
+                text-align: center;
+              "
+            >
+              <h3 style="margin-top: 0"><strong>strokeText()</strong></h3>
+              <p style="font-size: 0.7em; margin-bottom: 0">
+                Только <strong>контур</strong> текста
+              </p>
+            </div>
+          </div>
+          <div
+            style="margin-top: 35px; padding: 18px 22px; background: #f5f5f5; border-radius: 8px"
+          >
+            <strong>Два основных метода:</strong>
+            <span style="font-size: 0.8em">
+              один отвечает за заливку текста, другой — за его контур.
+            </span>
+          </div>
+        </section>
+
+        <!-- 84 -->
+        <section class="slide">
+          <h2>Метод <code>fillText()</code></h2>
+
+          <p>
+            Метод <strong>fillText()</strong> выводит текст, используя текущий цвет заливки
+            <strong>fillStyle</strong>.
+          </p>
+
+          <div style="margin-top: 25px; padding: 20px; background: #f5f5f5; border-radius: 8px">
+            <pre style="margin: 0"><code>ctx.fillText(text, x, y);</code></pre>
+          </div>
+
+          <div style="margin-top: 25px; padding: 20px; background: #eaf4ff; border-radius: 8px">
+            <h3 style="margin-top: 0">Пример</h3>
+            <pre style="margin: 0"><code>ctx.font = "48px serif";
+ctx.fillText("Hello world", 10, 50);</code></pre>
+          </div>
+
+          <div
+            style="margin-top: 25px; padding: 18px 22px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>Результат:</strong>
+
+            <div
+              style="
+                margin-top: 15px;
+                background: white;
+                border-radius: 6px;
+                padding: 25px;
+                text-align: center;
+              "
+            >
+              <span style="font-family: serif; font-size: 48px; color: #222">Hello world</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 85 -->
+        <section class="slide">
+          <h2>Метод <code>strokeText()</code></h2>
+
+          <p>
+            Метод <strong>strokeText()</strong> рисует только <strong>контур символов</strong>,
+            используя текущий цвет линии <strong>strokeStyle</strong>.
+          </p>
+
+          <div style="margin-top: 25px; padding: 20px; background: #f5f5f5; border-radius: 8px">
+            <pre style="margin: 0"><code>ctx.strokeText(text, x, y);</code></pre>
+          </div>
+
+          <div style="margin-top: 25px; padding: 20px; background: #eaf4ff; border-radius: 8px">
+            <h3 style="margin-top: 0">Пример</h3>
+            <pre style="margin: 0"><code>ctx.font = "48px serif";
+ctx.strokeText("Hello world", 10, 50);</code></pre>
+          </div>
+
+          <div
+            style="margin-top: 25px; padding: 18px 22px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>Результат:</strong>
+
+            <div
+              style="
+                margin-top: 15px;
+                background: white;
+                border-radius: 6px;
+                padding: 25px;
+                text-align: center;
+              "
+            >
+              <span
+                style="
+                  font-family: serif;
+                  font-size: 48px;
+                  color: white;
+                  -webkit-text-stroke: 2px #222;
+                  text-stroke: 2px #222;
+                "
+                >Hello world</span
+              >
+            </div>
+          </div>
+        </section>
+
+        <!-- 86 -->
+        <section class="slide">
+          <h2>Настройка шрифта: <code>font</code></h2>
+          <p>Внешний вид текста задаётся свойством <strong>font</strong>.</p>
+          <div style="margin-top: 25px; padding: 20px; background: #eaf4ff; border-radius: 8px">
+            <pre style="margin: 0"><code>ctx.font = "48px serif";</code></pre>
+          </div>
+          <div style="margin-top: 25px; padding: 20px; background: #f5f5f5; border-radius: 8px">
+            <p style="font-size: 0.8em; margin: 0">
+              Синтаксис полностью совпадает со свойством <strong>font</strong> в CSS.
+            </p>
+          </div>
+          <div
+            style="margin-top: 25px; padding: 18px 22px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>По умолчанию:</strong> <code style="font-size: 0.9em">10px sans-serif</code>
+          </div>
+          <p style="font-size: 0.75em; margin-top: 25px">
+            Можно изменять размер, семейство шрифтов, начертание и другие параметры так же, как в
+            CSS.
+          </p>
+        </section>
+
+        <!-- 87 -->
+        <section class="slide">
+          <h2>Выравнивание текста</h2>
+
+          <p>
+            Canvas позволяет управлять положением текста
+            <strong>относительно заданной точки</strong>.
+          </p>
+
+          <div style="margin-top: 20px; padding: 20px; background: #eaf4ff; border-radius: 8px">
+            <h3 style="margin-top: 0"><code>textAlign</code></h3>
+            <p style="font-size: 0.75em; margin-bottom: 0">
+              Определяет <strong>горизонтальное выравнивание</strong> текста.
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 25px; margin-top: 20px; align-items: center">
+            <div style="flex: 1">
+              <pre style="margin: 0"><code>const canvas = document.querySelector("#textCanvas");
+const ctx = canvas.getContext("2d");
+
+ctx.font = "32px serif";
+ctx.textAlign = "center";
+
+ctx.fillText("Hello world", 250, 90);</code></pre>
+            </div>
+
+            <div style="flex: 1; text-align: center">
+              <canvas
+                id="textCanvas"
+                width="500"
+                height="140"
+                style="
+                  max-width: 100%;
+                  border: 1px solid #ccc;
+                  border-radius: 8px;
+                  background: white;
+                "
+              ></canvas>
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 20px; padding: 18px 22px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>Что происходит?</strong>
+            <span style="font-size: 0.8em">
+              При <code>textAlign = "center"</code> координата <strong>x = 250</strong> указывает на
+              <strong>центр текста</strong>.
+            </span>
+          </div>
+
+          <script>
+            (() => {
+              const canvas = document.querySelector('#textCanvas');
+              const ctx = canvas.getContext('2d');
+
+              ctx.font = '32px serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+
+              // Центральная точка
+              ctx.beginPath();
+              ctx.moveTo(250, 20);
+              ctx.lineTo(250, 120);
+              ctx.strokeStyle = '#999';
+              ctx.setLineDash([5, 5]);
+              ctx.stroke();
+              ctx.setLineDash([]);
+
+              // Текст
+              ctx.fillStyle = '#222';
+              ctx.fillText('Hello world', 250, 70);
+
+              // Точка x = 250
+              ctx.beginPath();
+              ctx.arc(250, 70, 5, 0, Math.PI * 2);
+              ctx.fillStyle = '#e74c3c';
+              ctx.fill();
+            })();
+          </script>
+        </section>
+
+        <!-- 88 -->
+        <section class="slide">
+          <h2>Базовая линия текста</h2>
+
+          <p>
+            Свойство <strong>textBaseline</strong> определяет, относительно какой линии
+            располагается текст <strong>по вертикали</strong>.
+          </p>
+
+          <div style="display: flex; gap: 25px; margin-top: 25px; align-items: center">
+            <div style="flex: 1">
+              <pre style="margin: 0"><code>ctx.font = "32px serif";
+ctx.textBaseline = "middle";
+ctx.fillText(
+  "Hello world",
+  250,
+  70
+);</code></pre>
+            </div>
+
+            <div style="flex: 1; text-align: center">
+              <canvas
+                id="baselineCanvas"
+                width="500"
+                height="140"
+                style="
+                  max-width: 100%;
+                  border: 1px solid #ccc;
+                  border-radius: 8px;
+                  background: white;
+                "
+              ></canvas>
+            </div>
+          </div>
+
+          <div style="margin-top: 25px; padding: 20px; background: #eaf4ff; border-radius: 8px">
+            <h3 style="margin-top: 0">Основные значения</h3>
+
+            <div
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.72em"
+            >
+              <div style="padding: 12px 16px; background: white; border-radius: 6px">
+                top
+                <span> — верхний край текста совпадает с координатой <strong>y</strong>.</span>
+              </div>
+
+              <div style="padding: 12px 16px; background: white; border-radius: 6px">
+                middle
+                <span> — середина текста совпадает с координатой <strong>y</strong>.</span>
+              </div>
+
+              <div style="padding: 12px 16px; background: white; border-radius: 6px">
+                alphabetic
+                <span> — координата <strong>y</strong> задаёт базовую линию символов.</span>
+              </div>
+
+              <div style="padding: 12px 16px; background: white; border-radius: 6px">
+                bottom
+                <span> — нижний край текста совпадает с координатой <strong>y</strong>.</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 20px; padding: 16px 20px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>По умолчанию:</strong>
+            <code>alphabetic</code>
+            <span style="font-size: 0.8em"> — стандартная базовая линия для обычного текста. </span>
+          </div>
+
+          <script>
+            (() => {
+              const canvas = document.querySelector('#baselineCanvas');
+              const ctx = canvas.getContext('2d');
+
+              ctx.font = '32px serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+
+              // Линия, относительно которой располагается текст
+              ctx.beginPath();
+              ctx.moveTo(40, 70);
+              ctx.lineTo(460, 70);
+              ctx.strokeStyle = '#999';
+              ctx.setLineDash([6, 5]);
+              ctx.stroke();
+              ctx.setLineDash([]);
+
+              // Текст
+              ctx.fillStyle = '#222';
+              ctx.fillText('Hello world', 250, 70);
+
+              // Точка отсчёта
+              ctx.beginPath();
+              ctx.arc(250, 70, 5, 0, Math.PI * 2);
+              ctx.fillStyle = '#e74c3c';
+              ctx.fill();
+            })();
+          </script>
+        </section>
+
+        <!-- 89 -->
+        <section class="slide">
+          <h2>Направление текста</h2>
+
+          <p>Свойство <strong>direction</strong> определяет направление написания текста.</p>
+
+          <div style="display: flex; gap: 25px; margin-top: 25px; align-items: center">
+            <div style="flex: 1">
+              <pre style="margin: 0"><code>ctx.font = "32px serif";
+ctx.direction = "rtl";
+ctx.fillText(
+  "مرحبا بالعالم",
+  450,
+  70
+);</code></pre>
+            </div>
+
+            <div style="flex: 1; text-align: center">
+              <canvas
+                id="directionCanvas"
+                width="500"
+                height="140"
+                style="
+                  max-width: 100%;
+                  border: 1px solid #ccc;
+                  border-radius: 8px;
+                  background: white;
+                "
+              ></canvas>
+            </div>
+          </div>
+
+          <div style="margin-top: 25px; padding: 20px; background: #eaf4ff; border-radius: 8px">
+            <h3 style="margin-top: 0">Возможные значения</h3>
+
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap">
+              <div style="padding: 12px 20px; background: white; border-radius: 6px">
+                <code>ltr</code>
+                <span style="font-size: 0.7em"> — слева направо</span>
+              </div>
+
+              <div style="padding: 12px 20px; background: white; border-radius: 6px">
+                <code>rtl</code>
+                <span style="font-size: 0.7em"> — справа налево</span>
+              </div>
+
+              <div style="padding: 12px 20px; background: white; border-radius: 6px">
+                <code>inherit</code>
+                <span style="font-size: 0.7em"> — от родителя</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 20px; padding: 18px 22px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>По умолчанию:</strong>
+            <code>inherit</code>
+          </div>
+
+          <script>
+            (() => {
+              const canvas = document.querySelector('#directionCanvas');
+              const ctx = canvas.getContext('2d');
+
+              ctx.font = '32px serif';
+              ctx.direction = 'rtl';
+              ctx.textAlign = 'start';
+
+              ctx.fillStyle = '#222';
+              ctx.fillText('مرحبا بالعالم', 450, 70);
+
+              // Точка начала
+              ctx.beginPath();
+              ctx.arc(450, 70, 5, 0, Math.PI * 2);
+              ctx.fillStyle = '#e74c3c';
+              ctx.fill();
+            })();
+          </script>
+        </section>
+
+        <!-- 90 -->
+        <section class="slide">
+          <h2>Использование изображений</h2>
+
+          <p>
+            До этого момента мы создавали графику самостоятельно с помощью
+            <strong>фигур и линий</strong>.
+          </p>
+
+          <p>Canvas также позволяет использовать <strong>готовые изображения</strong>.</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px">
+            <div style="padding: 18px; background: #eaf4ff; border-radius: 8px">
+              📷 <strong>Фотографии</strong>
+            </div>
+
+            <div style="padding: 18px; background: #fff3e8; border-radius: 8px">
+              🎮 <strong>Спрайты</strong>
+            </div>
+
+            <div style="padding: 18px; background: #f5f5f5; border-radius: 8px">
+              🖼️ <strong>Фоновые изображения</strong>
+            </div>
+
+            <div style="padding: 18px; background: #eaf4ff; border-radius: 8px">
+              🎨 <strong>Комбинирование изображений</strong>
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 25px; padding: 18px 22px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>Главная идея:</strong>
+            <span style="font-size: 0.8em">
+              Canvas может не только рисовать графику, но и
+              <strong>выводить готовые изображения</strong>.
+            </span>
+          </div>
+        </section>
+
+        <!-- 91 -->
+        <section class="slide">
+          <h2>Как добавить изображение в Canvas</h2>
+
+          <p>
+            Работа с изображением состоит из
+            <strong>двух основных этапов</strong>.
+          </p>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 15px;
+              margin-top: 35px;
+            "
+          >
+            <div
+              style="
+                padding: 25px 30px;
+                background: #eaf4ff;
+                border-radius: 10px;
+                text-align: center;
+                width: 220px;
+              "
+            >
+              <div style="font-size: 1.5em">1</div>
+              <strong>Получить изображение</strong>
+              <p style="font-size: 0.65em; margin-bottom: 0">
+                Получить объект изображения или ссылку на него
+              </p>
+            </div>
+
+            <div style="font-size: 1.5em">→</div>
+
+            <div
+              style="
+                padding: 25px 30px;
+                background: #fff3e8;
+                border-radius: 10px;
+                text-align: center;
+                width: 220px;
+              "
+            >
+              <div style="font-size: 1.5em">2</div>
+              <strong>Нарисовать</strong>
+              <p style="font-size: 0.65em; margin-bottom: 0">Использовать drawImage()</p>
+            </div>
+          </div>
+
+          <div style="margin-top: 35px; padding: 20px; background: #f5f5f5; border-radius: 8px">
+            <pre style="margin: 0"><code>ctx.drawImage(image, x, y);</code></pre>
+          </div>
+
+          <div
+            style="margin-top: 20px; padding: 16px 20px; background: #eaf4ff; border-radius: 8px"
+          >
+            <strong><code>drawImage()</code></strong>
+            <span style="font-size: 0.8em">
+              — основной метод для вывода изображений на Canvas.
+            </span>
+          </div>
+        </section>
+
+        <!-- 92 -->
+        <section class="slide">
+          <h2>Источники изображений</h2>
+
+          <p>Метод <strong>drawImage()</strong> может работать с разными источниками.</p>
+
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 10px;
+              margin-top: 20px;
+              font-size: 0.7em;
+            "
+          >
+            <div style="padding: 12px 15px; background: #eaf4ff; border-radius: 7px">
+              HTMLImageElement<br />
+              обычный &lt;img&gt; или new Image()
+            </div>
+
+            <div style="padding: 12px 15px; background: #fff3e8; border-radius: 7px">
+              HTMLVideoElement<br />
+              текущий кадр видео
+            </div>
+
+            <div style="padding: 12px 15px; background: #f5f5f5; border-radius: 7px">
+              HTMLCanvasElement<br />
+              другой Canvas
+            </div>
+
+            <div style="padding: 12px 15px; background: #eaf4ff; border-radius: 7px">
+              SVGImageElement<br />
+              SVG-изображение
+            </div>
+
+            <div style="padding: 12px 15px; background: #fff3e8; border-radius: 7px">
+              ImageBitmap<br />
+              растровое изображение или его часть
+            </div>
+
+            <div style="padding: 12px 15px; background: #f5f5f5; border-radius: 7px">
+              OffscreenCanvas<br />
+              Canvas без отображения на странице
+            </div>
+
+            <div style="padding: 12px 15px; background: #eaf4ff; border-radius: 7px">
+              VideoFrame<br />
+              отдельный кадр видео
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 20px; padding: 16px 20px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>На практике:</strong>
+            <span style="font-size: 0.8em">
+              чаще всего используются обычные изображения &lt;img&gt; и другие элементы Canvas.
+            </span>
+          </div>
+        </section>
+
+        <!-- 93 -->
+        <section class="slide">
+          <h2>Получение изображения со страницы</h2>
+
+          <p>Если изображение уже находится на странице, его можно получить через JavaScript.</p>
+
+          <div style="display: flex; gap: 20px; margin-top: 25px">
+            <div style="flex: 1; padding: 20px; background: #eaf4ff; border-radius: 8px">
+              <h3 style="margin-top: 0">По <code>id</code></h3>
+
+              <pre style="margin: 0"><code>&lt;img
+  id="image" src="photo.jpg"&gt;</code></pre>
+
+              <pre style="margin-top: 15px"><code>const image =
+  document.getElementById("image");</code></pre>
+            </div>
+
+            <div style="flex: 1; padding: 20px; background: #fff3e8; border-radius: 8px">
+              <h3 style="margin-top: 0">Через <code>document.images</code></h3>
+
+              <pre style="margin: 0"><code>const image =
+  document.images[0];</code></pre>
+
+              <p style="font-size: 0.7em; margin-bottom: 0">
+                Коллекция содержит изображения, находящиеся на странице.
+              </p>
+            </div>
+          </div>
+
+          <div style="margin-top: 10px; padding: 15px; background: #f5f5f5; border-radius: 8px">
+            <pre style="margin: 0"><code>ctx.drawImage(image, 10, 10);</code></pre>
+          </div>
+
+          <div
+            style="margin-top: 10px; padding: 16px 20px; background: #eaf4ff; border-radius: 8px"
+          >
+            <strong>Важно:</strong>
+            <span style="font-size: 0.8em">
+              после получения ссылки на изображение его можно передать в
+              <strong><code>drawImage()</code></strong
+              >.
+            </span>
+          </div>
+        </section>
+
+        <!-- 94 -->
+        <section class="slide">
+          <h2>Дождитесь загрузки изображения</h2>
+
+          <p>
+            Перед рисованием необходимо убедиться, что изображение
+            <strong>полностью загрузилось</strong>.
+          </p>
+
+          <div style="margin-top: 25px; padding: 20px; background: #f5f5f5; border-radius: 8px">
+            <pre style="margin: 0"><code>const image = new Image();
+
+image.src = "photo.jpg";
+
+image.onload = () => {
+  ctx.drawImage(image, 0, 0);
+};</code></pre>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 12px;
+              margin-top: 25px;
+            "
+          >
+            <div style="padding: 15px 20px; background: #eaf4ff; border-radius: 7px">
+              Создать изображение
+            </div>
+
+            <span>→</span>
+
+            <div style="padding: 15px 20px; background: #fff3e8; border-radius: 7px">
+              <code>onload</code>
+            </div>
+
+            <span>→</span>
+
+            <div style="padding: 15px 20px; background: #eaf4ff; border-radius: 7px">
+              drawImage()
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 25px; padding: 18px 22px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>Почему?</strong>
+            <span style="font-size: 0.8em">
+              Если вызвать <code>drawImage()</code> слишком рано, изображение может
+              <strong>не появиться на Canvas</strong>.
+            </span>
+          </div>
+        </section>
+
+        <!-- 95 -->
+        <section class="slide">
+          <h2>Если изображений несколько</h2>
+
+          <p>
+            Если нужно загрузить несколько изображений, можно дождаться, пока
+            <strong>загрузится каждое из них</strong>.
+          </p>
+
+          <div style="margin-top: 25px; padding: 20px; background: #eaf4ff; border-radius: 8px">
+            <pre style="margin: 0"><code>const images = [new Image(),new Image(),new Image()];
+
+let loaded = 0;
+
+images[0].src = "player.png";
+images[1].src = "background.jpg";
+images[2].src = "enemy.png";
+
+images.forEach(image => {
+  image.onload = () => {
+    loaded++;
+    if (loaded === images.length) {
+      // Все изображения загружены
+      drawScene();}}});</code></pre>
+          </div>
+        </section>
+
+        <!-- 96 -->
+        <section class="slide">
+          <h2>Отрисовка изображений</h2>
+
+          <p>
+            Когда изображение загружено и у нас есть ссылка на него, его можно вывести на холст с
+            помощью метода
+            <strong><code>drawImage()</code></strong
+            >.
+          </p>
+
+          <div style="margin-top: 25px; padding: 20px; background: #eaf4ff; border-radius: 8px">
+            <pre style="margin: 0"><code>ctx.drawImage(image, x, y);</code></pre>
+          </div>
+
+          <div style="display: flex; gap: 20px; margin-top: 25px; align-items: center">
+            <div style="flex: 1">
+              <h3>Параметры</h3>
+
+              <div
+                style="padding: 12px 16px; margin-top: 8px; background: #f5f5f5; border-radius: 6px"
+              >
+                <code>image</code>
+                <span style="font-size: 0.75em"> — изображение, которое нужно нарисовать</span>
+              </div>
+
+              <div
+                style="padding: 12px 16px; margin-top: 8px; background: #f5f5f5; border-radius: 6px"
+              >
+                <code>x</code>
+                <span style="font-size: 0.75em"> — координата по горизонтали</span>
+              </div>
+
+              <div
+                style="padding: 12px 16px; margin-top: 8px; background: #f5f5f5; border-radius: 6px"
+              >
+                <code>y</code>
+                <span style="font-size: 0.75em"> — координата по вертикали</span>
+              </div>
+            </div>
+
+            <div style="flex: 1; text-align: center">
+              <canvas
+                id="drawImageCanvas"
+                width="400"
+                height="230"
+                style="
+                  max-width: 100%;
+                  border: 1px solid #ccc;
+                  border-radius: 8px;
+                  background: white;
+                "
+              ></canvas>
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 20px; padding: 18px 22px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>Важно:</strong>
+            <span style="font-size: 0.8em">
+              точка <strong>(x, y)</strong> задаёт <strong>левый верхний угол изображения</strong>.
+            </span>
+          </div>
+
+          <script>
+            (() => {
+              const canvas = document.querySelector('#drawImageCanvas');
+              const ctx = canvas.getContext('2d');
+
+              const image = new Image();
+
+              image.onload = () => {
+                ctx.drawImage(image, 80, 45);
+
+                // Показываем точку (x, y)
+                ctx.beginPath();
+                ctx.arc(80, 45, 5, 0, Math.PI * 2);
+                ctx.fillStyle = '#e74c3c';
+                ctx.fill();
+
+                ctx.font = '16px sans-serif';
+                ctx.fillStyle = '#333';
+                ctx.fillText('(80, 45)', 88, 40);
+              };
+
+              // Небольшое SVG-изображение для примера
+              image.src =
+                'data:image/svg+xml;charset=utf-8,' +
+                encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" width="240" height="140">
+            <rect width="240" height="140" rx="12" fill="#eaf4ff"/>
+            <circle cx="70" cy="70" r="40" fill="#74b9ff"/>
+            <rect x="125" y="40" width="75" height="60" rx="8" fill="#ffb86c"/>
+          </svg>
+        `);
+            })();
+          </script>
+        </section>
+
+        <!-- 97 -->
+        <section class="slide">
+          <h2>Особенность SVG</h2>
+
+          <p>
+            Если в качестве изображения используется <strong>SVG-файл</strong>, в корневом элементе
+            <code>&lt;svg&gt;</code> рекомендуется явно указывать <strong>width</strong> и
+            <strong>height</strong>.
+          </p>
+
+          <div style="display: flex; gap: 20px; margin-top: 30px">
+            <div style="flex: 1; padding: 20px; background: #eaf4ff; border-radius: 8px">
+              <h3 style="margin-top: 0">Правильно</h3>
+
+              <pre style="margin: 0"><code>&lt;svg
+  width="300"
+  height="200"
+  viewBox="0 0 300 200"
+&gt;
+  ...
+&lt;/svg&gt;</code></pre>
+            </div>
+
+            <div style="flex: 1; padding: 20px; background: #fff3e8; border-radius: 8px">
+              <h3 style="margin-top: 0">Без размеров</h3>
+
+              <pre style="margin: 0"><code>&lt;svg
+  viewBox="0 0 300 200"
+&gt;
+  ...
+&lt;/svg&gt;</code></pre>
+
+              <p style="font-size: 0.7em; margin-bottom: 0">
+                Размер изображения может быть определён не так, как ожидается при работе с Canvas.
+              </p>
+            </div>
+          </div>
+
+          <div style="margin-top: 30px; padding: 20px; background: #f5f5f5; border-radius: 8px">
+            <h3 style="margin-top: 0">Почему это важно?</h3>
+
+            <p style="font-size: 0.7em; margin-bottom: 0">
+              Canvas должен понимать, <strong>какого размера</strong> изображение нужно вывести.
+            </p>
+          </div>
+        </section>
+
+        <!-- 98 -->
+        <section class="slide">
+          <h2>Сохранение и восстановление состояния Canvas</h2>
+
+          <p>
+            При создании сложной графики часто приходится временно менять
+            <strong>настройки рисования</strong>.
+          </p>
+
+          <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px">
+            <div
+              style="
+                padding: 20px 28px;
+                background: #eaf4ff;
+                border-radius: 8px;
+                text-align: center;
+              "
+            >
+              🎨 Цвет
+            </div>
+
+            <div
+              style="
+                padding: 20px 28px;
+                background: #fff3e8;
+                border-radius: 8px;
+                text-align: center;
+              "
+            >
+              🔄 Поворот
+            </div>
+
+            <div
+              style="
+                padding: 20px 28px;
+                background: #f5f5f5;
+                border-radius: 8px;
+                text-align: center;
+              "
+            >
+              📐 Масштаб
+            </div>
+
+            <div
+              style="
+                padding: 20px 28px;
+                background: #eaf4ff;
+                border-radius: 8px;
+                text-align: center;
+              "
+            >
+              ◐ Прозрачность
+            </div>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 18px;
+              margin-top: 35px;
+            "
+          >
+            <div
+              style="
+                padding: 22px 35px;
+                background: #eaf4ff;
+                border-radius: 10px;
+                text-align: center;
+              "
+            >
+              save()
+              <div style="font-size: 0.65em; margin-top: 8px">сохранить состояние</div>
+            </div>
+
+            <span style="font-size: 1.5em">→</span>
+
+            <div
+              style="
+                padding: 22px 35px;
+                background: #fff3e8;
+                border-radius: 10px;
+                text-align: center;
+              "
+            >
+              restore()
+              <div style="font-size: 0.65em; margin-top: 8px">восстановить состояние</div>
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 30px; padding: 18px 22px; background: #f5f5f5; border-radius: 8px"
+          >
+            <strong>Главная идея:</strong>
+            <span style="font-size: 0.8em">
+              можно временно изменить настройки Canvas, а затем
+              <strong>вернуться к предыдущим</strong>.
+            </span>
+          </div>
+        </section>
+
+        <!-- 99 -->
+        <section class="slide">
+          <h2>Что сохраняет save()</h2>
+
+          <p>
+            Метод <strong>save()</strong> сохраняет текущее состояние контекста Canvas.
+          </p>
+
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 12px;
+              margin-top: 25px;
+              font-size: 0.72em;
+            "
+          >
+            <div style="padding: 14px 18px; background: #eaf4ff; border-radius: 7px">
+              <strong>Трансформации</strong><br />
+              смещение, поворот, масштаб
+            </div>
+
+            <div style="padding: 14px 18px; background: #fff3e8; border-radius: 7px">
+              <strong>Стили</strong><br />
+              цвет линий и заливки
+            </div>
+
+            <div style="padding: 14px 18px; background: #f5f5f5; border-radius: 7px">
+              <strong>Прозрачность</strong><br />
+              globalAlpha
+            </div>
+
+            <div style="padding: 14px 18px; background: #eaf4ff; border-radius: 7px">
+              <strong>Текст</strong><br />
+              шрифт и параметры текста
+            </div>
+
+            <div style="padding: 14px 18px; background: #fff3e8; border-radius: 7px">
+              <strong>Тени</strong><br />
+              параметры и настройки теней
+            </div>
+
+            <div style="padding: 14px 18px; background: #f5f5f5; border-radius: 7px">
+              <strong>Clipping path</strong><br />
+              путь обрезки
+            </div>
+          </div>
+
+          <div style="margin-top: 25px; padding: 20px; background: #eaf4ff; border-radius: 8px">
+            <pre style="margin: 0"><code>ctx.save();
+
+// Здесь можно менять настройки
+ctx.fillStyle = "red";
+ctx.globalAlpha = 0.5;
+// ...
+ctx.restore();</code></pre>
+          </div>
+
+          <div
+            style="margin-top: 20px; padding: 16px 20px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>Результат:</strong>
+            <span style="font-size: 0.8em">
+              после <code>restore()</code> настройки возвращаются к состоянию, которое было
+              сохранено.
+            </span>
+          </div>
+        </section>
+
+        <section class="slide">
+          
+        </section>
+
+        <!-- 100 -->
+        <section class="slide">
+          <h2>Принцип работы: стек состояний</h2>
+
+          <p>
+            Canvas хранит сохранённые состояния в виде
+            <strong>стека</strong>.
+          </p>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 35px;
+              margin-top: 30px;
+            "
+          >
+            <div style="text-align: center">
+              <div style="padding: 18px 25px; background: #eaf4ff; border-radius: 8px">
+                <code>save()</code>
+              </div>
+              <div style="font-size: 0.65em; margin-top: 8px">Сохраняет состояние</div>
+            </div>
+
+            <span style="font-size: 1.5em">→</span>
+
+            <div style="text-align: center">
+              <div style="width: 150px; padding: 12px; background: #f5f5f5; border-radius: 8px">
+                <div style="padding: 8px; background: white; border-radius: 5px">Состояние 3</div>
+                <div style="padding: 8px; background: white; border-radius: 5px; margin-top: 5px">
+                  Состояние 2
+                </div>
+                <div style="padding: 8px; background: white; border-radius: 5px; margin-top: 5px">
+                  Состояние 1
+                </div>
+              </div>
+              <div style="font-size: 0.65em; margin-top: 8px">Стек состояний</div>
+            </div>
+
+            <span style="font-size: 1.5em">→</span>
+
+            <div style="text-align: center">
+              <div style="padding: 18px 25px; background: #fff3e8; border-radius: 8px">
+                <code>restore()</code>
+              </div>
+              <div style="font-size: 0.65em; margin-top: 8px">Берёт последнее состояние</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 30px; padding: 20px; background: #eaf4ff; border-radius: 8px">
+            <pre style="margin: 0"><code>ctx.save();       // состояние 1
+
+ctx.save();       // состояние 2
+
+ctx.restore();    // возвращаемся к состоянию 2
+ctx.restore();    // возвращаемся к состоянию 1</code></pre>
+          </div>
+
+          <div
+            style="margin-top: 20px; padding: 16px 20px; background: #fff3e8; border-radius: 8px"
+          >
+            <strong>Правило:</strong>
+            <span style="font-size: 0.8em">
+              состояния восстанавливаются в обратном порядке —
+              <strong>последнее сохранённое возвращается первым</strong>.
+            </span>
+          </div>
         </section>
       </div>
     </div>
