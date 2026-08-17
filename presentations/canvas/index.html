@@ -274,6 +274,165 @@
   <body>
     <div class="reveal">
       <div class="slides">
+        <section class="slide canvas-title">
+          <style>
+            .canvas-title {
+              position: relative;
+              overflow: hidden;
+              background: #fff;
+              color: #222;
+            }
+
+            .canvas-title .bg-circle {
+              position: absolute;
+              width: 550px;
+              height: 550px;
+              border-radius: 50%;
+              background: #eaf4ff;
+              right: -170px;
+              top: -170px;
+              opacity: 0;
+              animation: circleIn 1.2s ease-out forwards;
+            }
+
+            .canvas-title .grid {
+              position: absolute;
+              inset: 0;
+              opacity: 0;
+              background-image:
+                linear-gradient(#e8f1fa 1px, transparent 1px),
+                linear-gradient(90deg, #e8f1fa 1px, transparent 1px);
+              background-size: 45px 45px;
+              mask-image: linear-gradient(to right, transparent, black 65%);
+              animation: gridIn 1.5s ease forwards 0.4s;
+            }
+
+            .canvas-title .content {
+              position: relative;
+              z-index: 2;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              padding-left: 100px;
+            }
+
+            .canvas-title .label {
+              font-family: monospace;
+              font-size: 0.65em;
+              color: #4285c5;
+              letter-spacing: 0.18em;
+              margin-bottom: 25px;
+              opacity: 0;
+              animation: fadeUp 0.7s ease forwards 0.2s;
+            }
+
+            .canvas-title h1 {
+              margin: 0;
+              font-size: 4em;
+              font-weight: 700;
+              letter-spacing: -0.03em;
+              opacity: 0;
+              animation: fadeUp 0.8s ease forwards 0.5s;
+            }
+
+            .canvas-title h1 span {
+              color: #4285c5;
+            }
+
+            .canvas-title .line {
+              width: 90px;
+              height: 5px;
+              background: #4285c5;
+              border-radius: 10px;
+              margin-top: 28px;
+              transform: scaleX(0);
+              transform-origin: left;
+              animation: lineIn 0.7s ease forwards 1s;
+            }
+
+            .canvas-title .subtitle {
+              margin-top: 25px;
+              color: #777;
+              font-size: 0.85em;
+              opacity: 0;
+              animation: fadeUp 0.7s ease forwards 1.2s;
+            }
+
+            @keyframes fadeUp {
+              from {
+                opacity: 0;
+                transform: translateY(25px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+
+            @keyframes circleIn {
+              from {
+                opacity: 0;
+                transform: scale(0.7);
+              }
+              to {
+                opacity: 1;
+                transform: scale(1);
+              }
+            }
+
+            @keyframes gridIn {
+              from {
+                opacity: 0;
+              }
+              to {
+                opacity: 0.7;
+              }
+            }
+
+            @keyframes lineIn {
+              from {
+                transform: scaleX(0);
+              }
+              to {
+                transform: scaleX(1);
+              }
+            }
+
+            @keyframes canvasIn {
+              from {
+                opacity: 0;
+                transform: translateY(-50%) translateX(50px) rotate(3deg);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0) rotate(0);
+              }
+            }
+
+            @keyframes float {
+              0%,
+              100% {
+                transform: translateY(0) rotate(0);
+              }
+              50% {
+                transform: translateY(-10px) rotate(5deg);
+              }
+            }
+          </style>
+
+          <div class="bg-circle"></div>
+          <div class="grid"></div>
+
+          <div class="content">
+            <h1>HTML5 <span>Canvas</span></h1>
+
+            <div class="line"></div>
+
+            <div class="subtitle">Рисование и работа с графикой в JavaScript</div>
+          </div>
+        </section>
+
         <!-- 1 -->
         <section class="slide">
           <h1>Элемент &lt;canvas&gt;</h1>
@@ -1712,22 +1871,6 @@ ctx.stroke();</code></pre>
             </div>
           </div>
 
-          <div
-            style="
-              margin-top: 20px;
-              padding: 16px 20px;
-              background: #f5f5f5;
-              border-left: 5px solid #c96b21;
-              border-radius: 8px;
-            "
-          >
-            <strong>Запомните:</strong>
-
-            <span style="margin-left: 8px">
-              fill() автоматически замыкает контур, а stroke() — нет.
-            </span>
-          </div>
-
           <script>
             // Закрашенный треугольник
             {
@@ -2028,7 +2171,13 @@ ctx.stroke();</code></pre>
           </div>
 
           <div
-            style="margin-top: 20px; padding: 15px 20px; background: #fff3e8; border-radius: 8px"
+            style="
+              margin-top: 20px;
+              padding: 15px 20px;
+              background: #fff3e8;
+              border-radius: 8px;
+              font-size: 1.2rem;
+            "
           >
             <strong>Важно:</strong>
             изменяя значения startAngle и endAngle, можно рисовать не только окружности, но и дуги
@@ -2107,7 +2256,7 @@ ctx.stroke();</code></pre>
             "
           >
             <strong>Задача:</strong>
-            самостоятельно выбрать координаты, размеры и цвета всех элементов.
+            самостоятельно выбрать координаты и размеры всех элементов.
           </div>
 
           <p class="small" style="margin-top: 20px">
@@ -2139,7 +2288,6 @@ ctx.stroke();</code></pre>
               <h3 style="margin-top: 10px; margin-bottom: 10px; font-size: 1.3rem">2. Крыша</h3>
 
               <pre><code class="javascript" style="font-size: 14px;">ctx.beginPath();
-
 ctx.moveTo(130, 180);
 ctx.lineTo(275, 70);
 ctx.lineTo(420, 180);
@@ -2170,19 +2318,6 @@ ctx.fill();</code></pre>
 
               <p style="font-size: 14px">Первые два значения — центр, третье — радиус.</p>
             </div>
-          </div>
-
-          <div
-            style="
-              margin-top: 18px;
-              padding: 14px 18px;
-              background: #eefaf2;
-              border-left: 5px solid #27ae60;
-              border-radius: 7px;
-            "
-          >
-            <strong>Попробуйте сами:</strong>
-            измените координаты, размеры и цвета, чтобы получить свой вариант домика.
           </div>
         </section>
 
@@ -4723,7 +4858,7 @@ ctx.fillText(
               </div>
 
               <div style="padding: 12px 16px; background: white; border-radius: 6px">
-                alphabetic
+                alphabetic (установлен по умолчанию)
                 <span> — координата <strong>y</strong> задаёт базовую линию символов.</span>
               </div>
 
@@ -4732,14 +4867,6 @@ ctx.fillText(
                 <span> — нижний край текста совпадает с координатой <strong>y</strong>.</span>
               </div>
             </div>
-          </div>
-
-          <div
-            style="margin-top: 20px; padding: 16px 20px; background: #fff3e8; border-radius: 8px"
-          >
-            <strong>По умолчанию:</strong>
-            <code>alphabetic</code>
-            <span style="font-size: 0.8em"> — стандартная базовая линия для обычного текста. </span>
           </div>
 
           <script>
@@ -5401,9 +5528,7 @@ images.forEach(image => {
         <section class="slide">
           <h2>Что сохраняет save()</h2>
 
-          <p>
-            Метод <strong>save()</strong> сохраняет текущее состояние контекста Canvas.
-          </p>
+          <p>Метод <strong>save()</strong> сохраняет текущее состояние контекста Canvas.</p>
 
           <div
             style="
@@ -5454,23 +5579,21 @@ ctx.globalAlpha = 0.5;
 // ...
 ctx.restore();</code></pre>
           </div>
+        </section>
 
+        <!-- 100 -->
+        <section class="slide">
           <div
             style="margin-top: 20px; padding: 16px 20px; background: #fff3e8; border-radius: 8px"
           >
             <strong>Результат:</strong>
             <span style="font-size: 0.8em">
-              после <code>restore()</code> настройки возвращаются к состоянию, которое было
-              сохранено.
+              после restore() настройки возвращаются к состоянию, которое было сохранено.
             </span>
           </div>
         </section>
 
-        <section class="slide">
-          
-        </section>
-
-        <!-- 100 -->
+        <!-- 101 -->
         <section class="slide">
           <h2>Принцип работы: стек состояний</h2>
 
@@ -5499,11 +5622,29 @@ ctx.restore();</code></pre>
 
             <div style="text-align: center">
               <div style="width: 150px; padding: 12px; background: #f5f5f5; border-radius: 8px">
-                <div style="padding: 8px; background: white; border-radius: 5px">Состояние 3</div>
-                <div style="padding: 8px; background: white; border-radius: 5px; margin-top: 5px">
+                <div style="padding: 8px; background: white; border-radius: 5px; font-size: 1rem">
+                  Состояние 3
+                </div>
+                <div
+                  style="
+                    padding: 8px;
+                    background: white;
+                    border-radius: 5px;
+                    margin-top: 5px;
+                    font-size: 1rem;
+                  "
+                >
                   Состояние 2
                 </div>
-                <div style="padding: 8px; background: white; border-radius: 5px; margin-top: 5px">
+                <div
+                  style="
+                    padding: 8px;
+                    background: white;
+                    border-radius: 5px;
+                    margin-top: 5px;
+                    font-size: 1rem;
+                  "
+                >
                   Состояние 1
                 </div>
               </div>
@@ -5538,6 +5679,11 @@ ctx.restore();    // возвращаемся к состоянию 1</code></pr
               <strong>последнее сохранённое возвращается первым</strong>.
             </span>
           </div>
+        </section>
+
+        <!-- 102 -->
+        <section class="slide">
+          <h2 style="margin: 0 auto; text-align: center">Спасибо за внимание!</h2>
         </section>
       </div>
     </div>
