@@ -526,9 +526,13 @@
                 Наведи на меня
               </button>
 
-              <pre style="margin-top: 20px; text-align: left"><code>button {
+              <pre style="margin-top: 20px; text-align: left; font-size: 1.3rem"><code>button {
   background: #eaf4ff;
-}</code></pre>
+}
+button: hover {
+  background: #4285c5;
+}
+</code></pre>
             </div>
 
             <div style="text-align: center">
@@ -560,10 +564,15 @@
               </button>
 
               <pre style="margin-top: 20px; text-align: left"><code>button {
+  background: #eaf4ff;
   transition:
     background 0.4s,
     color 0.4s;
-}</code></pre>
+}
+button: hover {
+  background: #4285c5;
+}
+</code></pre>
             </div>
           </div>
 
@@ -855,7 +864,7 @@ button:hover {
                 ></div>
               </div>
 
-              <pre style="margin-top: 20px"><code>.box {
+              <pre style="margin-top: 20px; font-size: 1.3rem"><code>.box {
   left: 20px;
   width: 70px;
 }
@@ -906,7 +915,7 @@ button:hover {
                 ></div>
               </div>
 
-              <pre style="margin-top: 20px"><code>.box {
+              <pre style="margin-top: 20px; font-size: 1.3rem"><code>.box {
   left: 20px;
   width: 70px;
   transition:
@@ -1247,7 +1256,7 @@ button:hover {
             <strong>Но не всё анимируется одинаково.</strong>
 
             <p style="font-size: 0.78em; margin-bottom: 0">
-              Некоторые значения, например auto, могут не иметь однозначного промежуточного
+              Некоторые значения, например visibility, могут не иметь однозначного промежуточного
               значения. Поэтому такие свойства лучше не использовать для плавных переходов без
               дополнительной проверки.
             </p>
@@ -1347,8 +1356,6 @@ button:hover {
 
         <!--11 -->
         <section class="slide">
-          <h2>Основные параметры Transition</h2>
-
           <p>
             С помощью transition можно анимировать
             <strong style="color: #e44d7a">несколько свойств одновременно</strong>.
@@ -1378,7 +1385,7 @@ button:hover {
                 <div style="font-size: 0.68em; margin-top: 8px">Что изменяем</div>
 
                 <div style="font-family: monospace; font-size: 0.65em; margin-top: 8px">
-                  width, transform
+                  width, height, transform, background-color
                 </div>
               </div>
 
@@ -3309,10 +3316,8 @@ toggle.addEventListener('click', () => {
   position: fixed;
   top: 0;
   right: 0;
-
   width: 300px;
   height: 100vh;
-
   background: white;
 
   /* 1. Начальное положение */
@@ -3638,7 +3643,7 @@ toggle.addEventListener('click', () => {
             <div>
               <h3 style="margin-top: 0">HTML</h3>
 
-              <pre><code>&lt;div class="card"&gt;
+              <pre style="font-size: 1.3rem"><code>&lt;div class="card"&gt;
   &lt;div class="card-inner"&gt;
 
     &lt;div class="card-front"&gt;
@@ -3693,13 +3698,10 @@ toggle.addEventListener('click', () => {
               width: 100%;
               height: 100%;
               box-sizing: border-box;
-
               backface-visibility: hidden;
-
               display: flex;
               align-items: center;
               justify-content: center;
-
               border-radius: 0.5rem;
             }
 
@@ -3796,20 +3798,20 @@ toggle.addEventListener('click', () => {
         <section class="slide">
           <h3 style="margin-top: 25px">1. Внешняя карточка</h3>
 
-          <pre style="margin-top: 10px"><code>.card {
+          <pre style="margin-top: 10px; font-size: 1.2rem"><code>.card {
   perspective: 1000px;
 }</code></pre>
 
           <h3 style="margin-top: 18px">2. Внутренняя часть</h3>
 
-          <pre style="margin-top: 10px"><code>.card-inner {
+          <pre style="margin-top: 10px; font-size: 1.2rem"><code>.card-inner {
   transition: transform 0.6s;
   transform-style: preserve-3d;
 }</code></pre>
 
           <h3 style="margin-top: 18px">3. Поворот при наведении</h3>
 
-          <pre style="margin-top: 10px"><code>.card:hover .card-inner {
+          <pre style="margin-top: 10px; font-size: 1.2rem"><code>.card:hover .card-inner {
   transform: rotateY(180deg);
 }</code></pre>
 
@@ -3825,6 +3827,7 @@ toggle.addEventListener('click', () => {
           >
             <strong>Главная идея:</strong>
             мы поворачиваем не переднюю и заднюю стороны отдельно, а весь .card-inner.
+            <p>Полный код карточки доступен по ссылке: https://codepen.io/nefejames/pen/RNbPZpp</p>
           </div>
         </section>
 
@@ -3840,7 +3843,7 @@ toggle.addEventListener('click', () => {
 
           <div
             style="
-              margin: 35px auto 25px;
+              margin: 15px auto 15px;
               width: 650px;
               height: 230px;
               max-width: 100%;
@@ -4409,7 +4412,7 @@ button:hover::before {
             </div>
 
             <!-- Код -->
-            <pre><code>.box {
+            <pre style="font-size: 1.3rem"><code>.box {
   animation: move 2s;
 }
 
@@ -4461,8 +4464,6 @@ button:hover::before {
 
         <!-- 45 -->
         <section class="slide">
-          <h2>Несколько этапов анимации</h2>
-
           <p>
             Вместо from и to можно использовать
             <strong style="color: #4285c5">проценты</strong>.
@@ -4864,7 +4865,7 @@ button:hover::before {
             "
           >
             <div style="padding: 18px; background: #eaf4ff; border-radius: 10px">
-              <code style="color: #4285c5">normal</code>
+              <code style="color: #4285c5">normal (по умолчанию)</code>
 
               <div style="font-size: 0.62em; margin-top: 10px">
                 Каждый цикл идёт
@@ -5095,6 +5096,28 @@ button:hover::before {
 
         <!-- 53 -->
         <section class="slide">
+          <h2>animation-fill-mode</h2>
+
+          <p>
+            Определяет, какие стили применяются к элементу <strong>до и после анимации</strong>.
+          </p>
+
+          <ul>
+            <li><code>none</code> — по умолчанию, стили анимации не применяются до и после.</li>
+            <li><code>forwards</code> — сохраняется конечное состояние анимации.</li>
+            <li><code>backwards</code> — применяется начальное состояние до запуска анимации.</li>
+            <li><code>both</code> — применяются и начальное, и конечное состояния.</li>
+          </ul>
+
+          <pre><code>.box {
+  animation: move 1s forwards;
+}</code></pre>
+
+          <p><code>forwards</code> → «останься в конечном состоянии»</p>
+        </section>
+
+        <!-- 54 -->
+        <section class="slide">
           <h2>Повторяем: свойство animation</h2>
 
           <p>
@@ -5223,7 +5246,7 @@ button:hover::before {
           </div>
         </section>
 
-        <!-- 54 -->
+        <!-- 55 -->
         <section class="slide">
           <h2>@keyframes — сценарий анимации</h2>
 
@@ -5328,7 +5351,7 @@ button:hover::before {
           </div>
         </section>
 
-        <!-- 55 -->
+        <!-- 56 -->
         <section class="slide">
           <h2>Ключевые кадры: from и to</h2>
 
@@ -5422,7 +5445,7 @@ button:hover::before {
           </div>
         </section>
 
-        <!-- 56 -->
+        <!-- 57 -->
         <section class="slide">
           <h2>Промежуточные состояния</h2>
 
@@ -5535,7 +5558,7 @@ button:hover::before {
           </style>
         </section>
 
-        <!-- 57 -->
+        <!-- 58 -->
         <section class="slide">
           <h2>В одном кадре можно изменить несколько свойств</h2>
 
@@ -5632,7 +5655,7 @@ button:hover::before {
           </style>
         </section>
 
-        <!-- 58 -->
+        <!-- 59 -->
         <section class="slide notification-example">
           <h2>Практический пример: уведомление</h2>
 
@@ -5931,7 +5954,7 @@ button:hover::before {
           </script>
         </section>
 
-        <!-- 59 -->
+        <!-- 60 -->
         <section class="slide">
           <h2>Разбор: начальное состояние</h2>
 
@@ -5992,7 +6015,7 @@ button:hover::before {
           </div>
         </section>
 
-        <!-- 60 -->
+        <!-- 61 -->
         <section class="slide">
           <h2>Разбор: @keyframes</h2>
 
@@ -6036,7 +6059,7 @@ button:hover::before {
               </div>
             </div>
 
-            <pre><code>@keyframes notification-in {
+            <pre style="font-size: 1.3rem"><code>@keyframes notification-in {
   from {
     transform: translateX(120%);
     opacity: 0;
@@ -6068,7 +6091,7 @@ button:hover::before {
           </div>
         </section>
 
-        <!-- 61 -->
+        <!-- 62 -->
         <section class="slide">
           <h2>Разбор: класс <code>.show</code></h2>
 
@@ -6123,7 +6146,7 @@ button:hover::before {
           </div>
         </section>
 
-        <!-- 62 -->
+        <!-- 63 -->
         <section class="slide">
           <h2>Разбор: JavaScript + CSS</h2>
 
@@ -6200,7 +6223,7 @@ button:hover::before {
           </div>
         </section>
 
-        <!-- 63 -->
+        <!-- 64 -->
         <section class="slide">
           <h2>Разбор: обратный отсчёт</h2>
 
@@ -6227,7 +6250,7 @@ button:hover::before {
               <div class="count-box">1</div>
             </div>
 
-            <pre><code>let seconds = 5;
+            <pre style="font-size: 1.3rem"><code>let seconds = 5;
 
 timer = setInterval(() => {
   seconds--;
@@ -6418,7 +6441,6 @@ timer = setInterval(() => {
 
             <pre style="font-size: 1.2rem"><code>.shadow-dance-text {
   color: #fff;
-
   text-shadow:
     5px 5px 0 #ff005e,
     10px 10px 0 #00d4ff;
@@ -6429,7 +6451,6 @@ timer = setInterval(() => {
 }
 
 @keyframes shadow-dance {
-
   0%, 100% {
     text-shadow:
       5px 5px 0 #ff005e,
@@ -6517,7 +6538,7 @@ timer = setInterval(() => {
                 02 · DEV COMMUNITY
               </div>
 
-              <h3 style="margin: 0 0 12px 0; font-size: 0.85em">10 Satisfying CSS Animations</h3>
+              <h3 style="margin: 0 0 12px 0; font-size: 0.85em">60 CSS Loading Animations</h3>
 
               <p style="margin: 0 0 15px 0; font-size: 0.62em; line-height: 1.5; color: #666">
                 Красивые и необычные анимации: загрузчики, точки, линии, костёр и другие эффекты.
@@ -6534,7 +6555,7 @@ timer = setInterval(() => {
                   color: #555;
                 "
               >
-                https://dev.to/webdeasy/9-satisfying-css-animations-for-relaxation-5ggl
+                https://dev.to/webdeasy/25-awesome-loading-animations-where-you-like-to-wait-1b5f
               </div>
             </div>
           </div>
@@ -6615,8 +6636,12 @@ timer = setInterval(() => {
                   <div>• &nbsp; <strong>3.</strong> Несколько пунктов навигации</div>
                   <div>✦ &nbsp; <strong>4.</strong> Hover-эффект у пунктов</div>
                   <div>× &nbsp; <strong>5.</strong> Кнопка закрытия</div>
-                  <div>◼ &nbsp; <strong>6.</strong> Затемнение остальной страницы (на 10 баллов)</div>
-                  <div>↩ &nbsp; <strong>7.</strong> Клик по затемнению закрывает меню (на 10 баллов)</div>
+                  <div>
+                    ◼ &nbsp; <strong>6.</strong> Затемнение остальной страницы (на 10 баллов)
+                  </div>
+                  <div>
+                    ↩ &nbsp; <strong>7.</strong> Клик по затемнению закрывает меню (на 10 баллов)
+                  </div>
                 </div>
               </div>
 
@@ -6646,8 +6671,7 @@ timer = setInterval(() => {
                 <strong style="color: #4285c5; font-size: 0.7em"> Подсказка 1 </strong>
 
                 <p style="margin: 10px 0 0; font-size: 0.6em; line-height: 1.5">
-                  Спрячьте меню с помощью
-                  transform: translateX(100%), а при открытии верните его в
+                  Спрячьте меню с помощью transform: translateX(100%), а при открытии верните его в
                   translateX(0).
                 </p>
               </div>
@@ -6674,97 +6698,82 @@ timer = setInterval(() => {
             "
           >
             <strong>Используйте:</strong>
-            transform · transition · :hover ·
-            position: fixed/absolute · JavaScript (для присвоения классов элементам)
+            transform · transition · :hover · position: fixed/absolute · JavaScript (для присвоения
+            классов элементам)
           </div>
         </section>
 
-        <section class="slide">
-  <h2>Как сдаём работу</h2>
-
-  <div
-    style="
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 25px;
-      margin-top: 35px;
-      align-items: stretch;
-    "
-  >
-    <!-- Что отправить -->
-    <div
-      style="
-        padding: 25px;
-        background: #f7f7f7;
-        border-radius: 12px;
-        border-left: 5px solid #4285c5;
-      "
-    >
-      <h3 style="margin-top: 0;">📦 Что отправить</h3>
-
-      <p style="font-size: 0.68em; line-height: 1.5;">
-        Архив с файлами:
-      </p>
-
-      <div
-        style="
-          padding: 15px;
-          background: white;
-          border-radius: 8px;
-          font-family: monospace;
-          font-size: 0.65em;
-          line-height: 1.8;
-        "
-      >
-        📁 project.zip<br>
-        ├── index.html<br>
-        ├── style.css<br>
-        └── script.js
-      </div>
-
-      <p
-        style="
-          margin-bottom: 0;
-          font-size: 0.62em;
-          color: #666;
-        "
-      >
-        Архив загрузить через <strong>учебный портал</strong>.
-      </p>
-    </div>
-
-  </div>
-
-  <div
-    style="
-      margin-top: 25px;
-      padding: 20px 25px;
-      background: #eaf4ff;
-      border-radius: 12px;
-    "
-  >
-    <strong style="font-size: 0.72em;">
-      Что добавить в код
-    </strong>
-
-    <div
-      style="
-        margin-top: 12px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px 25px;
-        font-size: 0.62em;
-      "
-    >
-      <div>✓ Комментарии к ключевым частям кода</div>
-      <div>✓ Понятные названия классов и переменных</div>
-      <div>✓ Укажите, где используется transform</div>
-      <div>✓ Укажите, где используется transition</div>
-    </div>
-  </div>
-</section>
-
         <!-- 68 -->
+        <section class="slide">
+          <h2>Как сдаём работу</h2>
+
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 25px;
+              margin-top: 35px;
+              align-items: stretch;
+            "
+          >
+            <!-- Что отправить -->
+            <div
+              style="
+                padding: 25px;
+                background: #f7f7f7;
+                border-radius: 12px;
+                border-left: 5px solid #4285c5;
+              "
+            >
+              <h3 style="margin-top: 0">📦 Что отправить</h3>
+
+              <p style="font-size: 0.68em; line-height: 1.5">Архив с файлами:</p>
+
+              <div
+                style="
+                  padding: 15px;
+                  background: white;
+                  border-radius: 8px;
+                  font-family: monospace;
+                  font-size: 0.65em;
+                  line-height: 1.8;
+                "
+              >
+                📁 project.zip<br />
+                ├── index.html<br />
+                ├── style.css<br />
+                └── script.js
+              </div>
+
+              <p style="margin-bottom: 0; font-size: 0.62em; color: #666">
+                Архив загрузить через <strong>учебный портал</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 25px; padding: 20px 25px; background: #eaf4ff; border-radius: 12px"
+          >
+            <strong style="font-size: 0.72em"> Что добавить в код </strong>
+
+            <div
+              style="
+                margin-top: 12px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px 25px;
+                font-size: 0.62em;
+              "
+            >
+              <div>✓ Комментарии к ключевым частям кода</div>
+              <div>✓ Понятные названия классов и переменных</div>
+              <div>✓ Укажите, где используется transform</div>
+              <div>✓ Укажите, где используется transition</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 69 -->
         <section class="slide menu-task-demo">
           <h2>Результат: выезжающее меню</h2>
 
@@ -7056,7 +7065,7 @@ timer = setInterval(() => {
           </script>
         </section>
 
-        <!-- 69 -->
+        <!-- 70 -->
         <section class="slide">
           <h2 style="margin: 0 auto; text-align: center">Спасибо за внимание!</h2>
         </section>
