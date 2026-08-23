@@ -429,7 +429,7 @@
 
             <div class="line"></div>
 
-            <div class="subtitle">Рисование и работа с графикой в JavaScript</div>
+            <div class="subtitle">Рисование и работа с графикой</div>
           </div>
         </section>
 
@@ -910,28 +910,13 @@
 
           <p>
             Чтобы получить 2D-контекст, сначала получаем сам Canvas, а затем вызываем метод
-            <strong>getContext()</strong>:
+            <strong>getContext()</strong>
           </p>
-
-          <pre><code class="javascript">
-const canvas = document.getElementById("myCanvas");
-
-const ctx = canvas.getContext("2d");
-  </code></pre>
-
-          <p>
-            Теперь переменная <strong>ctx</strong> содержит контекст, через который мы сможем
-            рисовать на Canvas.
-          </p>
-
-          <pre><code class="javascript">
-ctx.fillRect(50, 30, 150, 100);
-  </code></pre>
         </section>
 
         <!-- 14 -->
         <section class="slide">
-          <h2>Получение контекста</h2>
+          <h2>Пример получения контекста</h2>
 
           <p>
             Работа с Canvas всегда начинается с
@@ -1191,7 +1176,7 @@ ctx.arc(
           <h2>Первые фигуры: прямоугольники</h2>
 
           <p>
-            Canvas не содержит готовых фигур, как SVG. Основными графическими примитивами являются
+            Canvas не содержит готовых фигур. Основными графическими примитивами являются
             <strong>прямоугольники</strong> и <strong>контуры (paths)</strong>.
           </p>
 
@@ -1889,20 +1874,20 @@ ctx.stroke();</code></pre>
 
             // Контурный треугольник
             {
-              const canvas = document.getElementById('outlinedTriangle');
-              const ctx = canvas.getContext('2d');
+              const canvasF = document.getElementById('outlinedTriangle');
+              const ctxF = canvasF.getContext('2d');
 
-              ctx.beginPath();
+              ctxF.beginPath();
 
-              ctx.moveTo(125, 125);
-              ctx.lineTo(125, 45);
-              ctx.lineTo(45, 125);
+              ctxF.moveTo(125, 125);
+              ctxF.lineTo(125, 45);
+              ctxF.lineTo(45, 125);
 
-              ctx.closePath();
+              ctxF.closePath();
 
-              ctx.strokeStyle = '#c96b21';
-              ctx.lineWidth = 5;
-              ctx.stroke();
+              ctxF.strokeStyle = '#c96b21';
+              ctxF.lineWidth = 5;
+              ctxF.stroke();
             }
           </script>
         </section>
@@ -2325,7 +2310,7 @@ ctx.fill();</code></pre>
         <section>
           <h2>Как оформить код?</h2>
           <p>Перед рисованием нужно получить Canvas и его контекст.</p>
-          <div style="display: flex; gap: 25px; align-items: stretch">
+          <div style="display: flex; gap: 25px; align-items: stretch; flex-direction: column">
             <div class="box" style="flex: 1">
               <h3>1. Находим Canvas</h3>
               <pre><code class="javascript"> const canvas = document.querySelector('#canvas'); </code></pre>
@@ -3308,47 +3293,89 @@ ctx.fillStyle = "rgb(255 0 0 / 50%)";</code></pre>
           <h2>Особенности отображения линий</h2>
 
           <p>
-            Линия рисуется <strong>по центру заданного пути</strong>. Поэтому положение координаты
-            влияет на то, как линия попадёт на пиксели экрана.
+            Линия в Canvas рисуется <strong>относительно своего центра</strong>. Для линии толщиной
+            1 px координата <strong>y</strong> имеет значение.
           </p>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px">
-            <div style="padding: 18px; background: #f5f5f5; border-radius: 8px">
-              <h3>Чёткая линия</h3>
+            <!-- Размытая -->
+            <div style="padding: 18px; background: #fff3e8; border-radius: 8px">
+              <h3>Размытая линия</h3>
 
-              <p style="font-size: 0.75em">Координата проходит по границе физических пикселей.</p>
+              <p style="font-size: 0.75em">Центр линии находится между физическими пикселями.</p>
 
-              <pre style="margin-top: 15px"><code>ctx.lineWidth = 1;
+              <pre
+                style="margin-top: 15px; font-size: 1.2rem"
+              ><code>const ctx = canvas.getContext('2d');
+
+ctx.lineWidth = 1;
+ctx.beginPath();
 ctx.moveTo(20, 50);
 ctx.lineTo(280, 50);
 ctx.stroke();</code></pre>
 
               <canvas
+                id="blur-line"
                 width="300"
                 height="80"
                 style="width: 100%; background: white; border-radius: 5px"
-                data-demo="sharp-line"
               ></canvas>
             </div>
 
-            <div style="padding: 18px; background: #fff3e8; border-radius: 8px">
-              <h3>Размытая линия</h3>
+            <!-- Чёткая -->
+            <div style="padding: 18px; background: #f0f8f0; border-radius: 8px">
+              <h3>Чёткая линия</h3>
 
-              <p style="font-size: 0.75em">Центр линии оказывается между физическими пикселями.</p>
+              <p style="font-size: 0.75em">Центр линии совпадает с центром физического пикселя.</p>
 
-              <pre style="margin-top: 15px"><code>ctx.lineWidth = 1;
+              <pre
+                style="margin-top: 15px; font-size: 1.2rem"
+              ><code>const ctx = canvas.getContext('2d');
+
+ctx.lineWidth = 1;
+ctx.beginPath();
 ctx.moveTo(20, 50.5);
 ctx.lineTo(280, 50.5);
 ctx.stroke();</code></pre>
 
               <canvas
+                id="sharp-line"
                 width="300"
                 height="80"
                 style="width: 100%; background: white; border-radius: 5px"
-                data-demo="blur-line"
               ></canvas>
             </div>
           </div>
+
+          <script>
+            // Размытая линия
+            {
+              const canvas = document.getElementById('blur-line');
+              const ctx = canvas.getContext('2d');
+
+              ctx.strokeStyle = '#222';
+              ctx.lineWidth = 1;
+
+              ctx.beginPath();
+              ctx.moveTo(20, 50);
+              ctx.lineTo(280, 50);
+              ctx.stroke();
+            }
+
+            // Чёткая линия
+            {
+              const canvas = document.getElementById('sharp-line');
+              const ctx = canvas.getContext('2d');
+
+              ctx.strokeStyle = '#222';
+              ctx.lineWidth = 1;
+
+              ctx.beginPath();
+              ctx.moveTo(20, 50.5);
+              ctx.lineTo(280, 50.5);
+              ctx.stroke();
+            }
+          </script>
         </section>
 
         <!-- 57 -->
@@ -3359,32 +3386,12 @@ ctx.stroke();</code></pre>
             <strong>Почему?</strong>
 
             <span style="font-size: 0.8em">
-              При координате <strong>50</strong> линия толщиной 1 px оказывается между пикселями
-              симметрично. При <strong>50.5</strong> её центр смещается относительно пиксельной
-              сетки, и браузеру приходится распределять цвет между соседними пикселями.
+              При координате 50 центр линии толщиной 1 px попадает на границу между двумя рядами
+              физических пикселей. Поэтому линия покрывает оба ряда примерно наполовину и выглядит
+              размытой. При 50.5 центр линии смещается в центр пиксельного ряда, поэтому линия
+              попадает точно в один ряд пикселей и выглядит чёткой.
             </span>
           </div>
-
-          <script>
-            document.querySelectorAll('canvas[data-demo]').forEach((canvas) => {
-              const ctx = canvas.getContext('2d');
-
-              ctx.strokeStyle = '#222';
-              ctx.lineWidth = 1;
-
-              ctx.beginPath();
-
-              if (canvas.dataset.demo === 'sharp-line') {
-                ctx.moveTo(20, 50);
-                ctx.lineTo(280, 50);
-              } else {
-                ctx.moveTo(20, 50.5);
-                ctx.lineTo(280, 50.5);
-              }
-
-              ctx.stroke();
-            });
-          </script>
         </section>
 
         <!-- 58 -->
@@ -3393,38 +3400,30 @@ ctx.stroke();</code></pre>
 
           <p>Свойство <strong>lineCap</strong> определяет, как выглядят концы открытых линий.</p>
 
-          <pre style="margin-top: 20px"><code>ctx.lineCap = type;</code></pre>
+          <pre style="margin-top: 15px"><code>ctx.lineCap = type;</code></pre>
 
           <div
             style="
               display: grid;
               grid-template-columns: repeat(3, 1fr);
               gap: 20px;
-              margin-top: 25px;
+              margin-top: 20px;
             "
           >
-            <div
-              style="
-                padding: 20px;
-                background: #f5f5f5;
-                border-radius: 8px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-              "
-            >
+            <!-- BUTT -->
+            <div style="padding: 18px; background: #f5f5f5; border-radius: 8px">
               <h3>butt</h3>
 
-              <p style="font-size: 0.75em">
+              <p style="font-size: 0.7em; min-height: 45px">
                 Плоский край.
                 <br />
                 <strong>По умолчанию.</strong>
               </p>
 
               <canvas
-                width="240"
-                height="60"
-                style="width: 100%; background: white; border-radius: 5px; margin-top: 10px"
+                width="300"
+                height="120"
+                style="width: 100%; background: white; border-radius: 5px"
               ></canvas>
 
               <script>
@@ -3432,36 +3431,72 @@ ctx.stroke();</code></pre>
                   const canvas = document.currentScript.previousElementSibling;
                   const ctx = canvas.getContext('2d');
 
-                  ctx.lineWidth = 16;
+                  const startX = 50;
+                  const endX = 250;
+                  const y = 55;
+
+                  // Фактический путь
+                  ctx.setLineDash([5, 5]);
+                  ctx.strokeStyle = '#aaa';
+                  ctx.lineWidth = 1;
+
+                  ctx.beginPath();
+                  ctx.moveTo(startX, y);
+                  ctx.lineTo(endX, y);
+                  ctx.stroke();
+
+                  ctx.setLineDash([]);
+
+                  // Линия
+                  ctx.lineWidth = 20;
                   ctx.lineCap = 'butt';
                   ctx.strokeStyle = '#222';
 
                   ctx.beginPath();
-                  ctx.moveTo(35, 30);
-                  ctx.lineTo(205, 30);
+                  ctx.moveTo(startX, y);
+                  ctx.lineTo(endX, y);
                   ctx.stroke();
+
+                  // Координаты пути
+                  ctx.fillStyle = '#e74c3c';
+
+                  ctx.beginPath();
+                  ctx.arc(startX, y, 3, 0, Math.PI * 2);
+                  ctx.fill();
+
+                  ctx.beginPath();
+                  ctx.arc(endX, y, 3, 0, Math.PI * 2);
+                  ctx.fill();
+
+                  // Подписи
+                  ctx.fillStyle = '#555';
+                  ctx.font = '12px sans-serif';
+                  ctx.textAlign = 'center';
+
+                  ctx.fillText('moveTo', startX, 90);
+                  ctx.fillText('lineTo', endX, 90);
                 }
               </script>
+
+              <p style="font-size: 0.6em; text-align: center; margin: 8px 0 0">
+                Конец совпадает с координатой пути
+              </p>
             </div>
 
-            <div
-              style="
-                padding: 20px;
-                background: #eaf4ff;
-                border-radius: 8px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-              "
-            >
+            <!-- ROUND -->
+            <div style="padding: 18px; background: #eaf4ff; border-radius: 8px">
               <h3>round</h3>
 
-              <p style="font-size: 0.75em">Закруглённый конец.</p>
+              <p style="font-size: 0.7em; min-height: 45px">
+                Закруглённый конец.
+                <br />
+                Выступает на <code>lineWidth / 2</code>.
+              </p>
 
               <canvas
-                width="240"
-                height="60"
-                style="width: 100%; background: white; border-radius: 5px; margin-top: 10px"
+                width="300"
+                height="120"
+                style="width: 100%; background: white; border-radius: 5px"
               ></canvas>
 
               <script>
@@ -3469,38 +3504,72 @@ ctx.stroke();</code></pre>
                   const canvas = document.currentScript.previousElementSibling;
                   const ctx = canvas.getContext('2d');
 
-                  ctx.lineWidth = 16;
+                  const startX = 50;
+                  const endX = 250;
+                  const y = 55;
+
+                  // Фактический путь
+                  ctx.setLineDash([5, 5]);
+                  ctx.strokeStyle = '#aaa';
+                  ctx.lineWidth = 1;
+
+                  ctx.beginPath();
+                  ctx.moveTo(startX, y);
+                  ctx.lineTo(endX, y);
+                  ctx.stroke();
+
+                  ctx.setLineDash([]);
+
+                  // Линия
+                  ctx.lineWidth = 20;
                   ctx.lineCap = 'round';
                   ctx.strokeStyle = '#222';
 
                   ctx.beginPath();
-                  ctx.moveTo(35, 30);
-                  ctx.lineTo(205, 30);
+                  ctx.moveTo(startX, y);
+                  ctx.lineTo(endX, y);
                   ctx.stroke();
+
+                  // Координаты пути
+                  ctx.fillStyle = '#e74c3c';
+
+                  ctx.beginPath();
+                  ctx.arc(startX, y, 3, 0, Math.PI * 2);
+                  ctx.fill();
+
+                  ctx.beginPath();
+                  ctx.arc(endX, y, 3, 0, Math.PI * 2);
+                  ctx.fill();
+
+                  // Подписи
+                  ctx.fillStyle = '#555';
+                  ctx.font = '12px sans-serif';
+                  ctx.textAlign = 'center';
+
+                  ctx.fillText('moveTo', startX, 90);
+                  ctx.fillText('lineTo', endX, 90);
                 }
               </script>
+
+              <p style="font-size: 0.6em; text-align: center; margin: 8px 0 0">
+                Полукруг выступает за путь на 10 px
+              </p>
             </div>
 
-            <div
-              style="
-                padding: 20px;
-                background: #fff3e8;
-                border-radius: 8px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-              "
-            >
+            <!-- SQUARE -->
+            <div style="padding: 18px; background: #fff3e8; border-radius: 8px">
               <h3>square</h3>
 
-              <p style="font-size: 0.75em">
-                Квадратный конец, который немного выходит за пределы линии.
+              <p style="font-size: 0.7em; min-height: 45px">
+                Квадратный конец.
+                <br />
+                Выступает на <code>lineWidth / 2</code>.
               </p>
 
               <canvas
-                width="240"
-                height="60"
-                style="width: 100%; background: white; border-radius: 5px; margin-top: 10px"
+                width="300"
+                height="150"
+                style="width: 100%; background: white; border-radius: 5px"
               ></canvas>
 
               <script>
@@ -3508,17 +3577,91 @@ ctx.stroke();</code></pre>
                   const canvas = document.currentScript.previousElementSibling;
                   const ctx = canvas.getContext('2d');
 
-                  ctx.lineWidth = 16;
+                  const startX = 50;
+                  const endX = 250;
+                  const y = 55;
+                  const lineWidth = 20;
+
+                  // Фактический путь
+                  ctx.setLineDash([5, 5]);
+                  ctx.strokeStyle = '#aaa';
+                  ctx.lineWidth = 1;
+
+                  ctx.beginPath();
+                  ctx.moveTo(startX, y);
+                  ctx.lineTo(endX, y);
+                  ctx.stroke();
+
+                  ctx.setLineDash([]);
+
+                  // Основная линия
+                  ctx.lineWidth = lineWidth;
                   ctx.lineCap = 'square';
                   ctx.strokeStyle = '#222';
 
                   ctx.beginPath();
-                  ctx.moveTo(35, 30);
-                  ctx.lineTo(205, 30);
+                  ctx.moveTo(startX, y);
+                  ctx.lineTo(endX, y);
                   ctx.stroke();
+
+                  // Координаты пути
+                  ctx.fillStyle = '#e74c3c';
+
+                  ctx.beginPath();
+                  ctx.arc(startX, y, 3, 0, Math.PI * 2);
+                  ctx.fill();
+
+                  ctx.beginPath();
+                  ctx.arc(endX, y, 3, 0, Math.PI * 2);
+                  ctx.fill();
+
+                  // Линия, показывающая выступ справа
+                  ctx.strokeStyle = '#e74c3c';
+                  ctx.lineWidth = 1;
+
+                  ctx.beginPath();
+                  ctx.moveTo(endX, y + 22);
+                  ctx.lineTo(endX + lineWidth / 2, y + 22);
+                  ctx.stroke();
+
+                  // Вертикальные границы
+                  ctx.beginPath();
+                  ctx.moveTo(endX, y + 17);
+                  ctx.lineTo(endX, y + 27);
+                  ctx.moveTo(endX + lineWidth / 2, y + 17);
+                  ctx.lineTo(endX + lineWidth / 2, y + 27);
+                  ctx.stroke();
+
+                  // Подпись
+                  ctx.fillStyle = '#e74c3c';
+                  ctx.font = '11px sans-serif';
+                  ctx.textAlign = 'center';
+
+                  // Подписи координат
+                  ctx.fillStyle = '#555';
+                  ctx.font = '12px sans-serif';
                 }
               </script>
+
+              <p style="font-size: 0.6em; text-align: center; margin: 8px 0 0">
+                При <code>lineWidth = 20</code> выступ = <strong>10 px</strong>
+              </p>
             </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 20px;
+              padding: 12px 18px;
+              background: #f5f5f5;
+              border-radius: 8px;
+              text-align: center;
+              font-size: 0.8em;
+            "
+          >
+            <strong>Важно:</strong>
+            <code>lineCap</code> не меняет путь — он меняет только то, как
+            <strong>stroke</strong> визуально заканчивается вокруг пути.
           </div>
         </section>
 
@@ -3605,7 +3748,9 @@ ctx.stroke();</code></pre>
 
             <span style="font-size: 0.8em">
               <strong>lineCap</strong> отвечает за концы открытых линий, а
-              <strong>lineJoin</strong> — за соединения линий в углах.
+              <strong>lineJoin</strong> — за соединения линий в углах. Подробнее о lineJoin можно
+              почитать по ссылке:
+              https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors#a_linejoin_example
             </span>
           </div>
         </section>
@@ -3839,21 +3984,40 @@ ctx.strokeStyle = gradient;</code></pre>
           <p>В градиент можно добавить <strong>любое количество цветовых точек</strong>.</p>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px">
+            <!-- Простой градиент -->
             <div style="padding: 20px; background: #f5f5f5; border-radius: 8px">
               <h3>Простой переход</h3>
 
-              <pre><code>gradient.addColorStop(0, "white");
-gradient.addColorStop(1, "black");</code></pre>
+              <pre style="font-size: 1.2rem"><code>const gradient = ctx.createLinearGradient(
+  0, 0, 300, 0
+);
 
-              <div
-                style="
-                  height: 55px;
-                  margin-top: 15px;
-                  border-radius: 6px;
-                  background: linear-gradient(to right, white, black);
-                  border: 1px solid #ddd;
-                "
-              ></div>
+gradient.addColorStop(0, "white");
+gradient.addColorStop(1, "black");
+
+ctx.fillStyle = gradient;
+ctx.fillRect(0, 0, 300, 55);</code></pre>
+
+              <canvas
+                width="300"
+                height="55"
+                style="width: 100%; background: white; border-radius: 6px; margin-top: 15px"
+              ></canvas>
+
+              <script>
+                {
+                  const canvas = document.currentScript.previousElementSibling;
+                  const ctx = canvas.getContext('2d');
+
+                  const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+
+                  gradient.addColorStop(0, 'white');
+                  gradient.addColorStop(1, 'black');
+
+                  ctx.fillStyle = gradient;
+                  ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+              </script>
 
               <ul style="font-size: 0.75em; margin-top: 15px">
                 <li><strong>0</strong> — белый</li>
@@ -3861,35 +4025,47 @@ gradient.addColorStop(1, "black");</code></pre>
               </ul>
             </div>
 
+            <!-- Много цветовых точек -->
             <div style="padding: 20px; background: #fff3e8; border-radius: 8px">
               <h3>Больше цветовых точек</h3>
 
-              <p style="font-size: 0.8em">
-                Чем больше цветовых точек используется, тем сложнее и интереснее можно сделать
-                переход.
+              <pre style="font-size: 1.2rem"><code>const gradient = ctx.createLinearGradient(
+  0, 0, 300, 0
+);
+gradient.addColorStop(0, "#4facfe");
+gradient.addColorStop(0.33, "#7b61ff");
+gradient.addColorStop(0.66, "#ff4ecd");
+gradient.addColorStop(1, "#ff8a3d");
+ctx.fillStyle = gradient;
+ctx.fillRect(0, 0, 300, 55);</code></pre>
+
+              <canvas
+                width="300"
+                height="55"
+                style="width: 100%; background: white; border-radius: 6px; margin-top: 15px"
+              ></canvas>
+
+              <script>
+                {
+                  const canvas = document.currentScript.previousElementSibling;
+                  const ctx = canvas.getContext('2d');
+
+                  const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+
+                  gradient.addColorStop(0, '#4facfe');
+                  gradient.addColorStop(0.33, '#7b61ff');
+                  gradient.addColorStop(0.66, '#ff4ecd');
+                  gradient.addColorStop(1, '#ff8a3d');
+
+                  ctx.fillStyle = gradient;
+                  ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+              </script>
+
+              <p style="font-size: 0.75em; margin-top: 15px">
+                Позиция каждой точки задаётся числом от <strong>0</strong> до <strong>1</strong>.
               </p>
-
-              <div
-                style="
-                  height: 55px;
-                  margin-top: 15px;
-                  border-radius: 6px;
-                  background: linear-gradient(to right, #4facfe, #7b61ff, #ff4ecd, #ff8a3d);
-                "
-              ></div>
             </div>
-          </div>
-
-          <div
-            style="margin-top: 25px; padding: 18px 22px; background: #eaf4ff; border-radius: 8px"
-          >
-            <strong>В motion design</strong>
-
-            <span style="font-size: 0.8em">
-              градиенты часто применяются для создания
-              <strong>объёма, глубины</strong> и более выразительного визуального оформления
-              объектов.
-            </span>
           </div>
         </section>
 
@@ -3903,7 +4079,7 @@ gradient.addColorStop(1, "black");</code></pre>
 
           <div style="margin-top: 10px; padding: 20px; background: #f5f5f5; border-radius: 8px">
             <h3 style="margin: 5px">1. Создаём градиент</h3>
-            <pre><code>const gradient =
+            <pre style="font-size: 1.3rem"><code>const gradient =
   ctx.createLinearGradient(
     0, 0,
     300, 0
@@ -3918,7 +4094,7 @@ gradient.addColorStop(1, "black");</code></pre>
           <div style="margin-top: 10px; padding: 20px; background: #eaf4ff; border-radius: 8px">
             <h3 style="margin: 5px">2. Добавляем цветовые точки</h3>
 
-            <pre><code>gradient.addColorStop(0, "blue");
+            <pre style="font-size: 1.2rem"><code>gradient.addColorStop(0, "blue");
 gradient.addColorStop(1, "red");</code></pre>
 
             <p style="font-size: 0.78em; margin-bottom: 0">
@@ -4129,7 +4305,7 @@ ctx.strokeStyle = pattern;</code></pre>
 
           <p>Сначала загружаем изображение, затем создаём на его основе паттерн.</p>
 
-          <pre style="margin-top: 25px"><code>const img = new Image();
+          <pre style="margin-top: 25px; font-size: 1.2rem"><code>const img = new Image();
 
 img.src = "some-image.png";
 const pattern = ctx.createPattern(
@@ -4139,16 +4315,18 @@ const pattern = ctx.createPattern(
 ctx.fillStyle = pattern;</code></pre>
 
           <div
-            style="margin-top: 25px; padding: 20px 22px; background: #f5f5f5; border-radius: 8px"
+            style="margin-top: 10px; padding: 20px 22px; background: #f5f5f5; border-radius: 8px"
           >
-            <h3>Что произойдёт?</h3>
+            <h3 style="margin-bottom: 10px; margin-top: 10px">Что произойдёт?</h3>
 
             <p style="font-size: 0.8em">
               После назначения <strong>fillStyle</strong> все фигуры, которые будут рисоваться с
               помощью <strong>fill()</strong>, будут заполняться выбранным паттерном.
             </p>
 
-            <pre style="margin-top: 15px"><code>ctx.fillRect(20, 20, 300, 150);</code></pre>
+            <pre
+              style="margin-top: 15px; font-size: 1.2rem"
+            ><code>ctx.fillRect(20, 20, 300, 150);</code></pre>
           </div>
 
           <div
@@ -4336,7 +4514,7 @@ img.src = "img/pattern.jpg";</code></pre>
             <div style="padding: 20px; background: #eaf4ff; border-radius: 8px">
               <h3>Пример</h3>
 
-              <pre><code>ctx.shadowOffsetX = 10;
+              <pre style="font-size: 1.3rem"><code>ctx.shadowOffsetX = 10;
 ctx.shadowOffsetY = 10;
 ctx.shadowBlur = 15;
 ctx.shadowColor = "rgba(0, 0, 0, 0.5)";</code></pre>
@@ -4375,7 +4553,7 @@ ctx.shadowColor = "rgba(0, 0, 0, 0.5)";</code></pre>
             определяют положение тени относительно объекта.
           </p>
 
-          <pre style="margin-top: 20px"><code>ctx.shadowOffsetX = 10;
+          <pre style="margin-top: 20px; font-size: 1.3rem"><code>ctx.shadowOffsetX = 10;
 ctx.shadowOffsetY = 10;</code></pre>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px">
@@ -4985,11 +5163,6 @@ ctx.fillText(
         <section class="slide">
           <h2>Использование изображений</h2>
 
-          <p>
-            До этого момента мы создавали графику самостоятельно с помощью
-            <strong>фигур и линий</strong>.
-          </p>
-
           <p>Canvas также позволяет использовать <strong>готовые изображения</strong>.</p>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px">
@@ -5155,7 +5328,7 @@ ctx.fillText(
 
           <div style="display: flex; gap: 20px; margin-top: 25px">
             <div style="flex: 1; padding: 20px; background: #eaf4ff; border-radius: 8px">
-              <h3 style="margin-top: 0">По <code>id</code></h3>
+              <h3 style="margin-top: 0">По id</h3>
 
               <pre style="margin: 0"><code>&lt;img
   id="image" src="photo.jpg"&gt;</code></pre>
@@ -5165,7 +5338,7 @@ ctx.fillText(
             </div>
 
             <div style="flex: 1; padding: 20px; background: #fff3e8; border-radius: 8px">
-              <h3 style="margin-top: 0">Через <code>document.images</code></h3>
+              <h3 style="margin-top: 0">Через document.images</h3>
 
               <pre style="margin: 0"><code>const image =
   document.images[0];</code></pre>
@@ -5186,8 +5359,7 @@ ctx.fillText(
             <strong>Важно:</strong>
             <span style="font-size: 0.8em">
               после получения ссылки на изображение его можно передать в
-              <strong><code>drawImage()</code></strong
-              >.
+              <strong>drawImage()</strong>.
             </span>
           </div>
         </section>
@@ -5242,7 +5414,7 @@ image.onload = () => {
           >
             <strong>Почему?</strong>
             <span style="font-size: 0.8em">
-              Если вызвать <code>drawImage()</code> слишком рано, изображение может
+              Если вызвать drawImage() слишком рано, изображение может
               <strong>не появиться на Canvas</strong>.
             </span>
           </div>
@@ -5662,7 +5834,7 @@ ctx.restore();</code></pre>
           </div>
 
           <div style="margin-top: 30px; padding: 20px; background: #eaf4ff; border-radius: 8px">
-            <pre style="margin: 0"><code>ctx.save();       // состояние 1
+            <pre style="margin: 0; font-size: 1.3rem"><code>ctx.save();       // состояние 1
 
 ctx.save();       // состояние 2
 
