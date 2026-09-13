@@ -1464,83 +1464,6 @@ if (x > 0) {
           >
           </canvas>
 
-          <script>
-            // Изображение панорамы
-            const img = new Image();
-
-            img.src = './img/hills.jpg';
-
-            // Размер Canvas
-            const canvasXSize = 800;
-            const canvasYSize = 400;
-
-            // Скорость обновления
-            const speed = 30;
-
-            // Масштаб изображения;
-
-            // Вертикальное положение
-            const y = 0;
-
-            // Скорость движения
-            const dx = 0.75;
-
-            // Переменные изображения
-            let imgW;
-            let imgH;
-
-            // Текущая координата X
-            let x = 0;
-
-            // Контекст Canvas
-            let ctx;
-
-            // После загрузки изображения
-            img.onload = () => {
-              // Вычисляем размеры изображения
-              imgW = img.width;
-              imgH = img.height;
-
-              // Получаем Canvas
-              const canvas = document.getElementById('panoramaCanvas');
-
-              ctx = canvas.getContext('2d');
-
-              // Запускаем анимацию
-              setInterval(draw, speed);
-            };
-
-            // Функция рисования одного кадра
-            function draw() {
-              // Очищаем Canvas
-              ctx.clearRect(0, 0, canvasXSize, canvasYSize);
-
-              // --------------------------------
-              // ОСНОВНОЕ ИЗОБРАЖЕНИЕ
-              // --------------------------------
-
-              ctx.drawImage(img, Math.round(x), y, imgW, imgH);
-
-              // --------------------------------
-              // КОПИЯ ИЗОБРАЖЕНИЯ
-              // --------------------------------
-
-              ctx.drawImage(img, Math.round(x + imgW), y, imgW, imgH);
-
-              // --------------------------------
-              // ЕСЛИ ОСНОВНОЕ ИЗОБРАЖЕНИЕ
-              // ПОЛНОСТЬЮ УШЛО ВЛЕВО
-              // --------------------------------
-
-              if (x <= -imgW) {
-                x = 0;
-              }
-
-              // Двигаем изображение
-              x -= dx;
-            }
-          </script>
-
           <p class="lead" style="text-align: center">
             Две одинаковые копии изображения движутся вместе, поэтому одна постоянно заменяет
             другую.
@@ -2192,111 +2115,47 @@ ctx.fillRect(0,0,canvas.width,canvas.height);</code></pre>
         <!-- 52 -->
         <section class="slide">
           <h2 style="margin: 0 auto; text-align: center">Результат</h2>
-    <div class="info">Найди кота 🔦</div>
+          <div class="info">Найди кота 🔦</div>
 
-    <canvas id="game" width="1000" height="600"></canvas>
-
-    <script>
-      const canvasG = document.getElementById('game');
-      const ctxG = canvasG.getContext('2d');
-
-      //координаты курсора относительно canvas (при загрузке - по середине canvas)
-      const mouse = {
-        x: canvasG.width / 2,
-        y: canvasG.height / 2,
-      };
-
-      const room = new Image();
-      const cat = new Image();
-
-      room.src = './img/room.jpg';
-      cat.src = './img/cat.png';
-
-      const catData = {
-        x: Math.random() * (canvasG.width - 150),
-        y: Math.random() * (canvasG.height - 150),
-        width: 150,
-        height: 150,
-      };
-
-      let loaded = 0;
-
-      function checkLoaded() {
-        loaded++;
-        if (loaded === 2) {
-          requestAnimationFrame(render);
-        }
-      }
-
-      room.onload = checkLoaded;
-      cat.onload = checkLoaded;
-
-      canvasG.addEventListener('mousemove', (e) => {
-        const rect = canvasG.getBoundingClientRect();
-        mouse.x = e.clientX - rect.left;
-        mouse.y = e.clientY - rect.top;
-      });
-
-      canvasG.addEventListener('click', () => {
-        const dx = mouse.x - (catData.x + catData.width / 2);
-        const dy = mouse.y - (catData.y + catData.height / 2);
-
-        //вычисляем расстояние между точкой клика и центром кота
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 60) {
-          alert('Ты нашел кота 😺');
-
-          catData.x = Math.random() * (canvasG.width - catData.width);
-          catData.y = Math.random() * (canvasG.height - catData.height);
-        }
-      });
-
-      function render() {
-        ctxG.clearRect(0, 0, canvasG.width, canvasG.height);
-
-        // фон
-        ctxG.drawImage(room, 0, 0, canvasG.width, canvasG.height);
-
-        // кот
-        ctxG.drawImage(cat, catData.x, catData.y, catData.width, catData.height);
-
-        // тьма + мягкий фонарик
-        const gradient = ctxG.createRadialGradient(mouse.x, mouse.y, 20, mouse.x, mouse.y, 60);
-
-        gradient.addColorStop(0, 'rgba(0,0,0,0)');
-        gradient.addColorStop(1, 'rgba(0,0,0,0.95)');
-
-        ctxG.fillStyle = gradient;
-        ctxG.fillRect(0, 0, canvasG.width, canvasG.height);
-
-        requestAnimationFrame(render);
-      }
-    </script>
-    </section>
+          <canvas id="game" width="1000" height="600"></canvas>
+        </section>
 
         <!-- 53 -->
-                <section class="slide">
+        <section class="slide">
           <h2 style="margin: 0 auto; text-align: center">Canvas в реальных проектах</h2>
-            <ul>
-                <li><a href="https://heronaiapp.com/" target="_blank">Heron AI (https://heronaiapp.com)</a></li>
-                <li><a href="https://ishikawa.co/en/" target="_blank">Ishikawa Co. (https://ishikawa.co/en/)</a></li>
-                <li><a href="https://www.imsaud.me/" target="_blank">IMSaud (https://www.imsaud.me/)</a></li>
-                <li><a href="https://tol.is/" target="_blank">Tol.is (https://tol.is/)</a></li>
-                <li><a href="https://dny19.com/" target="_blank">Dny19 (https://dny19.com/)</a></li>
-                <li><a href="https://www.awwwards.com/websites/canvas-api/" target="_blank">Еще сайты (https://www.awwwards.com/websites/canvas-api/)</a></li>
-                </ul>
+          <ul>
+            <li>
+              <a href="https://heronaiapp.com/" target="_blank"
+                >Heron AI (https://heronaiapp.com)</a
+              >
+            </li>
+            <li>
+              <a href="https://ishikawa.co/en/" target="_blank"
+                >Ishikawa Co. (https://ishikawa.co/en/)</a
+              >
+            </li>
+            <li>
+              <a href="https://www.imsaud.me/" target="_blank">IMSaud (https://www.imsaud.me/)</a>
+            </li>
+            <li><a href="https://tol.is/" target="_blank">Tol.is (https://tol.is/)</a></li>
+            <li><a href="https://dny19.com/" target="_blank">Dny19 (https://dny19.com/)</a></li>
+            <li>
+              <a href="https://www.awwwards.com/websites/canvas-api/" target="_blank"
+                >Еще сайты (https://www.awwwards.com/websites/canvas-api/)</a
+              >
+            </li>
+          </ul>
         </section>
 
-                <section class="slide">
+        <section class="slide">
           <h2 style="margin: 0 auto; text-align: center">Спасибо за внимание!</h2>
         </section>
-
-
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="./panorama.js"></script>
+    <script src="./cat.js"></script>
     <script>
       Reveal.initialize({
         hash: true,
