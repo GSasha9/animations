@@ -1,0 +1,2442 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas — интерактивная графика в браузере</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+
+    <style>
+      :root {
+        --navy: #233d70;
+        --orange: #c96b21;
+        --text: #111111;
+        --muted: #5f6368;
+        --line: #e4e7eb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #ffffff;
+        color: var(--text);
+      }
+
+      p {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .reveal {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 26px;
+        color: var(--text);
+      }
+
+      .reveal .slides {
+        text-align: left;
+        width: 1000px;
+      }
+
+      .reveal .slides section {
+        padding: 0.8em 1em 1em;
+        box-sizing: border-box;
+      }
+
+      .reveal .slides section > * {
+        max-width: 1000px;
+      }
+
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        color: var(--navy);
+        text-transform: none;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .reveal h1 {
+        font-size: 2.05em;
+        margin-bottom: 0.7em;
+      }
+
+      .reveal h2 {
+        font-size: 1.65em;
+        margin-bottom: 0.3em;
+        margin-top: 0.2em;
+      }
+
+      .reveal h3 {
+        font-size: 1.05em;
+      }
+
+      .reveal p,
+      .reveal li {
+        line-height: 1.35;
+        font-size: 1.5rem;
+      }
+
+      .reveal ul,
+      .reveal ol {
+        margin-top: 0.25em;
+      }
+
+      .reveal li {
+        margin-bottom: 0.25em;
+      }
+
+      .reveal strong,
+      .accent {
+        color: var(--navy);
+      }
+
+      .slide {
+        position: relative;
+        padding-top: 0.55em;
+      }
+
+      .subtitle {
+        color: var(--navy);
+        font-size: 1.05em;
+        margin-bottom: 0.55em;
+      }
+
+      .lead {
+        font-size: 1.12em;
+      }
+
+      .conclusion {
+        margin-top: 0.8em;
+        font-size: 0.95em;
+      }
+
+      .conclusion strong {
+        color: var(--navy);
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.1em;
+        align-items: start;
+      }
+
+      .box {
+        border: 1px solid var(--line);
+        padding: 0.65em 0.8em;
+        border-radius: 8px;
+      }
+
+      .box h3 {
+        margin-top: 0;
+      }
+
+      .small {
+        font-size: 0.72em;
+        color: var(--muted);
+      }
+
+      .code-wrap {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-top: 0.5em;
+      }
+
+      pre {
+        margin: 0;
+        box-shadow: none;
+        background: #f7f7f7;
+        padding: 0.7em;
+        font-size: 1.3rem;
+      }
+
+      code {
+        font-family: 'SFMono-Regular', Consolas, monospace;
+        font-size: 0.72em;
+        line-height: 1.4;
+      }
+
+      .demo-layout {
+        display: grid;
+        grid-template-columns: 0.9fr 1.5fr;
+        gap: 0.8em;
+        align-items: center;
+      }
+
+      .demo-text {
+        font-size: 0.82em;
+      }
+
+      canvas.demo {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid #cfd3d8;
+        border-radius: 8px;
+        background: #fafafa;
+      }
+
+      .demo-note {
+        margin-top: 0.35em;
+        color: var(--muted);
+        font-size: 0.62em;
+      }
+
+      .diagram {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.3em;
+        margin: 1em 0;
+        flex-wrap: wrap;
+      }
+
+      .diagram .node {
+        border: 2px solid var(--navy);
+        color: var(--navy);
+        padding: 0.45em 0.7em;
+        border-radius: 6px;
+        font-size: 0.8em;
+        text-align: center;
+      }
+
+      .diagram .arrow {
+        color: var(--orange);
+        font-size: 1.3em;
+      }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.4em;
+        margin-top: 1em;
+      }
+
+      .timeline > div {
+        border-top: 3px solid var(--orange);
+        padding-top: 0.35em;
+        font-size: 0.7em;
+      }
+
+      .number {
+        color: var(--orange);
+        font-weight: bold;
+      }
+
+      .task {
+        border-left: 5px solid var(--orange);
+        padding-left: 0.8em;
+        margin-top: 0.7em;
+      }
+
+      .footer-note {
+        position: absolute;
+        bottom: -0.25em;
+        right: 0;
+        color: var(--muted);
+        font-size: 0.48em;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.72em;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 0.5em;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--navy);
+      }
+
+      @media (max-width: 900px) {
+        .two-col,
+        .demo-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .reveal {
+          font-size: 22px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section class="slide canvas-title">
+          <style>
+            .canvas-title {
+              position: relative;
+              overflow: hidden;
+              background: #fff;
+              color: #222;
+            }
+
+            .canvas-title .bg-circle {
+              position: absolute;
+              width: 550px;
+              height: 550px;
+              border-radius: 50%;
+              background: #eaf4ff;
+              right: -170px;
+              top: -170px;
+              opacity: 0;
+              animation: circleIn 1.2s ease-out forwards;
+            }
+
+            .canvas-title .grid {
+              position: absolute;
+              inset: 0;
+              opacity: 0;
+              background-image:
+                linear-gradient(#e8f1fa 1px, transparent 1px),
+                linear-gradient(90deg, #e8f1fa 1px, transparent 1px);
+              background-size: 45px 45px;
+              mask-image: linear-gradient(to right, transparent, black 65%);
+              animation: gridIn 1.5s ease forwards 0.4s;
+            }
+
+            .canvas-title .content {
+              position: relative;
+              z-index: 2;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              padding-left: 100px;
+            }
+
+            .canvas-title h1 {
+              margin: 0;
+              font-size: 4em;
+              font-weight: 700;
+              letter-spacing: -0.03em;
+              opacity: 0;
+              animation: fadeUp 0.8s ease forwards 0.5s;
+            }
+
+            .canvas-title h1 span {
+              color: #4285c5;
+            }
+
+            .canvas-title .line {
+              width: 90px;
+              height: 5px;
+              background: #4285c5;
+              border-radius: 10px;
+              margin-top: 28px;
+              transform: scaleX(0);
+              transform-origin: left;
+              animation: lineIn 0.7s ease forwards 1s;
+            }
+
+            .canvas-title .subtitle {
+              margin-top: 25px;
+              color: #777;
+              font-size: 0.85em;
+              opacity: 0;
+              animation: fadeUp 0.7s ease forwards 1.2s;
+            }
+
+            /* Анимированный объект */
+            .canvas-title .ball {
+              position: absolute;
+              z-index: 3;
+              right: 180px;
+              bottom: 120px;
+              width: 70px;
+              height: 70px;
+              border-radius: 50%;
+              background: #4285c5;
+              box-shadow: 0 10px 25px rgba(66, 133, 197, 0.25);
+              opacity: 0;
+              animation:
+                ballIn 0.8s ease forwards 1.4s,
+                bounce 1.8s ease-in-out infinite 2.2s;
+            }
+
+            .canvas-title .ball::after {
+              content: '';
+              position: absolute;
+              width: 100px;
+              height: 15px;
+              border-radius: 50%;
+              background: rgba(66, 133, 197, 0.15);
+              left: -15px;
+              bottom: -25px;
+            }
+
+            @keyframes fadeUp {
+              from {
+                opacity: 0;
+                transform: translateY(25px);
+              }
+
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+
+            @keyframes circleIn {
+              from {
+                opacity: 0;
+                transform: scale(0.7);
+              }
+
+              to {
+                opacity: 1;
+                transform: scale(1);
+              }
+            }
+
+            @keyframes gridIn {
+              from {
+                opacity: 0;
+              }
+
+              to {
+                opacity: 0.7;
+              }
+            }
+
+            @keyframes lineIn {
+              from {
+                transform: scaleX(0);
+              }
+
+              to {
+                transform: scaleX(1);
+              }
+            }
+
+            @keyframes ballIn {
+              from {
+                opacity: 0;
+                transform: translateX(80px);
+              }
+
+              to {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+
+            @keyframes bounce {
+              0%,
+              100% {
+                transform: translateY(0);
+              }
+
+              50% {
+                transform: translateY(-80px);
+              }
+            }
+          </style>
+
+          <div class="bg-circle"></div>
+          <div class="grid"></div>
+
+          <div class="content">
+            <h1>Canvas <span>Анимация</span></h1>
+
+            <div class="line"></div>
+
+            <div class="subtitle">Создание движущейся графики с помощью HTML5 Canvas</div>
+          </div>
+
+          <div class="ball"></div>
+        </section>
+
+        <!-- 1 -->
+        <section class="slide">
+          <h1>Анимация в Canvas</h1>
+
+          <p class="lead">
+            Canvas управляется с помощью JavaScript, поэтому его содержимое можно изменять во время
+            работы программы.
+          </p>
+
+          <p>
+            Для создания анимации мы изменяем свойства объекта и
+            <strong>заново рисуем кадр</strong>.
+          </p>
+
+          <ul>
+            <li>изменяем координаты объекта;</li>
+            <li>очищаем предыдущий кадр;</li>
+            <li>рисуем объект заново;</li>
+            <li>повторяем процесс много раз в секунду.</li>
+          </ul>
+        </section>
+
+        <!-- 2 -->
+        <section class="slide">
+          <h2>Пример анимации</h2>
+
+          <div style="display: flex; gap: 35px; align-items: center">
+            <!-- Canvas -->
+            <div style="flex: 1">
+              <canvas
+                id="animationCanvas"
+                width="500"
+                height="280"
+                style="border: 2px solid #dce6ef; border-radius: 12px; background: #fafcff"
+              >
+              </canvas>
+            </div>
+
+            <!-- Код -->
+            <div style="flex: 1">
+              <pre style="margin: 0"><code class="javascript">
+let x = 20;
+
+function draw() {
+  ctx.clearRect(
+    0, 0,
+    canvas.width,
+    canvas.height
+  );
+
+  ctx.fillStyle = "#4285c5";
+  ctx.fillRect(x, 110, 50, 50);
+
+  x += 2;
+}
+
+setInterval(draw, 30);
+      </code></pre>
+            </div>
+          </div>
+
+          <p>
+            Каждые <strong>30 мс</strong> холст очищается и квадрат рисуется немного правее.
+            Изменение координаты <code>x</code> создаёт движение.
+          </p>
+
+          <script>
+            (function () {
+              const canvas = document.getElementById('animationCanvas');
+              const ctx = canvas.getContext('2d');
+
+              let x = 20;
+
+              function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#4285c5';
+                ctx.fillRect(x, 110, 50, 50);
+
+                x += 2;
+
+                if (x > canvas.width) {
+                  x = -50;
+                }
+              }
+
+              setInterval(draw, 30);
+            })();
+          </script>
+        </section>
+
+        <!-- 3 -->
+        <section class="slide">
+          <h2>Как работает анимация</h2>
+
+          <p class="lead">
+            Каждый кадр создаётся заново. Основной цикл состоит из нескольких шагов:
+          </p>
+
+          <ol>
+            <li><strong>Очистить</strong> холст — clearRect()</li>
+            <li><strong>Изменить</strong> координаты объекта</li>
+            <li><strong>Нарисовать</strong> объект в новом положении</li>
+            <li><strong>Повторить</strong> эти действия через небольшой интервал</li>
+          </ol>
+
+          <pre><code class="javascript">
+let x = 0;
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  x += 2;
+  ctx.fillRect(x, 100, 50, 50);
+}
+
+setInterval(animate, 30);
+  </code></pre>
+
+          <p>
+            setInterval() запускает функцию через заданный промежуток времени. Здесь новый кадр
+            создаётся каждые <strong>30 мс</strong>.
+          </p>
+        </section>
+
+        <!-- 4 -->
+        <section class="slide">
+          <h2>Управление анимацией</h2>
+
+          <p class="lead">
+            Canvas рисует изображение только в момент выполнения JavaScript-кода. После этого
+            нарисованный объект остаётся статичным.
+          </p>
+
+          <p>
+            Поэтому обычный цикл for не подходит для создания анимации: все итерации выполнятся
+            слишком быстро.
+          </p>
+
+          <p style="color: red">Так делать нельзя!</p>
+
+          <pre><code class="javascript">
+for (let x = 0; x &lt; 500; x += 2) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillRect(x, 100, 50, 50);
+}
+  </code></pre>
+
+          <p>
+            Браузер не успеет показать каждый кадр — пользователь увидит только конечный результат.
+          </p>
+
+          <p>
+            Для анимации функцию отрисовки нужно запускать
+            <strong>через определённые промежутки времени</strong>.
+          </p>
+        </section>
+
+        <!-- 5 -->
+        <section class="slide">
+          <h2>Способы запуска анимации</h2>
+
+          <p class="lead">
+            JavaScript предоставляет несколько способов повторно или отложенно запускать функции.
+          </p>
+
+          <ul>
+            <li>
+              <strong>setInterval()</strong> — многократно вызывает функцию через заданный интервал.
+            </li>
+
+            <li>
+              <strong>setTimeout()</strong> — вызывает функцию один раз после указанной задержки.
+            </li>
+
+            <li>
+              <strong>requestAnimationFrame()</strong> — запускает функцию перед следующим
+              обновлением экрана.
+            </li>
+          </ul>
+
+          <pre><code class="javascript">
+// повторять каждые 30 мс
+setInterval(draw, 30);
+
+// выполнить один раз через 1 секунду
+setTimeout(draw, 1000);
+
+// запустить перед следующим кадром
+requestAnimationFrame(draw);
+  </code></pre>
+
+          <p>
+            Для современных Canvas-анимаций основным способом считается requestAnimationFrame().
+          </p>
+        </section>
+
+        <!-- 6 -->
+        <section class="slide">
+          <h2>Когда использовать разные методы?</h2>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px">
+            <div>
+              <h3><code>setInterval()</code></h3>
+              <p style="font-size: 1.2rem">
+                Подходит для простых анимаций, которые должны постоянно повторяться через одинаковый
+                промежуток времени.
+              </p>
+
+              <pre><code class="javascript">
+setInterval(draw, 30);
+      </code></pre>
+            </div>
+
+            <div>
+              <h3><code>setTimeout()</code></h3>
+              <p style="font-size: 1.2rem">
+                Удобен, когда действие должно произойти один раз после определённой задержки.
+              </p>
+
+              <pre><code class="javascript">
+setTimeout(draw, 1000);
+      </code></pre>
+            </div>
+
+            <div>
+              <h3><code>requestAnimationFrame()</code></h3>
+              <p style="font-size: 1.2rem">
+                Рекомендуется для плавных современных анимаций. Синхронизируется с обновлением
+                экрана.
+              </p>
+
+              <pre><code class="javascript">
+requestAnimationFrame(draw);
+      </code></pre>
+            </div>
+
+            <div>
+              <h3><code>addEventListener()</code></h3>
+              <p style="font-size: 1.2rem">
+                Используется, когда анимация должна реагировать на действия пользователя.
+              </p>
+
+              <pre><code class="javascript">
+canvas.addEventListener(
+  "click", draw
+);
+      </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7 -->
+        <section class="slide">
+          <h2><code>requestAnimationFrame()</code></h2>
+
+          <p class="lead">Просит браузер вызвать функцию перед следующей перерисовкой экрана.</p>
+
+          <ul>
+            <li>используется для создания плавной анимации;</li>
+            <li>вызов происходит в подходящий момент перед отрисовкой кадра;</li>
+            <li>метод возвращает идентификатор запланированного вызова.</li>
+          </ul>
+
+          <pre><code class="javascript">
+requestAnimationFrame(draw);
+  </code></pre>
+        </section>
+
+        <!-- 8 -->
+        <section class="slide">
+          <h2>Частота кадров</h2>
+
+          <p class="lead">Частота вызовов обычно соответствует частоте обновления экрана.</p>
+
+          <ul>
+            <li><strong>60 Гц</strong> → примерно 60 кадров/с;</li>
+            <li><strong>120 Гц</strong> → примерно 120 кадров/с;</li>
+            <li><strong>144 Гц</strong> → примерно 144 кадров/с;</li>
+            <li>в фоновых вкладках вызовы обычно приостанавливаются.</li>
+          </ul>
+
+          <p>
+            Поэтому requestAnimationFrame() лучше подходит для анимации, чем фиксированный интервал.
+          </p>
+        </section>
+
+        <!-- 9 -->
+        <section class="slide">
+          <h2>Как работает цикл анимации?</h2>
+
+          <p class="lead">requestAnimationFrame() планирует только один следующий вызов.</p>
+
+          <pre><code class="javascript">
+function draw() {
+  // 1. обновляем состояние
+  // 2. рисуем кадр
+
+  requestAnimationFrame(draw);
+}
+
+requestAnimationFrame(draw);
+  </code></pre>
+
+          <p>После рисования функция снова планирует следующий кадр.</p>
+
+          <p><strong>Схема:</strong></p>
+          <p>requestAnimationFrame() → draw() → следующий кадр → draw() → …</p>
+        </section>
+
+        <!-- 10 -->
+        <section class="slide">
+          <h3>Дополнительная информация</h3>
+          <h2>Время кадра — timestamp</h2>
+
+          <p class="lead">
+            Callback получает время, в которое браузер планирует отрисовать кадр. Его мы можем
+            использовать для расчёта движения объектов.
+          </p>
+
+          <pre><code class="javascript">
+let start;
+
+function draw(timestamp) {
+  if (start === undefined) {
+    start = timestamp;
+  }
+
+  const elapsed = timestamp - start;
+  console.log(elapsed); // сколько миллисекунд прошло
+  requestAnimationFrame(draw);
+}
+
+requestAnimationFrame(draw);
+  </code></pre>
+        </section>
+
+        <!-- 11 -->
+        <section class="slide">
+          <h3>Пример: анимированная Солнечная система</h3>
+
+          <p>В примере используются три изображения:</p>
+
+          <ul style="list-style: none">
+            <li>☀️ <strong>Солнце</strong> — находится в центре;</li>
+            <li>🌍 <strong>Земля</strong> — вращается вокруг Солнца;</li>
+            <li>🌙 <strong>Луна</strong> — вращается вокруг Земли.</li>
+          </ul>
+
+          <p>
+            Изображения загружаются при запуске программы, после чего запускается цикл анимации.
+          </p>
+
+          <p>Каждый новый кадр рассчитывает положение планет и заново рисует их на Canvas.</p>
+        </section>
+
+        <!-- 12 -->
+        <section class="slide">
+          <h2>Как устроен цикл анимации</h2>
+          <p class="lead">Каждый кадр строится заново по одному и тому же алгоритму.</p>
+
+          <ol>
+            <li>Очистить холст.</li>
+            <li>Вычислить положение объектов.</li>
+            <li>Нарисовать объекты.</li>
+            <li>Запросить следующий кадр.</li>
+          </ol>
+
+          <p style="text-align: center; font-size: 1.2em">
+            <strong>очистить → вычислить → нарисовать → следующий кадр</strong>
+          </p>
+        </section>
+
+        <!-- 13 -->
+        <section class="slide">
+          <h2>Сохраняем состояние Canvas (подробнее в лекции Canvas API)</h2>
+          <p class="lead">
+            При работе с трансформациями удобно временно изменять систему координат.
+          </p>
+
+          <p>save() сохраняет состояние Canvas, а restore() возвращает его.</p>
+
+          <pre><code class="javascript">
+ctx.save();
+
+ctx.translate(150, 150);
+ctx.rotate(angle);
+
+// рисуем объект
+
+ctx.restore();
+  </code></pre>
+
+          <p>После restore() координаты возвращаются к состоянию, которое было до save().</p>
+        </section>
+
+        <!-- 14 -->
+        <section class="slide">
+          <h2>Перемещаем начало координат</h2>
+          <p class="lead">translate() переносит начало координат в указанную точку.</p>
+
+          <pre><code class="javascript">
+ctx.save();
+
+ctx.translate(150, 150);
+
+// (0, 0) теперь находится в центре Canvas
+// рисуем Солнце в центре
+
+ctx.restore();
+  </code></pre>
+
+          <p>Для Canvas размером <strong>300 × 300</strong> точка (150, 150) является центром.</p>
+
+          <p>Теперь можно задавать положение объектов относительно Солнца.</p>
+        </section>
+
+        <!-- 15 -->
+        <section class="slide">
+          <h2>Поворачиваем систему координат</h2>
+          <p class="lead">rotate() поворачивает систему координат на заданный угол.</p>
+
+          <p>Угол задаётся в <strong>радианах</strong>. Полный круг — <code>2π</code>.</p>
+
+          <pre><code class="javascript">
+ctx.save();
+
+ctx.rotate(earthAngle);
+ctx.translate(150, 150);
+
+// расстояние от Солнца
+ctx.translate(105, 0);
+
+// здесь будет Земля
+
+ctx.restore();
+  </code></pre>
+
+          <p>При изменении earthAngle точка на расстоянии 105 перемещается по кругу.</p>
+        </section>
+
+        <!-- 16 -->
+        <section class="slide">
+          <h2>Вычисляем угол Земли</h2>
+          <p class="lead">Угол должен изменяться со временем.</p>
+
+          <pre><code class="javascript">
+const time = new Date();
+
+const earthAngle =
+  (2 * Math.PI / 60) * time.getSeconds() +
+  (2 * Math.PI / 60000) * time.getMilliseconds();
+  </code></pre>
+
+          <ul>
+            <li>getSeconds() — текущие секунды. Возвращает только целое число от 0 до 59</li>
+            <li>getMilliseconds() — текущие миллисекунды. Возвращает значение от 0 до 999</li>
+          </ul>
+
+          <p>Полученный угол передаём в rotate():</p>
+
+          <pre><code class="javascript">
+ctx.rotate(earthAngle);
+  </code></pre>
+        </section>
+
+        <!-- 17 -->
+        <section class="slide">
+          <h2>Рисуем Землю</h2>
+          <p class="lead">Теперь объединяем все операции в одну последовательность.</p>
+
+          <pre><code class="javascript">
+ctx.save();
+
+// 1. Центр Солнца
+ctx.translate(150, 150);
+
+// 2. Положение на орбите
+ctx.rotate(earthAngle);
+ctx.translate(105, 0);
+
+// 3. Земля
+ctx.drawImage(
+  earth,
+  -12, -12,
+  24, 24
+);
+
+ctx.restore();
+  </code></pre>
+
+          <p style="text-align: center">
+            <strong>центр → поворот → расстояние → Земля</strong>
+          </p>
+        </section>
+
+        <!-- 18 -->
+        <section class="slide">
+          <h2>Добавляем Луну</h2>
+          <p class="lead">Луна движется относительно уже найденного положения Земли.</p>
+
+          <p>Сначала вычислим её угол:</p>
+
+          <pre><code class="javascript">
+const moonAngle =
+  (2 * Math.PI / 6) * time.getSeconds() +
+  (2 * Math.PI / 6000) * time.getMilliseconds();
+  </code></pre>
+
+          <p>Затем добавим ещё один уровень трансформации:</p>
+
+          <pre><code class="javascript">
+ctx.save();
+
+ctx.rotate(moonAngle);
+ctx.translate(30, 0);
+
+ctx.drawImage(moon, -5, -5, 10, 10);
+
+ctx.restore();
+  </code></pre>
+
+          <p>Вложенный save() / restore() позволяет отдельно управлять движением Луны.</p>
+        </section>
+
+        <!-- 19 -->
+        <section class="slide">
+          <h2>Рисуем орбиту</h2>
+          <p class="lead">Орбиту Земли можно изобразить окружностью.</p>
+
+          <pre><code class="javascript">
+ctx.beginPath();
+
+ctx.arc(
+  150, 150,       // центр
+  105,            // радиус
+  0,
+  Math.PI * 2     // полный круг
+);
+
+ctx.stroke();
+  </code></pre>
+
+          <p>
+            Радиус 105 совпадает с расстоянием, на которое мы переносим Землю через translate(105,
+            0).
+          </p>
+        </section>
+
+        <!-- 20 -->
+        <section class="slide">
+          <h2>Собираем всё в <code>draw()</code></h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px">
+            <pre><code class="javascript">
+function draw() {
+  // 1. Очищаем предыдущий кадр
+  ctx.clearRect(0, 0, 300, 300);
+
+  // 2. Вычисляем углы
+  const time = new Date();
+
+  const earthAngle =
+    (2 * Math.PI / 60) * time.getSeconds() +
+    (2 * Math.PI / 60000) * time.getMilliseconds();
+
+  const moonAngle =
+    (2 * Math.PI / 6) * time.getSeconds() +
+    (2 * Math.PI / 6000) * time.getMilliseconds();
+
+  // 3. Центр Солнца
+  ctx.save();
+  ctx.translate(150, 150);
+
+  // 4. Земля
+  ctx.save();
+  ctx.rotate(earthAngle);
+  ctx.translate(105, 0);
+  ctx.drawImage(earth, -12, -12, 24, 24);
+
+  
+}
+  </code></pre>
+
+            <pre><code class="javascript">
+// 5. Луна
+  ctx.save();
+  ctx.rotate(moonAngle);
+  ctx.translate(30, 0);
+  ctx.drawImage(moon, -5, -5, 10, 10);
+
+  ctx.restore();
+  ctx.restore();
+  ctx.restore();
+
+  // 6. Орбита
+  ctx.beginPath();
+  ctx.arc(150, 150, 105, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // 7. Солнце
+  ctx.drawImage(sun, 115, 115, 70, 70);
+
+  // 8. Следующий кадр
+  requestAnimationFrame(draw);
+  </code></pre>
+          </div>
+        </section>
+
+        <!-- 21 -->
+        <section class="slide">
+          <h2>Запускаем анимацию</h2>
+          <p class="lead">Осталось загрузить изображения и запустить <code>draw()</code>.</p>
+
+          <pre><code class="javascript">
+const sun = new Image();
+const earth = new Image();
+const moon = new Image();
+
+sun.src = "img/sun.png";
+earth.src = "img/earth.png";
+moon.src = "img/moon.png";
+
+draw();
+  </code></pre>
+
+          <p>
+            Первый вызов запускает draw(). В конце каждого кадра функция сама запрашивает следующий:
+          </p>
+
+          <pre><code class="javascript">
+requestAnimationFrame(draw);
+  </code></pre>
+
+          <p style="text-align: center; font-size: 1.1em">
+            <strong>draw() → следующий кадр → draw() → следующий кадр → …</strong>
+          </p>
+        </section>
+
+        <!-- 22 -->
+        <section class="slide">
+          <h2>Результат</h2>
+
+          <div style="text-align: center">
+            <canvas
+              id="solarCanvas"
+              width="420"
+              height="420"
+              style="background: #050b14; border-radius: 50%"
+            ></canvas>
+          </div>
+
+          <p style="text-align: center">Земля вращается вокруг Солнца, а Луна — вокруг Земли.</p>
+
+          <script>
+            (function () {
+              const canvas = document.getElementById('solarCanvas');
+              const ctx = canvas.getContext('2d');
+
+              const sun = new Image();
+              const earth = new Image();
+              const moon = new Image();
+
+              sun.src = 'img/sun.png';
+              earth.src = 'img/earth.png';
+              moon.src = 'img/moon.png';
+
+              function draw() {
+                ctx.clearRect(0, 0, 420, 420);
+
+                const time = new Date();
+
+                const earthAngle =
+                  ((2 * Math.PI) / 60) * time.getSeconds() +
+                  ((2 * Math.PI) / 60000) * time.getMilliseconds();
+
+                const moonAngle =
+                  ((2 * Math.PI) / 6) * time.getSeconds() +
+                  ((2 * Math.PI) / 6000) * time.getMilliseconds();
+
+                ctx.save();
+                ctx.translate(210, 210);
+
+                // Земля
+                ctx.save();
+                ctx.rotate(earthAngle);
+                ctx.translate(130, 0);
+                ctx.drawImage(earth, -20, -20, 40, 40);
+
+                // Луна
+                ctx.save();
+                ctx.rotate(moonAngle);
+                ctx.translate(32, 0);
+                ctx.drawImage(moon, -8, -8, 16, 16);
+                ctx.restore();
+
+                ctx.restore();
+                ctx.restore();
+
+                // Орбита
+                ctx.beginPath();
+                ctx.arc(210, 210, 130, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(100,180,255,.35)';
+                ctx.stroke();
+
+                // Солнце
+                ctx.drawImage(sun, 165, 165, 90, 90);
+
+                requestAnimationFrame(draw);
+              }
+
+              draw();
+            })();
+          </script>
+        </section>
+
+        <!-- 23 -->
+        <section class="slide">
+          <h2>Пример: бесконечная панорама</h2>
+
+          <p class="lead">Создадим эффект непрерывного движения фонового изображения.</p>
+
+          <ul>
+            <li>панорама постепенно перемещается по холсту;</li>
+            <li>когда изображение подходит к краю, появляется его копия;</li>
+            <li>движение продолжается без видимого разрыва.</li>
+          </ul>
+
+          <p>
+            Такой приём часто используется в <strong>2D-играх</strong>
+            и анимации для создания движущегося фона.
+          </p>
+
+          <p class="lead">
+            <strong>Идея:</strong>
+            одно изображение постоянно сменяется другим.
+          </p>
+        </section>
+
+        <!-- 24 -->
+        <section class="slide">
+          <h2>Основные параметры</h2>
+
+          <p class="lead">Сначала задаём изображение и параметры его движения.</p>
+
+          <pre><code class="javascript">
+const img = new Image();
+
+img.src = "hills.jpg";
+
+const canvasXSize = 800;
+const canvasYSize = 200;
+
+const speed = 30;
+
+const y = 0;
+const dx = 0.75;
+  </code></pre>
+
+          <ul>
+            <li>canvasXSize, canvasYSize — размеры холста;</li>
+            <li>y — вертикальное положение;</li>
+            <li>dx — изменение координаты x;</li>
+            <li>speed — интервал между кадрами.</li>
+          </ul>
+        </section>
+
+        <!-- 25 -->
+        <section class="slide">
+          <h2>Загрузка и подготовка изображения</h2>
+
+          <p class="lead">После загрузки узнаём размеры изображения и подготавливаем Canvas.</p>
+
+          <pre><code class="javascript">
+let imgW;
+let imgH;
+let x = 0;
+
+img.onload = () => {
+  imgW = img.width;
+  imgH = img.height;
+
+  ctx = document.getElementById("canvas").getContext("2d");
+
+  clearX = Math.max(imgW, canvasXSize);
+  clearY = Math.max(imgH, canvasYSize);
+
+  setInterval(draw, speed);
+};
+  </code></pre>
+
+          <ul>
+            <li>размер изображения учитывает scale;</li>
+            <li>x хранит его текущее положение;</li>
+            <li>после загрузки запускается draw().</li>
+          </ul>
+        </section>
+
+        <!-- 26 -->
+        <section class="slide">
+          <h2>Функция draw()</h2>
+
+          <p class="lead">Каждый кадр выполняется одна и та же последовательность действий.</p>
+
+          <ol>
+            <li>Очистить область Canvas.</li>
+            <li>Проверить положение изображения.</li>
+            <li>При необходимости нарисовать его копию.</li>
+            <li>Нарисовать основное изображение.</li>
+            <li>Изменить координату x.</li>
+          </ol>
+
+          <pre><code class="javascript">
+function draw() {
+  ctx.clearRect(0, 0, clearX, clearY);
+
+  // проверка положения
+  // дополнительная копия
+
+  ctx.drawImage(img, x, y, imgW, imgH);
+
+  x += dx;
+}
+  </code></pre>
+        </section>
+
+        <!-- 27 -->
+        <section class="slide">
+          <h2>Как изображение движется?</h2>
+
+          <p class="lead">Движение создаётся изменением координаты x.</p>
+
+          <pre><code class="javascript">
+ctx.drawImage(img, x, y, imgW, imgH);
+
+x += dx;
+  </code></pre>
+
+          <p>Например, при dx = 0.75:</p>
+
+          <pre><code class="text">
+кадр 1:  x = 0
+кадр 2:  x = 0.75
+кадр 3:  x = 1.50
+кадр 4:  x = 2.25
+...
+  </code></pre>
+
+          <p>В результате изображение постепенно перемещается по холсту.</p>
+        </section>
+
+        <!-- 28 -->
+        <section class="slide">
+          <h2>Зацикливание фона</h2>
+
+          <p class="lead">
+            Одного изображения недостаточно: после его выхода за границу появится пустое место.
+          </p>
+
+          <pre><code class="javascript">
+if (x > canvasXSize) {
+  x = -imgW + x;
+}
+
+if (x > 0) {
+  ctx.drawImage(img, -imgW + x, y, imgW, imgH);
+}
+  </code></pre>
+
+          <p>Поэтому рядом с основным изображением заранее рисуется его копия.</p>
+
+          <p class="lead">
+            <strong>Главный принцип:</strong>
+            пока одна картинка уходит, другая уже занимает её место.
+          </p>
+        </section>
+
+        <!-- 29 -->
+        <section class="slide">
+          <h2>Почему нужны копии?</h2>
+
+          <p class="lead">Копии позволяют избежать пустого пространства между изображениями.</p>
+
+          <pre><code class="text">
+┌──────────────────────────────────────┐
+│      ┌──────────┐                    │
+│      │ ПАНОРАМА │   ← основная       │
+│      └──────────┘                    │
+│                  ┌──────────┐        │
+│                  │ ПАНОРАМА │ ← копия│
+│                  └──────────┘        │
+└──────────────────────────────────────┘
+                     ← движение
+  </code></pre>
+
+          <ul>
+            <li>изображения имеют одинаковые размеры;</li>
+            <li>они располагаются вплотную друг к другу;</li>
+            <li>при движении одна копия сменяет другую.</li>
+          </ul>
+
+          <p>
+            Такой приём называют <strong>зацикливанием фона</strong> (<em>looping background</em>).
+          </p>
+        </section>
+
+        <!-- 30 -->
+        <section class="slide">
+          <h2>Соберем все вместе</h2>
+          <div style="display: grid; grid-template-columns: 450px 1fr; gap: 10px">
+            <pre><code>
+    // 1.Изображение панорамы
+
+    const img = new Image();
+
+    img.src = './img/hills.jpg';
+
+    // 2.Размер Canvas
+    const canvasXSize = 800;
+    const canvasYSize = 400;
+
+    // 3.Скорость обновления
+    const speed = 30;
+
+    // 4.Вертикальное положение
+    const y = 0;
+
+    // 5.Скорость движения
+    const dx = 0.75;
+
+    // 6.Переменные изображения
+    let imgW;
+    let imgH;
+</code></pre>
+
+            <pre><code>
+    // 7.Текущая координата X
+    let x = 0;
+
+    // 8.Контекст Canvas
+    let ctx;
+
+    // После загрузки изображения
+
+    img.onload = () => {
+        // 9.Вычисляем размеры изображения
+        imgW = img.width;
+        imgH = img.height;
+
+        // 10.Получаем Canvas
+        const canvas = document
+        .getElementById('panoramaCanvas');
+
+        ctx = canvas.getContext('2d');
+
+        // 11.Запускаем анимацию
+        setInterval(draw, speed);
+    };
+
+</code></pre>
+          </div>
+        </section>
+
+        <!-- 31 -->
+        <section class="slide">
+          <h2>Соберем все вместе</h2>
+
+          <pre><code>
+            // Функция рисования одного кадра
+            function draw() {
+              // 12.Очищаем Canvas
+              ctx.clearRect(0, 0, canvasXSize, canvasYSize);
+
+              // 13.Основное изображение
+
+              ctx.drawImage(img, Math.round(x), y, imgW, imgH);
+
+              // 14.Копия изображения
+
+              ctx.drawImage(img, Math.round(x + imgW), y, imgW, imgH);
+
+              // 15.Если основное изображение полностью ушло влево
+
+              if (x <= -imgW) {
+                x = 0;
+              }
+
+              // 16.Двигаем изображение
+              x -= dx;
+            }
+</code></pre>
+        </section>
+
+        <!-- 31 -->
+        <section class="slide">
+          <h2>Результат: бесконечная панорама</h2>
+
+          <canvas
+            id="panoramaCanvas"
+            width="800"
+            height="400"
+            style="display: block; margin: 0 auto"
+          >
+          </canvas>
+
+          <script>
+            // Изображение панорамы
+            const img = new Image();
+
+            img.src = './img/hills.jpg';
+
+            // Размер Canvas
+            const canvasXSize = 800;
+            const canvasYSize = 400;
+
+            // Скорость обновления
+            const speed = 30;
+
+            // Масштаб изображения;
+
+            // Вертикальное положение
+            const y = 0;
+
+            // Скорость движения
+            const dx = 0.75;
+
+            // Переменные изображения
+            let imgW;
+            let imgH;
+
+            // Текущая координата X
+            let x = 0;
+
+            // Контекст Canvas
+            let ctx;
+
+            // После загрузки изображения
+            img.onload = () => {
+              // Вычисляем размеры изображения
+              imgW = img.width;
+              imgH = img.height;
+
+              // Получаем Canvas
+              const canvas = document.getElementById('panoramaCanvas');
+
+              ctx = canvas.getContext('2d');
+
+              // Запускаем анимацию
+              setInterval(draw, speed);
+            };
+
+            // Функция рисования одного кадра
+            function draw() {
+              // Очищаем Canvas
+              ctx.clearRect(0, 0, canvasXSize, canvasYSize);
+
+              // --------------------------------
+              // ОСНОВНОЕ ИЗОБРАЖЕНИЕ
+              // --------------------------------
+
+              ctx.drawImage(img, Math.round(x), y, imgW, imgH);
+
+              // --------------------------------
+              // КОПИЯ ИЗОБРАЖЕНИЯ
+              // --------------------------------
+
+              ctx.drawImage(img, Math.round(x + imgW), y, imgW, imgH);
+
+              // --------------------------------
+              // ЕСЛИ ОСНОВНОЕ ИЗОБРАЖЕНИЕ
+              // ПОЛНОСТЬЮ УШЛО ВЛЕВО
+              // --------------------------------
+
+              if (x <= -imgW) {
+                x = 0;
+              }
+
+              // Двигаем изображение
+              x -= dx;
+            }
+          </script>
+
+          <p class="lead" style="text-align: center">
+            Две одинаковые копии изображения движутся вместе, поэтому одна постоянно заменяет
+            другую.
+          </p>
+        </section>
+
+        <!-- 32 -->
+        <section class="slide">
+          <h2>Алгоритм бесконечной панорамы</h2>
+
+          <ol>
+            <li>Загрузить изображение.</li>
+            <li>Вычислить его размеры.</li>
+            <li>Запустить цикл draw().</li>
+            <li>Очистить Canvas.</li>
+            <li>Нарисовать изображение и его копию.</li>
+            <li>Изменить x.</li>
+            <li>При достижении края вернуть изображение в начало.</li>
+          </ol>
+
+          <p class="lead">
+            <strong>Ключевая идея:</strong>
+            мы не перемещаем картинку физически — каждый кадр заново рисуем её в новой координате.
+          </p>
+        </section>
+
+        <!-- 33 -->
+        <section class="slide">
+          <h2>Оптимизация Canvas</h2>
+
+          <p>
+            Простые сцены Canvas обрабатывает быстро, но в сложных анимациях каждый кадр может
+            требовать множества вычислений.
+          </p>
+
+          <p>Способы оптимизации:</p>
+
+          <ul>
+            <li>уменьшаем количество перерисовок</li>
+            <li>избегаем лишних вычислений</li>
+            <li>повторно используем готовые данные</li>
+            <li>перерисовываем только то, что действительно изменилось</li>
+          </ul>
+
+          <p><strong>Цель:</strong> уменьшить работу браузера при каждом кадре.</p>
+        </section>
+
+        <!-- 34 -->
+        <section class="slide">
+          <h2>Предварительная отрисовка (Offscreen Canvas)</h2>
+
+          <p>
+            Если один и тот же объект приходится рисовать в каждом кадре, его можно заранее
+            нарисовать на невидимом (offscreen) canvas.
+          </p>
+
+          <p>
+            Во время анимации вместо повторного рисования объекта достаточно скопировать уже готовое
+            изображение.
+          </p>
+
+          <p>
+            <strong>Пример:</strong>
+          </p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
+            <pre><code class="language-javascript">const offscreen = document.createElement('canvas');
+
+offscreen.width = 100;
+offscreen.height = 100;
+
+const offCtx = offscreen.getContext('2d');
+
+// Рисуем объект один раз
+offCtx.fillStyle = 'orange';
+offCtx.beginPath();
+offCtx.arc(50, 50, 40, 0, 2 * Math.PI);
+offCtx.fill();
+</code></pre>
+            <pre><code class="language-javascript">
+// В каждом кадре только копируем
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.drawImage(offscreen, x, y);
+
+  requestAnimationFrame(draw);
+}</code></pre>
+          </div>
+        </section>
+
+        <!-- 35 -->
+        <section class="slide">
+          <h2>Используйте целые координаты</h2>
+
+          <p>Для изображений лучше использовать целые координаты:</p>
+
+          <pre><code class="language-javascript">ctx.drawImage(img, 100, 50);</code></pre>
+
+          <p>Вместо дробных:</p>
+
+          <pre><code class="language-javascript">ctx.drawImage(img, 100.3, 50.7);</code></pre>
+
+          <p>Целые координаты позволяют избежать лишних вычислений при сглаживании изображения.</p>
+
+          <p>При необходимости координаты можно округлить:</p>
+
+          <pre><code class="language-javascript">ctx.drawImage(
+  img,
+  Math.floor(x),
+  Math.floor(y)
+);</code></pre>
+
+          <p>
+            <strong>Идея:</strong> если точность до дробных пикселей не нужна, используйте целые
+            координаты.
+          </p>
+        </section>
+
+        <!-- 36 -->
+        <section class="slide">
+          <h2>Не масштабируйте изображения каждый кадр</h2>
+
+          <p>
+            Метод drawImage() позволяет изменять размер изображения во время рисования, но
+            постоянное масштабирование требует дополнительных вычислений.
+          </p>
+
+          <p>
+            Если изображение часто используется в одном и том же размере, лучше заранее подготовить
+            его масштабированную копию (offscreen canvas).
+          </p>
+        </section>
+
+        <!-- 37 -->
+        <section class="slide">
+          <h2>Используйте CSS для статичного фона</h2>
+
+          <p>
+            Если фон не меняется во время анимации, его не обязательно рисовать на Canvas. Можно
+            разместить фоновое изображение в обычном HTML-элементе с помощью CSS, а Canvas
+            расположить поверх него.
+          </p>
+          <p>
+            <strong>Пример:</strong>
+          </p>
+
+          <pre><code class="language-html">&lt;div class="scene"&gt;
+  &lt;canvas id="canvas"&gt;&lt;/canvas&gt;
+&lt;/div&gt;</code></pre>
+
+          <pre><code class="language-css">.scene {
+  width: 800px;
+  height: 400px;
+  background: url('./img/background.jpg') center / cover;
+}
+
+canvas {
+  display: block;
+}</code></pre>
+
+          <p>
+            Теперь Canvas отвечает только за анимацию, а статичный фон находится в отдельном
+            HTML-элементе.
+          </p>
+        </section>
+
+        <!-- 38 -->
+        <section class="slide">
+          <h2>Видео на Canvas</h2>
+
+          <p>Canvas может использовать HTML-элемент &lt;video&gt; как источник изображения.</p>
+
+          <p>Каждый кадр видео можно получить и нарисовать на Canvas с помощью drawImage().</p>
+
+          <pre><code class="language-javascript">ctx.drawImage(video, 0, 0);</code></pre>
+
+          <p>В результате содержимое видео становится частью изображения Canvas.</p>
+        </section>
+
+        <!-- 39 -->
+        <section class="slide">
+          <h2>Зачем размещать видео на Canvas?</h2>
+
+          <p>
+            Обычный &lt;video&gt; уже умеет показывать видео. Canvas нужен, когда видео необходимо
+            <strong>обрабатывать</strong>.
+          </p>
+
+          <ul>
+            <li>накладывать графику и эффекты</li>
+            <li>изменять цвета и пиксели видео</li>
+            <li>обрезать или масштабировать изображение</li>
+            <li>объединять видео с другими объектами Canvas</li>
+            <li>создавать собственные визуальные эффекты</li>
+          </ul>
+
+          <p><strong>Идея:</strong> видео становится обычным источником изображения для Canvas.</p>
+        </section>
+
+        <!-- 40 -->
+        <section class="slide">
+          <h2>Пример: видео на Canvas</h2>
+
+          <p>Сначала создаём видео и Canvas:</p>
+
+          <pre><code class="language-html">&lt;video id="video" src="./video.mp4"&gt;&lt;/video&gt;
+&lt;canvas id="canvas" width="640" height="360"&gt;&lt;/canvas&gt;</code></pre>
+
+          <p>Затем копируем текущий кадр видео на Canvas:</p>
+
+          <pre><code class="language-javascript">const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+function draw() {
+  ctx.drawImage(video, 0, 0, 640, 360);
+
+  requestAnimationFrame(draw);
+}
+
+video.play();
+draw();</code></pre>
+
+          <p>
+            <strong>Результат:</strong> Canvas показывает текущие кадры видео и обновляет их во
+            время воспроизведения.
+          </p>
+        </section>
+
+        <!-- 41 -->
+        <section class="slide">
+          <h2>Видео + Canvas: эффект лупы</h2>
+
+          <video
+            id="catVideoL"
+            src="./video/cat.mp4"
+            width="1280"
+            height="720"
+            muted
+            loop
+            playsinline
+            style="display: none"
+          ></video>
+
+          <canvas
+            id="catCanvasL"
+            width="640"
+            height="360"
+            style="max-width: 100%; cursor: crosshair"
+          >
+          </canvas>
+
+          <script>
+            const videoL = document.getElementById('catVideoL');
+            const canvasL = document.getElementById('catCanvasL');
+            const ctxL = canvasL.getContext('2d');
+
+            // Положение мыши на Canvas
+            let mouseX = canvasL.width / 2;
+            let mouseY = canvasL.height / 2;
+
+            // Получаем координаты мыши
+            canvasL.addEventListener('mousemove', (event) => {
+              const rect = canvasL.getBoundingClientRect();
+
+              mouseX = ((event.clientX - rect.left) * canvasL.width) / rect.width;
+
+              mouseY = ((event.clientY - rect.top) * canvasL.height) / rect.height;
+            });
+
+            // Запускаем видео
+            videoL.play();
+
+            let animationStarted = false;
+
+            function draw() {
+              // Рисуем обычный кадр видео
+              ctxL.drawImage(videoL, 0, 0, canvasL.width, canvasL.height);
+
+              const radius = 70;
+              const zoom = 2;
+
+              /*
+               * Canvas: 640 × 360
+               * Video:  1280 × 720
+               *
+               * Поэтому координаты Canvas
+               * переводим в координаты исходного видео.
+               */
+
+              const scaleX = videoL.videoWidth / canvasL.width;
+
+              const scaleY = videoL.videoHeight / canvasL.height;
+
+              const videoX = mouseX * scaleX;
+              const videoY = mouseY * scaleY;
+
+              // Размер области, которую берём из видео
+              const sourceWidth = ((radius * 2) / zoom) * scaleX;
+
+              const sourceHeight = ((radius * 2) / zoom) * scaleY;
+
+              // Ограничиваем область лупы кругом
+              ctxL.save();
+
+              ctxL.beginPath();
+              ctxL.arc(mouseX, mouseY, radius, 0, Math.PI * 2);
+              ctxL.clip();
+
+              /*
+               * Берём небольшую область
+               * из исходного видео
+               * и увеличиваем её в 2 раза.
+               */
+              ctxL.drawImage(
+                videoL,
+
+                // Откуда берём
+                videoX - sourceWidth / 2,
+                videoY - sourceHeight / 2,
+                sourceWidth,
+                sourceHeight,
+
+                // Куда рисуем
+                mouseX - radius,
+                mouseY - radius,
+                radius * 2,
+                radius * 2,
+              );
+
+              ctxL.restore();
+
+              // Рамка лупы
+              ctxL.beginPath();
+              ctxL.arc(mouseX, mouseY, radius, 0, Math.PI * 2);
+
+              ctxL.strokeStyle = 'white';
+              ctxL.lineWidth = 4;
+              ctxL.stroke();
+
+              requestAnimationFrame(draw);
+            }
+
+            // Начинаем рисование после загрузки видео
+            videoL.addEventListener('loadeddata', () => {
+              if (!animationStarted) {
+                animationStarted = true;
+                requestAnimationFrame(draw);
+              }
+            });
+          </script>
+
+          <p>
+            <strong>
+              Видео → Canvas → выделяем область → увеличиваем → отображаем под лупой
+            </strong>
+          </p>
+        </section>
+
+        <!-- 42 -->
+        <section class="slide">
+          <h2>Браузерные 2D-игры на Canvas</h2>
+
+          <p>Canvas позволяет создавать простые 2D-игры прямо в браузере.</p>
+
+          <p>В игре Canvas обычно используется для:</p>
+
+          <ul>
+            <li>отрисовки игрового мира</li>
+            <li>персонажей и объектов</li>
+            <li>анимации</li>
+            <li>обработки действий игрока</li>
+            <li>проверки столкновений</li>
+            <li>создания визуальных эффектов</li>
+          </ul>
+
+          <p>
+            Рассмотрим небольшую игру
+            <strong>«Найди кота»</strong>.
+          </p>
+
+          <p>Игрок должен найти кота в комнате с помощью виртуального фонарика.</p>
+
+          <p>
+            <strong>Идея:</strong>
+            игра постоянно хранит состояние, обновляет его и рисует новый кадр.
+          </p>
+        </section>
+
+        <!-- 43 -->
+        <section class="slide">
+          <h2>Из чего состоит игра?</h2>
+
+          <p>Даже небольшая игра состоит из нескольких основных частей.</p>
+
+          <pre><code class="language-javascript">// Canvas - игровое поле
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+// Игровые объекты
+const room = new Image();
+const cat = new Image();
+
+// Состояние игры
+const mouse = {
+  x: canvas.width / 2,
+  y: canvas.height / 2
+};
+
+const catData = {
+  x: 100,
+  y: 100,
+  width: 150,
+  height: 150
+};</code></pre>
+
+          <p>
+            <strong>Важно:</strong>
+            Canvas сам по себе не хранит понятие «кот», «игрок» или «игра». Мы описываем всё это
+            самостоятельно в JavaScript.
+          </p>
+        </section>
+
+        <!-- 44 -->
+        <section class="slide">
+          <h2>Игровое состояние</h2>
+
+          <p>Чтобы управлять игрой, нам нужно хранить её текущее состояние.</p>
+
+          <p>Например, положение кота:</p>
+
+          <pre><code class="language-javascript">const catData = {
+  x: Math.random() * (canvas.width - 150),
+  y: Math.random() * (canvas.height - 150),
+  width: 150,
+  height: 150
+};</code></pre>
+
+          <p>Здесь объект содержит всё необходимое для его отображения:</p>
+
+          <ul>
+            <li><code>x</code> — координата по горизонтали</li>
+            <li><code>y</code> — координата по вертикали</li>
+            <li><code>width</code> — ширина</li>
+            <li><code>height</code> — высота</li>
+          </ul>
+
+          <p>
+            <strong>Игровое состояние</strong> — это данные, которые описывают происходящее в игре в
+            данный момент.
+          </p>
+        </section>
+
+        <!-- 45 -->
+        <section class="slide">
+          <h2>Случайное размещение кота</h2>
+
+          <p>При запуске игры кот появляется в случайном месте комнаты.</p>
+
+          <pre><code class="language-javascript">catData.x =
+  Math.random() * (canvas.width - catData.width);
+
+catData.y =
+  Math.random() * (canvas.height - catData.height);</code></pre>
+
+          <p>Math.random() возвращает число от 0 до 1.</p>
+
+          <p>Поэтому координата умножается на доступный диапазон.</p>
+
+          <pre><code class="language-javascript">Math.random() * (1000 - 80)</code></pre>
+
+          <p>
+            Кот никогда не окажется за правой или нижней границей Canvas, потому что из размера поля
+            мы заранее вычитаем размер кота.
+          </p>
+
+          <p>
+            После нахождения кота можно повторить эту операцию, чтобы спрятать его в новом месте.
+          </p>
+        </section>
+
+        <!-- 46 -->
+        <section class="slide">
+          <h2>Получаем положение мыши</h2>
+
+          <p>Для эффекта фонарика нам нужно знать, где находится курсор внутри Canvas.</p>
+
+          <pre><code class="language-javascript">const mouse = {
+  x: canvas.width / 2,
+  y: canvas.height / 2
+};
+
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+
+  mouse.x = e.clientX - rect.left;
+  mouse.y = e.clientY - rect.top;
+});</code></pre>
+
+          <p>
+            clientX и clientY относятся к окну браузера, поэтому сначала нужно получить положение
+            Canvas.
+          </p>
+
+          <p>
+            rect.left и rect.top позволяют перевести координаты мыши в систему координат Canvas.
+          </p>
+
+          <p>
+            <strong>Результат:</strong>
+            mouse.x и mouse.y всегда показывают, где находится курсор на игровом поле.
+          </p>
+        </section>
+
+        <!-- 47 -->
+        <section class="slide">
+          <h2>Проверка попадания</h2>
+
+          <p>При клике нужно определить, находится ли курсор достаточно близко к центру кота.</p>
+
+          <pre><code class="language-javascript">const dx = mouse.x - (catData.x + catData.width / 2);
+
+const dy = mouse.y - (catData.y + catData.height / 2);
+
+const distance = Math.sqrt(dx * dx + dy * dy);
+
+if (distance &lt; 60) {
+  alert('Ты нашел кота 😺');
+}</code></pre>
+
+          <p>Здесь используется расстояние между двумя точками.</p>
+
+          <p>
+            <strong>Теорема Пифагора:</strong>
+          </p>
+
+          <pre><code class="language-javascript">distance = √(dx² + dy²)</code></pre>
+
+          <p>Если расстояние меньше <code>60</code> пикселей, считаем, что игрок попал по коту.</p>
+
+          <p>Это простой пример <strong>проверки столкновения</strong>.</p>
+        </section>
+
+        <!-- 48 -->
+        <section class="slide">
+          <h2>Рендеринг игрового мира</h2>
+
+          <p>Каждый кадр Canvas очищается и рисуется заново.</p>
+
+          <pre><code class="language-javascript">function render() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Комната
+  ctx.drawImage(room,0,0,canvas.width,canvas.height);
+
+  // Кот
+  ctx.drawImage(cat,catData.x,catData.y,catData.width,catData.height);
+
+  requestAnimationFrame(render);
+}</code></pre>
+
+          <p>Порядок рисования имеет значение.</p>
+
+          <ol>
+            <li>очищаем Canvas</li>
+            <li>рисуем комнату</li>
+            <li>рисуем кота</li>
+            <li>рисуем эффекты</li>
+          </ol>
+
+          <p>
+            <strong>Последний нарисованный объект находится поверх предыдущих.</strong>
+          </p>
+        </section>
+
+        <!-- 49 -->
+        <section class="slide">
+          <h2>Создаём эффект фонарика</h2>
+
+          <p>После комнаты и кота поверх всего изображения создаётся тёмный слой.</p>
+
+          <pre><code class="language-javascript">const gradient =
+  ctx.createRadialGradient(mouse.x,mouse.y,20,mouse.x,mouse.y,60);
+
+gradient.addColorStop(0,'rgba(0,0,0,0)');
+
+gradient.addColorStop(1,'rgba(0,0,0,0.95)');
+
+ctx.fillStyle = gradient;
+
+ctx.fillRect(0,0,canvas.width,canvas.height);</code></pre>
+
+          <p>В центре градиента прозрачность максимальная, поэтому изображение хорошо видно.</p>
+
+          <p>К краям градиент становится почти чёрным.</p>
+
+          <p>
+            <strong> Так обычный радиальный градиент превращается в фонарик. </strong>
+          </p>
+        </section>
+
+        <!-- 50 -->
+        <section class="slide">
+          <h2>Как работает «Найди кота»?</h2>
+
+          <pre style="font-size: 1.1rem"><code class="language-javascript">Загрузка
+   ↓
+Загрузили комнату и кота
+   ↓
+Определили случайную позицию кота
+   ↓
+Запустили игровой цикл
+   ↓
+┌─────────────────────────┐
+│         КАДР            │
+│                         │
+│  1. Нарисовать комнату  │
+│  2. Нарисовать кота     │
+│  3. Нарисовать темноту   │
+│  4. Сделать фонарик     │
+└─────────────────────────┘
+   ↓
+Следующий requestAnimationFrame()
+   ↓
+Повторяем
+</code></pre>
+
+          <p>Параллельно браузер обрабатывает действия игрока:</p>
+
+          <ul>
+            <li>mousemove → перемещаем фонарик</li>
+            <li>click → проверяем, найден ли кот</li>
+          </ul>
+        </section>
+
+        <!-- 51 -->
+        <section class="slide">
+          <p>
+            Если кот найден — его координаты меняются, и игра продолжается с новым местом
+            расположения.
+          </p>
+
+          <p>
+            <strong> Canvas + JavaScript + события + игровой цикл = простая 2D-игра. </strong>
+          </p>
+        </section>
+
+        <!-- 52 -->
+        <section class="slide">
+          <h2 style="margin: 0 auto; text-align: center">Результат</h2>
+    <div class="info">Найди кота 🔦</div>
+
+    <canvas id="game" width="1000" height="600"></canvas>
+
+    <script>
+      const canvasG = document.getElementById('game');
+      const ctxG = canvasG.getContext('2d');
+
+      //координаты курсора относительно canvas (при загрузке - по середине canvas)
+      const mouse = {
+        x: canvasG.width / 2,
+        y: canvasG.height / 2,
+      };
+
+      const room = new Image();
+      const cat = new Image();
+
+      room.src = './img/room.jpg';
+      cat.src = './img/cat.png';
+
+      const catData = {
+        x: Math.random() * (canvasG.width - 150),
+        y: Math.random() * (canvasG.height - 150),
+        width: 150,
+        height: 150,
+      };
+
+      let loaded = 0;
+
+      function checkLoaded() {
+        loaded++;
+        if (loaded === 2) {
+          requestAnimationFrame(render);
+        }
+      }
+
+      room.onload = checkLoaded;
+      cat.onload = checkLoaded;
+
+      canvasG.addEventListener('mousemove', (e) => {
+        const rect = canvasG.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+
+      canvasG.addEventListener('click', () => {
+        const dx = mouse.x - (catData.x + catData.width / 2);
+        const dy = mouse.y - (catData.y + catData.height / 2);
+
+        //вычисляем расстояние между точкой клика и центром кота
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 60) {
+          alert('Ты нашел кота 😺');
+
+          catData.x = Math.random() * (canvasG.width - catData.width);
+          catData.y = Math.random() * (canvasG.height - catData.height);
+        }
+      });
+
+      function render() {
+        ctxG.clearRect(0, 0, canvasG.width, canvasG.height);
+
+        // фон
+        ctxG.drawImage(room, 0, 0, canvasG.width, canvasG.height);
+
+        // кот
+        ctxG.drawImage(cat, catData.x, catData.y, catData.width, catData.height);
+
+        // тьма + мягкий фонарик
+        const gradient = ctxG.createRadialGradient(mouse.x, mouse.y, 20, mouse.x, mouse.y, 60);
+
+        gradient.addColorStop(0, 'rgba(0,0,0,0)');
+        gradient.addColorStop(1, 'rgba(0,0,0,0.95)');
+
+        ctxG.fillStyle = gradient;
+        ctxG.fillRect(0, 0, canvasG.width, canvasG.height);
+
+        requestAnimationFrame(render);
+      }
+    </script>
+    </section>
+
+        <!-- 53 -->
+                <section class="slide">
+          <h2 style="margin: 0 auto; text-align: center">Canvas в реальных проектах</h2>
+            <ul>
+                <li><a href="https://heronaiapp.com/" target="_blank">Heron AI (https://heronaiapp.com)</a></li>
+                <li><a href="https://ishikawa.co/en/" target="_blank">Ishikawa Co. (https://ishikawa.co/en/)</a></li>
+                <li><a href="https://www.imsaud.me/" target="_blank">IMSaud (https://www.imsaud.me/)</a></li>
+                <li><a href="https://tol.is/" target="_blank">Tol.is (https://tol.is/)</a></li>
+                <li><a href="https://dny19.com/" target="_blank">Dny19 (https://dny19.com/)</a></li>
+                <li><a href="https://www.awwwards.com/websites/canvas-api/" target="_blank">Еще сайты (https://www.awwwards.com/websites/canvas-api/)</a></li>
+                </ul>
+        </section>
+
+                <section class="slide">
+          <h2 style="margin: 0 auto; text-align: center">Спасибо за внимание!</h2>
+        </section>
+
+
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide',
+        backgroundTransition: 'none',
+      });
+
+      function setupCanvas(id) {
+        const canvas = document.getElementById(id);
+        const ctx = canvas.getContext('2d');
+        return { canvas, ctx };
+      }
+
+      // Rectangle
+      {
+        const { canvas, ctx } = setupCanvas('rectangleCanvas');
+        ctx.fillStyle = '#c96b21';
+        ctx.fillRect(140, 100, 300, 130);
+      }
+
+      // Circle
+      {
+        const { canvas, ctx } = setupCanvas('circleCanvas');
+        ctx.beginPath();
+        ctx.arc(400, 175, 90, 0, Math.PI * 2);
+        ctx.fillStyle = '#233d70';
+        ctx.fill();
+      }
+
+      // Animation
+      {
+        const { canvas, ctx } = setupCanvas('animationCanvas');
+        let x = -40;
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          ctx.beginPath();
+          ctx.arc(x, 175, 38, 0, Math.PI * 2);
+          ctx.fillStyle = '#c96b21';
+          ctx.fill();
+
+          x += 3;
+
+          if (x > canvas.width + 40) {
+            x = -40;
+          }
+
+          requestAnimationFrame(animate);
+        }
+
+        animate();
+      }
+
+      // Mouse interaction
+      {
+        const { canvas, ctx } = setupCanvas('mouseCanvas');
+
+        let mouseX = 400;
+        let mouseY = 175;
+
+        canvas.addEventListener('mousemove', (event) => {
+          mouseX = event.offsetX;
+          mouseY = event.offsetY;
+        });
+
+        function draw() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          ctx.beginPath();
+          ctx.arc(mouseX, mouseY, 48, 0, Math.PI * 2);
+          ctx.fillStyle = '#233d70';
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(mouseX, mouseY, 65, 0, Math.PI * 2);
+          ctx.strokeStyle = '#c96b21';
+          ctx.lineWidth = 3;
+          ctx.stroke();
+
+          requestAnimationFrame(draw);
+        }
+
+        draw();
+      }
+
+      // Particles
+      {
+        const { canvas, ctx } = setupCanvas('particleCanvas');
+
+        const particles = [];
+        let mouseX = canvas.width / 2;
+        let mouseY = canvas.height / 2;
+
+        canvas.addEventListener('mousemove', (event) => {
+          mouseX = event.offsetX;
+          mouseY = event.offsetY;
+        });
+
+        for (let i = 0; i < 110; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: (Math.random() - 0.5) * 1.5,
+            radius: Math.random() * 3 + 2,
+          });
+        }
+
+        function animateParticles() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          particles.forEach((p) => {
+            const dx = p.x - mouseX;
+            const dy = p.y - mouseY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 130 && distance > 0) {
+              p.x += (dx / distance) * 1.8;
+              p.y += (dy / distance) * 1.8;
+            }
+
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#233d70';
+            ctx.fill();
+          });
+
+          requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+      }
+    </script>
+  </body>
+</html>
