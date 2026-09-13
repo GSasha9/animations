@@ -2758,32 +2758,10 @@ button:hover {
             из-за края экрана.
           </p>
 
-          <div
-            class="menu-demo-page"
-            style="
-              margin: 30px auto 0;
-              width: 680px;
-              height: 400px;
-              position: relative;
-              overflow: hidden;
-              border-radius: 14px;
-              background: #f3f5f7;
-              box-shadow: 0 5px 25px #0002;
-            "
-          >
+          <div class="menu-demo-page">
             <!-- Имитация сайта -->
-            <div
-              style="
-                height: 60px;
-                background: white;
-                border-bottom: 1px solid #ddd;
-                display: flex;
-                align-items: center;
-                padding: 0 20px;
-                justify-content: space-between;
-              "
-            >
-              <strong style="font-size: 0.7em">MY WEBSITE</strong>
+            <div class="menu-demo-header">
+              <strong>MY WEBSITE</strong>
 
               <button class="menu-demo-toggle" aria-label="Открыть меню">
                 <span></span>
@@ -2793,19 +2771,10 @@ button:hover {
             </div>
 
             <!-- Содержимое страницы -->
-            <div style="padding: 35px; text-align: center; color: #555">
-              <div
-                style="
-                  width: 80px;
-                  height: 80px;
-                  margin: 0 auto 20px;
-                  border-radius: 50%;
-                  background: #4285c5;
-                  opacity: 0.15;
-                "
-              ></div>
+            <div class="menu-demo-content">
+              <div class="menu-demo-circle"></div>
 
-              <strong style="font-size: 0.85em"> Главная страница </strong>
+              <strong>Главная страница</strong>
             </div>
 
             <!-- Затемнение -->
@@ -2813,15 +2782,8 @@ button:hover {
 
             <!-- Выезжающее меню -->
             <aside class="menu-demo-panel">
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  margin-bottom: 25px;
-                "
-              >
-                <strong style="font-size: 0.8em">Меню</strong>
+              <div class="menu-demo-panel-header">
+                <strong>Меню</strong>
 
                 <button class="menu-demo-close">×</button>
               </div>
@@ -2848,144 +2810,6 @@ button:hover {
             <strong>Попробуй:</strong>
             нажми на ☰ — меню выедет справа.
           </div>
-
-          <style>
-            /* Кнопка меню */
-            .menu-demo-toggle {
-              width: 42px;
-              height: 38px;
-              border: none;
-              background: transparent;
-              cursor: pointer;
-
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              gap: 6px;
-            }
-
-            .menu-demo-toggle span {
-              width: 24px;
-              height: 2px;
-              background: #333;
-              margin: 0 auto;
-            }
-
-            .menu-demo-toggle:hover > span {
-              background: #4285c5;
-            }
-
-            /* Затемнение страницы */
-            .menu-demo-overlay {
-              position: absolute;
-              inset: 60px 0 0 0;
-
-              background: #0006;
-
-              opacity: 0;
-              pointer-events: none;
-
-              transition: opacity 0.3s ease;
-            }
-
-            /* Само меню */
-            .menu-demo-panel {
-              position: absolute;
-
-              top: 0;
-              right: 0;
-
-              width: 260px;
-              height: 100%;
-
-              box-sizing: border-box;
-              padding: 15px 25px;
-
-              background: white;
-              box-shadow: -5px 0 20px #0002;
-
-              /* Прячем меню справа */
-              transform: translateX(100%);
-
-              /* Плавность движения */
-              transition: transform 0.35s ease;
-            }
-
-            /* Пункты меню */
-            .menu-demo-panel nav {
-              display: grid;
-              gap: 5px;
-            }
-
-            .menu-demo-panel nav a {
-              padding: 12px 8px;
-
-              color: #333;
-              text-decoration: none;
-              border-radius: 6px;
-
-              font-size: 0.68em;
-
-              transition:
-                background-color 0.2s ease,
-                color 0.2s ease;
-            }
-
-            .menu-demo-panel nav a:hover {
-              background: #eaf4ff;
-              color: #4285c5;
-            }
-
-            /* Кнопка закрытия */
-            .menu-demo-close {
-              width: 35px;
-              height: 35px;
-
-              border: none;
-              border-radius: 50%;
-
-              background: #f0f0f0;
-              color: #555;
-
-              font-size: 1.2em;
-              cursor: pointer;
-            }
-
-            .menu-demo-close:hover {
-              background: #ee7878;
-            }
-
-            /* ОТКРЫТОЕ состояние */
-
-            .menu-demo.open .menu-demo-panel {
-              transform: translateX(0);
-            }
-
-            .menu-demo.open .menu-demo-overlay {
-              opacity: 1;
-              pointer-events: auto;
-            }
-          </style>
-
-          <script>
-            const slide = document.currentScript.parentElement;
-
-            const toggle = slide.querySelector('.menu-demo-toggle');
-            const close = slide.querySelector('.menu-demo-close');
-            const overlay = slide.querySelector('.menu-demo-overlay');
-
-            toggle.addEventListener('click', () => {
-              slide.classList.add('open');
-            });
-
-            close.addEventListener('click', () => {
-              slide.classList.remove('open');
-            });
-
-            overlay.addEventListener('click', () => {
-              slide.classList.remove('open');
-            });
-          </script>
         </section>
 
         <!-- 25 -->
@@ -6780,7 +6604,6 @@ timer = setInterval(() => {
           <p>Нажми <strong style="color: #4285c5">☰</strong>, чтобы открыть меню.</p>
 
           <div class="task-page">
-            <!-- Шапка сайта -->
             <header class="task-header">
               <strong>MY WEBSITE</strong>
 
@@ -6791,7 +6614,6 @@ timer = setInterval(() => {
               </button>
             </header>
 
-            <!-- Содержимое страницы -->
             <main class="task-content">
               <div class="task-circle"></div>
 
@@ -6800,10 +6622,8 @@ timer = setInterval(() => {
               <p>Это обычное содержимое сайта.</p>
             </main>
 
-            <!-- Затемнение -->
             <div class="task-overlay"></div>
 
-            <!-- Боковое меню -->
             <aside class="task-menu">
               <div class="task-menu-header">
                 <strong>Меню</strong>
@@ -6825,244 +6645,6 @@ timer = setInterval(() => {
             открой меню → наведи на пункты → закрой крестиком → снова открой и закрой кликом по
             затемнению.
           </div>
-
-          <style>
-            .menu-task-demo {
-              --blue: #4285c5;
-            }
-
-            .task-page {
-              position: relative;
-              width: 680px;
-              height: 380px;
-              margin: 25px auto 0;
-              overflow: hidden;
-              border-radius: 14px;
-              background: #f3f5f7;
-              box-shadow: 0 5px 25px #0002;
-            }
-
-            /* Шапка */
-            .task-header {
-              height: 60px;
-              padding: 0 20px;
-              box-sizing: border-box;
-
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-
-              background: white;
-              border-bottom: 1px solid #ddd;
-            }
-
-            .task-header strong {
-              font-size: 0.7em;
-            }
-
-            /* Кнопка открытия */
-            .task-menu-button {
-              width: 42px;
-              height: 38px;
-
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              gap: 5px;
-
-              border: none;
-              background: transparent;
-              cursor: pointer;
-            }
-
-            .task-menu-button span {
-              width: 25px;
-              height: 2px;
-              background: #333;
-
-              transition:
-                background-color 0.2s ease,
-                width 0.2s ease;
-            }
-
-            .task-menu-button:hover span {
-              width: 29px;
-              background: var(--blue);
-            }
-
-            /* Содержимое */
-            .task-content {
-              padding: 40px;
-              text-align: center;
-              color: #666;
-            }
-
-            .task-content h3 {
-              margin: 0;
-              font-size: 0.85em;
-              color: #444;
-            }
-
-            .task-content p {
-              font-size: 0.62em;
-            }
-
-            .task-circle {
-              width: 70px;
-              height: 70px;
-              margin: 0 auto 20px;
-
-              border-radius: 50%;
-              background: var(--blue);
-              opacity: 0.15;
-            }
-
-            /* Затемнение */
-            .task-overlay {
-              position: absolute;
-              inset: 0;
-
-              background: rgba(0, 0, 0, 0.55);
-
-              opacity: 0;
-              pointer-events: none;
-
-              transition: opacity 0.3s ease;
-            }
-
-            /* Боковое меню */
-            .task-menu {
-              position: absolute;
-              top: 0;
-              right: 0;
-
-              width: 270px;
-              height: 100%;
-
-              box-sizing: border-box;
-              padding: 20px;
-
-              background: white;
-              box-shadow: -6px 0 20px #0003;
-
-              /* Спрятано за правым краем */
-              transform: translateX(100%);
-
-              transition: transform 0.35s ease;
-            }
-
-            /* Заголовок меню */
-            .task-menu-header {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-
-              margin-bottom: 25px;
-            }
-
-            .task-menu-header strong {
-              font-size: 0.8em;
-            }
-
-            /* Крестик */
-            .task-close {
-              width: 34px;
-              height: 34px;
-
-              border: none;
-              border-radius: 50%;
-
-              background: #f0f0f0;
-              color: #555;
-
-              font-size: 1.25em;
-              line-height: 1;
-
-              cursor: pointer;
-
-              transition:
-                background-color 0.2s ease,
-                color 0.2s ease;
-            }
-
-            .task-close:hover {
-              background: #ee7878;
-              color: white;
-            }
-
-            /* Пункты меню */
-            .task-nav {
-              display: grid;
-              gap: 5px;
-            }
-
-            .task-nav a {
-              padding: 13px 10px;
-
-              border-radius: 7px;
-
-              color: #333;
-              text-decoration: none;
-
-              font-size: 0.68em;
-
-              transition:
-                background-color 0.2s ease,
-                color 0.2s ease,
-                padding-left 0.2s ease;
-            }
-
-            .task-nav a:hover {
-              padding-left: 16px;
-              background: #eaf4ff;
-              color: var(--blue);
-            }
-
-            /* Открытое состояние */
-            .menu-task-demo.is-open .task-menu {
-              transform: translateX(0);
-            }
-
-            .menu-task-demo.is-open .task-overlay {
-              opacity: 1;
-              pointer-events: auto;
-            }
-
-            .task-hint {
-              margin: 20px auto 0;
-              max-width: 680px;
-              padding: 14px 20px;
-
-              background: #eaf4ff;
-              border-radius: 9px;
-
-              text-align: center;
-              font-size: 0.62em;
-            }
-          </style>
-
-          <script>
-            (() => {
-              const slide = document.currentScript.closest('.menu-task-demo');
-
-              const openButton = slide.querySelector('.task-menu-button');
-              const closeButton = slide.querySelector('.task-close');
-              const overlay = slide.querySelector('.task-overlay');
-
-              function openMenu() {
-                slide.classList.add('is-open');
-              }
-
-              function closeMenu() {
-                slide.classList.remove('is-open');
-              }
-
-              openButton.addEventListener('click', openMenu);
-              closeButton.addEventListener('click', closeMenu);
-              overlay.addEventListener('click', closeMenu);
-            })();
-          </script>
         </section>
 
         <!-- 70 -->
@@ -7072,7 +6654,9 @@ timer = setInterval(() => {
       </div>
     </div>
 
+    <link rel="stylesheet" href="./side-menu.css" />
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="./side-menu.js"></script>
 
     <script>
       Reveal.initialize({
