@@ -1,0 +1,77 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 24px;
+  background: #f9fafb;
+  color: #111;
+}
+
+p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.anchor-demo {
+  border: 2px solid #ccc;
+  border-radius: 14px;
+  overflow: hidden;
+  background: white;
+  /* scroll-behavior: smooth; */
+}
+
+.anchor-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+  padding: 15px 20px;
+  background: white;
+  border-bottom: 1px solid #ddd;
+}
+
+.anchor-nav a {
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #eaf4ff;
+  color: #4285c5;
+  text-decoration: none;
+}
+
+.anchor-scroll {
+  height: 330px;
+  overflow-y: scroll;
+}
+
+.anchor-section {
+  padding: 35px;
+}
+
+.anchor-section#demo-about {
+  background: #eaf4ff;
+}
+
+.anchor-section#demo-projects {
+  background: #fff0f5;
+}
+
+.anchor-section#demo-services {
+  background: #eef7ea;
+}
+
+.anchor-section#demo-contact {
+  background: #f5f5f5;
+}
+
+.anchor-section h3 {
+  margin-top: 0;
+}
+
+.anchor-callout {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.anchor-intro {
+  margin-bottom: 25px;
+}

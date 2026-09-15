@@ -1,0 +1,1345 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Animations</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+
+    <style>
+      :root {
+        --navy: #233d70;
+        --orange: #c96b21;
+        --pink: #e44d7a;
+        --text: #111111;
+        --muted: #5f6368;
+        --line: #e4e7eb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #ffffff;
+        color: var(--text);
+      }
+
+      p {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .reveal {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 26px;
+        color: var(--text);
+      }
+
+      .reveal .slides {
+        text-align: left;
+        width: 1000px;
+      }
+
+      .reveal .slides section {
+        padding: 0.8em 1em 1em;
+        box-sizing: border-box;
+      }
+
+      .reveal .slides section > * {
+        max-width: 1000px;
+      }
+
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        color: var(--navy);
+        text-transform: none;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .reveal h1 {
+        font-size: 2.05em;
+        margin-bottom: 0.7em;
+      }
+
+      .reveal h2 {
+        font-size: 1.65em;
+        margin-bottom: 0.5em;
+        margin-top: 0.4em;
+      }
+
+      .reveal h3 {
+        font-size: 1.05em;
+      }
+
+      .reveal p,
+      .reveal li {
+        line-height: 1.35;
+      }
+
+      .reveal ul,
+      .reveal ol {
+        margin-top: 0.25em;
+      }
+
+      .reveal li {
+        margin-bottom: 0.25em;
+      }
+
+      .reveal strong,
+      .accent {
+        color: var(--navy);
+      }
+
+      .slide {
+        position: relative;
+        padding-top: 0.55em;
+      }
+
+      .subtitle {
+        color: var(--navy);
+        font-size: 1.05em;
+        margin-bottom: 0.55em;
+      }
+
+      .lead {
+        font-size: 1.12em;
+      }
+
+      .conclusion {
+        margin-top: 0.8em;
+        font-size: 0.95em;
+      }
+
+      .conclusion strong {
+        color: var(--navy);
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.1em;
+        align-items: start;
+      }
+
+      .box {
+        border: 1px solid var(--line);
+        padding: 0.65em 0.8em;
+        border-radius: 8px;
+      }
+
+      .box h3 {
+        margin-top: 0;
+      }
+
+      .small {
+        font-size: 0.72em;
+        color: var(--muted);
+      }
+
+      .code-wrap {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-top: 0.5em;
+      }
+
+      pre {
+        margin: 0;
+        box-shadow: none;
+        background: #f7f7f7;
+        padding: 0.7em;
+        font-size: 1.2rem;
+      }
+
+      code {
+        font-family: 'SFMono-Regular', Consolas, monospace;
+        font-size: 0.72em;
+        line-height: 1.4;
+      }
+
+      .demo-layout {
+        display: grid;
+        grid-template-columns: 0.9fr 1.5fr;
+        gap: 0.8em;
+        align-items: center;
+      }
+
+      .demo-text {
+        font-size: 0.82em;
+      }
+
+      .demo-note {
+        margin-top: 0.35em;
+        color: var(--muted);
+        font-size: 0.62em;
+      }
+
+      .diagram {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.3em;
+        margin: 1em 0;
+        flex-wrap: wrap;
+      }
+
+      .diagram .node {
+        border: 2px solid var(--navy);
+        color: var(--navy);
+        padding: 0.45em 0.7em;
+        border-radius: 6px;
+        font-size: 0.8em;
+        text-align: center;
+      }
+
+      .diagram .arrow {
+        color: var(--orange);
+        font-size: 1.3em;
+      }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.4em;
+        margin-top: 1em;
+      }
+
+      .timeline > div {
+        border-top: 3px solid var(--orange);
+        padding-top: 0.35em;
+        font-size: 0.7em;
+      }
+
+      .number {
+        color: var(--orange);
+        font-weight: bold;
+      }
+
+      .task {
+        border-left: 5px solid var(--orange);
+        padding-left: 0.8em;
+        margin-top: 0.7em;
+      }
+
+      .footer-note {
+        position: absolute;
+        bottom: -0.25em;
+        right: 0;
+        color: var(--muted);
+        font-size: 0.48em;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.72em;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 0.5em;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--navy);
+      }
+
+      /* =========================
+         TITULЬНЫЙ СЛАЙД
+         ========================= */
+
+      .css-animations-title {
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+        color: #222;
+      }
+
+      .css-animations-title .bg-circle {
+        position: absolute;
+        width: 550px;
+        height: 550px;
+        border-radius: 50%;
+        background: #fff0f5;
+        right: -170px;
+        top: -170px;
+        opacity: 0;
+        animation: cssCircleIn 1.2s ease-out forwards;
+      }
+
+      .css-animations-title .grid {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        background-image:
+          linear-gradient(#f5e5ec 1px, transparent 1px),
+          linear-gradient(90deg, #f5e5ec 1px, transparent 1px);
+        background-size: 45px 45px;
+        mask-image: linear-gradient(to right, transparent, black 65%);
+        animation: cssGridIn 1.5s ease forwards 0.4s;
+      }
+
+      .css-animations-title .content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-left: 100px;
+      }
+
+      .css-animations-title h1 {
+        margin: 0;
+        font-size: 4em;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        opacity: 0;
+        animation: cssFadeUp 0.8s ease forwards 0.5s;
+      }
+
+      .css-animations-title h1 span {
+        color: var(--pink);
+      }
+
+      .css-animations-title .line {
+        width: 90px;
+        height: 5px;
+        background: var(--pink);
+        border-radius: 10px;
+        margin-top: 28px;
+        transform: scaleX(0);
+        transform-origin: left;
+        animation: cssLineIn 0.7s ease forwards 1s;
+      }
+
+      .css-animations-title .subtitle {
+        margin-top: 25px;
+        color: #777;
+        font-size: 0.85em;
+        opacity: 0;
+        animation: cssFadeUp 0.7s ease forwards 1.2s;
+      }
+
+      .css-animations-title .motion-line {
+        position: absolute;
+        z-index: 2;
+        right: 80px;
+        top: 50%;
+        width: 390px;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(228, 77, 122, 0.15),
+          rgba(228, 77, 122, 0.6),
+          transparent
+        );
+        transform: rotate(-25deg);
+        opacity: 0;
+        animation: cssMotionLine 1.2s ease forwards 0.8s;
+      }
+
+      @keyframes cssFadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(25px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes cssCircleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.7);
+        }
+
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes cssGridIn {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 0.7;
+        }
+      }
+
+      @keyframes cssLineIn {
+        from {
+          transform: scaleX(0);
+        }
+
+        to {
+          transform: scaleX(1);
+        }
+      }
+
+      @keyframes cssMotionLine {
+        from {
+          opacity: 0;
+          transform: translateX(60px) rotate(-25deg);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateX(0) rotate(-25deg);
+        }
+      }
+
+      @media (max-width: 900px) {
+        .two-col,
+        .demo-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .reveal {
+          font-size: 22px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- 1 -->
+        <section class="slide css-animations-title">
+          <div class="bg-circle"></div>
+          <div class="grid"></div>
+          <div class="motion-line"></div>
+
+          <div class="content">
+            <h1><span>CSS</span> Animations</h1>
+
+            <div class="line"></div>
+
+            <div class="subtitle">
+              Современная веб-интерактивность: Scroll, Viewport и UI-эффекты
+            </div>
+          </div>
+        </section>
+
+        <!-- 2 -->
+        <section class="slide">
+          <h2>Link → Scroll</h2>
+
+          <p>
+            На длинной странице навигация должна помогать пользователю быстро перемещаться между
+            разделами.
+          </p>
+
+          <div style="margin-top: 30px; padding: 25px; background: #f5f5f5; border-radius: 14px">
+            <h3 style="margin-top: 0">Типичные примеры</h3>
+
+            <ul>
+              <li>landing page</li>
+              <li>документация</li>
+              <li>определенные статьи на странице</li>
+              <li>страница продукта/товара</li>
+              <li>портфолио</li>
+            </ul>
+          </div>
+
+          <p style="margin-top: 35px; text-align: center">
+            <strong>
+              Ссылка может вести не только на другую страницу, но и на конкретный элемент текущей
+              страницы.
+            </strong>
+          </p>
+        </section>
+
+        <!-- 3 -->
+        <section class="slide">
+          <h2>Как работает href="#..."?</h2>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 35px; margin-top: 35px">
+            <div>
+              <h3>Ссылка</h3>
+
+              <pre><code>&lt;a href="#projects"&gt;
+  Projects
+&lt;/a&gt;</code></pre>
+            </div>
+
+            <div>
+              <h3>Цель</h3>
+
+              <pre><code>&lt;section id="projects"&gt;
+  ...
+&lt;/section&gt;</code></pre>
+            </div>
+          </div>
+
+          <div style="margin-top: 40px; padding: 25px; background: #eaf4ff; border-radius: 12px">
+            <p style="font-size: 1.1em">
+              Значение после # — это <strong>fragment identifier</strong>.
+            </p>
+
+            <p>Браузер ищет элемент с соответствующим id и перемещает viewport к нему.</p>
+          </div>
+
+          <div style="margin-top: 30px; text-align: center; font-size: 1.15em">
+            <code>href="#projects"</code>
+            →
+            <code>id="projects"</code>
+            →
+            <strong>scroll</strong>
+          </div>
+        </section>
+
+        <!-- 4 -->
+        <section class="slide">
+          <h2>Smooth scrolling</h2>
+
+          <p>
+            По умолчанию браузер может мгновенно переместить viewport. Для навигации по длинной
+            странице часто используется плавная прокрутка.
+          </p>
+
+          <pre style="margin-top: 35px"><code>html {
+  scroll-behavior: smooth;
+}</code></pre>
+
+          <div style="margin-top: 35px; padding: 25px; background: #eaf4ff; border-radius: 12px">
+            <h3 style="margin-top: 0">Важно</h3>
+
+            <p>Мы не создаём анимацию вручную.</p>
+
+            <p>
+              Браузер сам выполняет переход между текущей позицией scroll и положением целевого
+              элемента.
+            </p>
+          </div>
+
+          <div style="margin-top: 30px; text-align: center; font-size: 1.1em">
+            <code>link</code>
+            →
+            <code>browser scroll</code>
+            →
+            <code>target element</code>
+          </div>
+
+          <p style="margin-top: 35px">
+            <strong>Попробуйте нажать на ссылку в предыдущем примере.</strong>
+          </p>
+        </section>
+
+        <!-- 5 -->
+        <section class="slide">
+          <h2>А теперь другая задача</h2>
+
+          <div
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center"
+          >
+            <div>
+              <p style="font-size: 1.25em">
+                Мы уже умеем отправить пользователя к нужному разделу:
+              </p>
+
+              <pre><code class="language-html">&lt;a href="#projects"&gt;
+  Projects
+&lt;/a&gt;</code></pre>
+
+              <p style="font-size: 1.25em">
+                Но что, если пользователь просто прокручивает страницу?
+              </p>
+            </div>
+
+            <div style="padding: 30px; border-radius: 16px; background: #f3f4f6">
+              <p style="font-size: 1.3rem">
+                ❓ Как узнать, какой раздел
+                <strong>сейчас находится в области просмотра?</strong>
+                И как на это отреагировать? Например, можно:
+              </p>
+
+              <ul style="font-size: 1.3rem">
+                <li>подсветить пункт меню;</li>
+                <li>показать анимацию;</li>
+                <li>загрузить данные;</li>
+                <li>запустить счётчик;</li>
+                <li>показать элемент.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 10px;
+              padding: 20px;
+              text-align: center;
+              border-radius: 14px;
+              background: #e8f0fe;
+              font-size: 1.2em;
+            "
+          >
+            Нам нужно не управлять прокруткой, а <strong>реагировать на неё</strong>.
+          </div>
+        </section>
+
+        <!-- 6 -->
+        <section class="slide">
+          <h2>Intersection Observer</h2>
+
+          <p style="font-size: 1.25em">
+            IntersectionObserver — это браузерный API, который сообщает JavaScript, когда элемент
+            <strong>пересекается с областью просмотра</strong>.
+          </p>
+
+          <div
+            style="
+              margin: 35px auto;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 25px;
+              font-size: 1.3em;
+            "
+          >
+            <div style="padding: 25px; border: 3px solid #888; border-radius: 12px">Элемент</div>
+
+            <div style="font-size: 2em">↔</div>
+
+            <div style="padding: 35px 25px; border: 3px dashed #888; border-radius: 12px">
+              Viewport
+            </div>
+          </div>
+
+          <div style="padding: 25px; border-radius: 14px; background: #f3f4f6">
+            <p><strong>Важно:</strong></p>
+
+            <p>Observer не прокручивает страницу и не выполняет анимацию.</p>
+
+            <p>
+              Он только сообщает:
+              <strong>«элемент вошёл в область наблюдения»</strong>
+              или
+              <strong>«элемент вышел из неё»</strong>.
+            </p>
+          </div>
+        </section>
+
+        <!-- 7 -->
+        <section class="slide">
+          <h2>Что такое viewport?</h2>
+
+          <p style="font-size: 1.2em">
+            <strong>Viewport</strong> — это видимая область веб-страницы внутри окна браузера.
+          </p>
+
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 35px;
+              margin-top: 30px;
+              align-items: center;
+            "
+          >
+            <!-- Вся страница -->
+            <div>
+              <div
+                style="
+                  height: 330px;
+                  width: 240px;
+                  margin: auto;
+                  border: 3px solid #888;
+                  border-radius: 10px;
+                  position: relative;
+                  overflow: hidden;
+                  background: #f5f5f5;
+                "
+              >
+                <div style="height: 700px; padding: 15px; font-size: 0.8em">
+                  <div style="height: 130px; padding: 15px; background: #ddd; border-radius: 8px">
+                    Section 1
+                  </div>
+
+                  <div
+                    style="
+                      height: 130px;
+                      margin-top: 15px;
+                      padding: 15px;
+                      background: #ddd;
+                      border-radius: 8px;
+                    "
+                  >
+                    Section 2
+                  </div>
+
+                  <div
+                    style="
+                      height: 130px;
+                      margin-top: 15px;
+                      padding: 15px;
+                      background: #ddd;
+                      border-radius: 8px;
+                    "
+                  >
+                    Section 3
+                  </div>
+
+                  <div
+                    style="
+                      height: 130px;
+                      margin-top: 15px;
+                      padding: 15px;
+                      background: #ddd;
+                      border-radius: 8px;
+                    "
+                  >
+                    Section 4
+                  </div>
+                </div>
+
+                <!-- viewport -->
+                <div
+                  style="
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 85px;
+                    height: 160px;
+                    border: 4px solid #4a90e2;
+                    box-sizing: border-box;
+                    background: rgba(74, 144, 226, 0.12);
+                  "
+                >
+                  <div
+                    style="text-align: center; font-weight: bold; padding-top: 60px; color: #2563a6"
+                  >
+                    VIEWPORT
+                  </div>
+                </div>
+              </div>
+
+              <p style="text-align: center; margin-top: 12px">Вся страница</p>
+            </div>
+
+            <!-- Объяснение -->
+            <div>
+              <div
+                style="padding: 25px; border-radius: 15px; background: #f3f4f6; font-size: 1.3rem"
+              >
+                <h3>Что важно понимать?</h3>
+
+                <p>Страница может быть намного больше, чем область, которую мы видим сейчас.</p>
+
+                При прокрутке содержимое движется, а viewport остаётся областью, через которую мы
+                смотрим на страницу.
+              </div>
+
+              <div
+                style="
+                  margin-top: 20px;
+                  padding: 20px;
+                  border-radius: 12px;
+                  background: #e8f0fe;
+                  text-align: center;
+                "
+              >
+                <strong>Viewport ≠ вся страница</strong>
+                <br />
+                Viewport — только то, что сейчас видно.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8 -->
+        <section class="slide">
+          <h2>Как мыслить об Intersection Observer?</h2>
+
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 18px;
+              margin-top: 35px;
+              font-size: 1.3rem;
+            "
+          >
+            <div style="padding: 18px 35px; border-radius: 12px; background: #f3f4f6">
+              Элемент находится вне viewport
+            </div>
+
+            <div style="font-size: 1.5em">↓</div>
+
+            <div style="padding: 18px 35px; border-radius: 12px; background: #e8f0fe">
+              Элемент появляется в viewport
+            </div>
+
+            <div style="font-size: 1.5em">↓</div>
+
+            <div style="padding: 18px 35px; border-radius: 12px; background: #e8f0fe">
+              IntersectionObserver сообщает об изменении
+            </div>
+
+            <div style="font-size: 1.5em">↓</div>
+
+            <div style="padding: 18px 35px; border-radius: 12px; background: #e8f0fe">
+              JavaScript изменяет состояние страницы
+            </div>
+          </div>
+
+          <div style="margin-top: 30px; text-align: center; font-size: 1.15em">
+            <strong>Viewport → событие → состояние → UI</strong>
+          </div>
+        </section>
+
+        <!-- 9 -->
+        <section class="slide">
+          <h2>Базовая структура IntersectionObserver</h2>
+
+          <pre><code class="language-javascript">const observer = new IntersectionObserver(
+  (entries) =&gt; {
+    // элемент изменил состояние видимости
+  }
+);
+
+observer.observe(element);</code></pre>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 30px">
+            <div style="padding: 25px; border-radius: 14px; background: #f3f4f6">
+              <h3>1. Создаём observer</h3>
+              <p>Передаём функцию, которая будет вызвана, когда состояние пересечения изменится.</p>
+            </div>
+
+            <div style="padding: 25px; border-radius: 14px; background: #f3f4f6">
+              <h3>2. Начинаем наблюдение</h3>
+              <p><code>observe()</code> говорит браузеру, какой элемент нужно отслеживать.</p>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 30px;
+              padding: 20px;
+              border-left: 5px solid #888;
+              background: #fafafa;
+            "
+          >
+            <strong>Главная мысль:</strong>
+            мы не спрашиваем браузер постоянно «где элемент?». Браузер сам сообщает нам об
+            изменении.
+          </div>
+        </section>
+
+        <!-- 10 -->
+        <section class="slide">
+          <h2>Что сообщает Observer?</h2>
+
+          <pre><code class="language-javascript">const observer = new IntersectionObserver(
+  (entries) =&gt; {
+    entries.forEach((entry) =&gt; {
+
+      console.log(entry.isIntersecting);
+
+    });
+  }
+);</code></pre>
+
+          <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 25px">
+            <div style="padding: 30px; border-radius: 14px; background: #f3f4f6">
+              <h3><code>true</code></h3>
+
+              <p style="font-size: 1.2em">Элемент пересекается с viewport.</p>
+
+              <p>Он появился в наблюдаемой области.</p>
+            </div>
+
+            <div style="padding: 30px; border-radius: 14px; background: #f3f4f6">
+              <h3><code>false</code></h3>
+
+              <p style="font-size: 1.2em">Элемент больше не пересекается с viewport.</p>
+
+              <p>Он вышел из наблюдаемой области.</p>
+            </div>
+          </div>
+
+          <div style="margin-top: 30px; text-align: center; font-size: 1.2em">
+            Таким образом, можно реагировать на появление элементов в области просмотра.
+          </div>
+        </section>
+
+        <!--11 -->
+<section class="slide">
+  <h2>Реальный паттерн: Table of Contents</h2>
+
+  <p>
+    Такой интерфейс часто используется в документации, технических статьях и long-form
+    content.
+  </p>
+
+  <div
+    style="
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 35px;
+      margin-top: 30px;
+      text-align: left;
+      border: 1px solid #e4e7eb;
+    "
+  >
+    <!-- Навигация остаётся на месте -->
+    <aside
+      style="
+        padding: 20px;
+        background: #f5f5f5;
+        border-radius: 12px;
+        height: 100%;
+      "
+    >
+      <strong>Содержание</strong>
+
+      <nav style="margin-top: 20px; line-height: 2">
+        <a href="#toc-intro">Введение</a><br />
+        <a href="#toc-api">API</a><br />
+        <a href="#toc-examples">Примеры</a><br />
+        <a href="#toc-summary">Итоги</a>
+      </nav>
+    </aside>
+
+    <!-- Прокручивается только контент -->
+    <div
+      style="
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 15px;
+      "
+    >
+      <article id="toc-intro" style="min-height: 300px">
+        <h3>Введение</h3>
+        <p>
+          Большой текст статьи...
+        </p>
+        <p>
+          Ещё немного текста, чтобы было видно прокрутку.
+        </p>
+      </article>
+
+      <article id="toc-api" style="min-height: 300px">
+        <h3>API</h3>
+        <p>
+          Описание API...
+        </p>
+        <p>
+          Подробное описание методов и параметров.
+        </p>
+      </article>
+
+      <article id="toc-examples" style="min-height: 300px">
+        <h3>Примеры</h3>
+        <p>
+          Практические примеры...
+        </p>
+        <p>
+          Ещё несколько примеров использования.
+        </p>
+      </article>
+
+      <article id="toc-summary" style="min-height: 300px">
+        <h3>Итоги</h3>
+        <p>
+          Основные выводы...
+        </p>
+        <p>
+          На этом заканчивается статья.
+        </p>
+      </article>
+    </div>
+  </div>
+
+  <p style="margin-top: 25px">
+    Пока это просто набор ссылок.
+    <strong>Но можно сделать навигацию «умнее».</strong>
+  </p>
+</section>
+
+<!--12 -->
+<section class="slide">
+  <h2>1. Выбираем элементы для наблюдения</h2>
+
+  <p>
+    Сначала нам нужно найти те элементы страницы,
+    за которыми должен следить <code>IntersectionObserver</code>.
+  </p>
+
+  <pre><code class="language-javascript">const sections =
+  document.querySelectorAll(".article-section");
+
+const links =
+  document.querySelectorAll(".toc a");</code></pre>
+
+  <div
+    style="
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 20px;
+      align-items: center;
+      margin-top: 30px;
+    "
+  >
+    <div
+      style="
+        padding: 25px;
+        border-radius: 12px;
+        background: #f5f5f5;
+        text-align: center;
+      "
+    >
+      <code>.article-section</code>
+      <br />
+      <small>Разделы статьи</small>
+    </div>
+
+    <div style="font-size: 2em">→</div>
+
+    <div
+      style="
+        padding: 25px;
+        border-radius: 12px;
+        background: #f5f5f5;
+        text-align: center;
+      "
+    >
+      <code>.toc a</code>
+      <br />
+      <small>Ссылки навигации</small>
+    </div>
+  </div>
+
+  <div
+    style="
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 12px;
+      background: #e8f0fe;
+    "
+  >
+    <strong>Почему нужны оба?</strong>
+
+    <p style="margin-bottom: 0">
+      Мы наблюдаем за <strong>разделами статьи</strong>,
+      но изменяем состояние <strong>ссылок</strong>.
+    </p>
+  </div>
+</section>
+
+<!--13 -->
+<section class="slide">
+  <h2>2. Создаём наблюдателя</h2>
+
+  <pre><code class="language-javascript">const observer = new IntersectionObserver(
+  (entries) =&gt; {
+    entries.forEach((entry) =&gt; {
+      if (entry.isIntersecting) {
+        // секция появилась в viewport
+      } }); });</code></pre>
+
+  <div
+    style="
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      font-size: 1.2rem;
+    "
+  >
+    <div
+      style="
+        padding: 20px 35px;
+        border-radius: 12px;
+        background: #f5f5f5;
+      "
+    >
+      IntersectionObserver
+    </div>
+
+    <div style="font-size: 1em">↓</div>
+
+    <div
+      style="
+        padding: 20px 35px;
+        border-radius: 12px;
+        background: #f5f5f5;
+      "
+    >
+      наблюдает за элементами
+    </div>
+
+    <div style="font-size: 1em">↓</div>
+
+    <div
+      style="
+        padding: 20px 35px;
+        border-radius: 12px;
+        background: #e8f0fe;
+      "
+    >
+      сообщает об изменении пересечения
+    </div>
+  </div>
+
+  <div
+    style="
+      margin-top: 30px;
+      padding: 20px;
+      border-left: 5px solid #888;
+      background: #fafafa;
+    "
+  >
+    <strong>Важно:</strong>
+    callback вызывается браузером, когда меняется
+    состояние пересечения элемента с областью наблюдения.
+  </div>
+</section>
+
+<!--14 -->
+<section class="slide">
+  <h2>3. Проверяем: секция видна?</h2>
+
+  <pre><code class="language-javascript">entries.forEach((entry) =&gt; {
+  if (entry.isIntersecting) {
+    // секция пересекается с viewport
+  }
+});</code></pre>
+
+  <div
+    style="
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-top: 30px;
+    "
+  >
+    <div
+      style="
+        padding: 25px;
+        border-radius: 12px;
+        background: #f5f5f5;
+      "
+    >
+      <h3><code>true</code></h3>
+
+      <p>
+        Элемент находится в наблюдаемой области.
+      </p>
+
+      <div style="font-size: 1.2em">
+        → можем сделать секцию активной
+      </div>
+    </div>
+
+    <div
+      style="
+        padding: 25px;
+        border-radius: 12px;
+        background: #f5f5f5;
+      "
+    >
+      <h3><code>false</code></h3>
+
+      <p>
+        Элемент больше не пересекается
+        с наблюдаемой областью.
+      </p>
+
+      <div style="font-size: 1.2em">
+        → можем убрать активное состояние
+      </div>
+    </div>
+  </div>
+
+  <div
+    style="
+      margin-top: 30px;
+      text-align: center;
+      font-size: 1.2em;
+    "
+  >
+    <strong>isIntersecting</strong> — простой способ узнать,
+    пересекается ли элемент с viewport.
+  </div>
+</section>
+
+<!--15 -->
+<section class="slide">
+  <h2>4. Связываем секцию и ссылку</h2>
+
+  <p>
+    У каждой секции есть свой <code>id</code>.
+  </p>
+
+  <pre><code class="language-html">&lt;section id="examples"&gt;
+  ...
+&lt;/section&gt;
+&lt;a href="#examples"&gt;
+  Примеры
+&lt;/a&gt;</code></pre>
+
+  <p style="margin-top: 25px">
+    В JavaScript мы получаем <code>id</code> секции:
+  </p>
+
+  <pre><code class="language-javascript">const id = entry.target.id;</code></pre>
+
+  <div
+    style="
+      margin: 25px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      font-size: 1.2em;
+    "
+  >
+    <code>entry.target</code>
+    <span>→</span>
+    <code>id = "examples"</code>
+    <span>→</span>
+    <code>href="#examples"</code>
+  </div>
+
+  <pre><code class="language-javascript">const activeLink =
+  document.querySelector(
+    `.toc a[href="#${id}"]`
+  );</code></pre>
+
+  <div
+    style="
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 12px;
+      background: #e8f0fe;
+      text-align: center;
+    "
+  >
+    <strong>
+      id секции позволяет найти соответствующий пункт меню.
+    </strong>
+  </div>
+</section>
+
+<!--16 -->
+<section class="slide">
+  <h2>5. Меняем состояние UI</h2>
+
+  <p>
+    Когда мы нашли нужную ссылку,
+    добавляем ей класс <code>active</code>.
+  </p>
+
+  <pre><code class="language-javascript">links.forEach((link) =&gt; {
+  link.classList.remove("active");
+});
+
+if (activeLink) {
+  activeLink.classList.add("active");
+}</code></pre>
+
+  <div
+    style="
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 20px;
+      align-items: center;
+    "
+  >
+    <div
+      style="
+        padding: 25px;
+        border-radius: 12px;
+        background: #f5f5f5;
+        text-align: center;
+      "
+    >
+      Пользователь скроллит
+    </div>
+
+    <div style="font-size: 1.5em">→</div>
+
+    <div
+      style="
+        padding: 25px;
+        border-radius: 12px;
+        background: #f5f5f5;
+        text-align: center;
+      "
+    >
+      Observer сообщает
+    </div>
+
+    <div style="font-size: 1.5em">↓</div>
+    <div style="font-size: 1.5em">→</div>
+    <div style="font-size: 1.5em">↓</div>
+
+    <div
+      style="
+        padding: 25px;
+        border-radius: 12px;
+        background: #f5f5f5;
+        text-align: center;
+      "
+    >
+      Находим нужную ссылку
+    </div>
+
+    <div style="font-size: 1.5em">→</div>
+
+    <div
+      style="
+        padding: 25px;
+        border-radius: 12px;
+        background: #e8f0fe;
+        text-align: center;
+      "
+    >
+      <code>.active</code>
+    </div>
+  </div>
+
+  <pre style="margin-top: 30px"><code class="language-css">.toc a.active {
+  background: #222;
+  color: white;
+}</code></pre>
+</section>
+
+        <!-- 70 -->
+        <section class="slide">
+          <h2 style="margin: 0 auto; text-align: center">Спасибо за внимание!</h2>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide',
+        backgroundTransition: 'none',
+      });
+    </script>
+  </body>
+</html>
