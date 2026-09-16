@@ -2122,6 +2122,771 @@ ctx.fillRect(0,0,canvas.width,canvas.height);</code></pre>
 
         <!-- 53 -->
         <section class="slide">
+          <h2>Игра «Виселица»</h2>
+
+          <p>
+            В этой игре необходимо угадать загаданное слово, называя буквы. За каждую ошибку
+            постепенно рисуется виселица.
+          </p>
+
+          <p>
+            <strong> Canvas + JavaScript + события + игровой цикл = простая 2D-игра. </strong>
+          </p>
+        </section>
+
+        <!-- 54 -->
+        <section class="slide">
+          <h2>Как работает игра</h2>
+
+          <p>Игрок вводит букву.</p>
+
+          <p>
+            Если буква есть в слове — она открывается. Если буквы нет — увеличивается количество
+            ошибок.
+          </p>
+
+          <p>После каждой попытки обновляется состояние игры и перерисовывается Canvas.</p>
+        </section>
+
+        <!-- 55 -->
+        <section class="slide">
+          <h2>Что хранит игра</h2>
+
+          <p>Для работы игры необходимо хранить несколько значений:</p>
+
+          <ul>
+            <li>загаданное слово;</li>
+            <li>открытые буквы;</li>
+            <li>количество ошибок;</li>
+            <li>максимальное количество ошибок.</li>
+          </ul>
+        </section>
+
+        <!-- 56 -->
+        <section class="slide">
+          <h2>Загаданное слово</h2>
+
+          <p>Слово можно хранить в переменной. Например:</p>
+
+          <pre><code class="language-javascript">
+const word = "JAVASCRIPT";
+  </code></pre>
+
+          <p>Отдельно храним буквы, которые уже были угаданы.</p>
+        </section>
+
+        <!-- 57 -->
+        <section class="slide">
+          <h2>Проверка буквы</h2>
+
+          <p>
+            Когда игрок вводит букву, программа проверяет, содержится ли она в загаданном слове.
+          </p>
+
+          <pre><code class="language-javascript">
+if (word.includes(letter)) {
+  // Буква есть в слове
+} else {
+  // Ошибка
+}
+  </code></pre>
+        </section>
+
+        <!-- 58 -->
+        <section class="slide">
+          <h2>Canvas</h2>
+
+          <p>
+            В нашей игре Canvas будет использоваться для рисования виселицы и постепенного
+            добавления частей тела.
+          </p>
+        </section>
+
+        <!-- 59 -->
+        <section class="slide">
+          <h2>Получаем Canvas</h2>
+
+          <pre><code class="language-javascript">
+const canvas = document.querySelector("#game");
+
+const ctx = canvas.getContext("2d");
+  </code></pre>
+
+          <p>
+            Переменная ctx содержит контекст рисования, через который мы будем создавать линии и
+            фигуры.
+          </p>
+        </section>
+
+        <!-- 60 -->
+        <section class="slide">
+          <h2>Количество ошибок</h2>
+
+          <p>Каждая ошибка увеличивает значение переменной errors.</p>
+
+          <pre><code class="language-javascript">
+errors++;
+
+if (errors === 1) {
+  // Рисуем основу
+}
+  </code></pre>
+
+          <p>В зависимости от количества ошибок добавляется новая часть виселицы.</p>
+        </section>
+
+        <!-- 61 -->
+        <section class="slide">
+          <h2>Функция draw()</h2>
+
+          <p>Чтобы не повторять код рисования, создадим отдельную функцию draw().</p>
+
+          <pre><code class="language-javascript">
+function draw() {
+  // Очистка Canvas
+  // Рисование виселицы
+  // Рисование частей тела
+}
+  </code></pre>
+        </section>
+
+        <!-- 62 -->
+        <section class="slide">
+          <h2>Очистка Canvas</h2>
+
+          <pre><code class="language-javascript">
+ctx.clearRect(
+  0,
+  0,
+  canvas.width,
+  canvas.height
+);
+  </code></pre>
+
+          <p>
+            Этот метод очищает Canvas перед новой отрисовкой. Благодаря этому изображение всегда
+            соответствует текущему состоянию игры.
+          </p>
+        </section>
+
+        <!-- 63 -->
+        <section class="slide">
+          <h2>Обновление игры</h2>
+
+          <p>После каждой попытки игрока необходимо:</p>
+
+          <ol>
+            <li>проверить букву;</li>
+            <li>изменить состояние игры;</li>
+            <li>очистить Canvas;</li>
+            <li>перерисовать виселицу.</li>
+          </ol>
+        </section>
+
+        <!-- 64 -->
+        <section class="slide">
+          <h2>Игровой цикл</h2>
+
+          <p>Игра постоянно проходит через последовательность действий:</p>
+
+          <p>
+            <strong> Событие → изменение состояния → отрисовка → результат </strong>
+          </p>
+
+          <p>
+            В игре «Виселица» событием является ввод буквы, а результатом — открытая буква или новая
+            часть виселицы.
+          </p>
+        </section>
+
+        <!-- 65 -->
+        <section class="slide">
+          <h2>Проверка победы</h2>
+
+          <p>Если все буквы слова открыты, игрок побеждает.</p>
+
+          <pre><code class="language-javascript">
+if (guessedWord === word) {
+  // Победа
+}
+  </code></pre>
+        </section>
+
+        <!-- 66 -->
+        <section class="slide">
+          <h2>Проверка поражения</h2>
+
+          <p>
+            Если количество ошибок достигло максимального значения, игра заканчивается поражением.
+          </p>
+
+          <pre><code class="language-javascript">
+if (errors >= maxErrors) {
+  // Поражение
+}
+  </code></pre>
+        </section>
+
+        <!-- 67 -->
+        <section class="slide">
+          <h2>Полная отрисовка виселицы</h2>
+
+          <p>
+            Функция <code>drawHangman()</code> постепенно добавляет части фигуры в зависимости от
+            количества ошибок.
+          </p>
+
+          <pre><code class="language-javascript">
+function drawHangman() {
+
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  // Стойка
+  if (errors >= 1) {
+    drawLine(130, 350, 130, 50);
+  }
+
+  // Верхняя перекладина
+  if (errors >= 2) {
+    drawLine(130, 50, 400, 50);
+  }
+
+  ...
+  </code></pre>
+        </section>
+
+        <!-- 68 -->
+        <section class="slide">
+          <pre><code class="language-javascript">
+...
+  // Верёвка
+  if (errors >= 3) {
+    drawLine(400, 50, 400, 100);
+  }
+
+  // Голова
+  if (errors >= 4) {
+    ctx.beginPath();
+    ctx.arc(400, 140, 40, 0, Math.PI * 2
+    );
+    ctx.stroke();
+  }
+
+  // Тело
+  if (errors >= 5) {
+    drawLine(400, 180, 400, 280);
+  }
+
+  // Руки и ноги
+  if (errors >= 6) {
+    drawLine(400, 210, 340, 250);
+    drawLine(400, 210, 460, 250);
+
+    drawLine(400, 280, 350, 330);
+    drawLine(400, 280, 450, 330);
+  }
+}
+  </code></pre>
+        </section>
+
+        <!-- 69 -->
+        <section class="slide">
+          <p>Мы разобрали все основные части игры:</p>
+
+          <ul>
+            <li>получение Canvas и контекста рисования;</li>
+            <li>рисование линий и окружности;</li>
+            <li>обработку введённой буквы;</li>
+            <li>подсчёт ошибок;</li>
+            <li>перерисовку Canvas после каждого действия.</li>
+          </ul>
+
+          <p>Теперь объединим всё это в одну работающую игру.</p>
+
+          <p>
+            <strong> Событие → изменение состояния → Canvas → новый результат. </strong>
+          </p>
+        </section>
+
+        <!-- 70 -->
+        <section class="slide">
+          <h2 style="margin: 0 auto; text-align: center">Результат</h2>
+
+          <div class="info">Игра «Виселица»</div>
+
+          <div style="display: flex; justify-content: center; align-items: center; gap: 40px">
+            <canvas id="hangmanCanvas" width="600" height="400"></canvas>
+
+            <div style="text-align: center">
+              <div
+                id="hangmanWord"
+                style="font-size: 32px; letter-spacing: 8px; margin-bottom: 25px"
+              ></div>
+
+              <input
+                id="hangmanInput"
+                maxlength="1"
+                placeholder="Буква"
+                style="width: 90px; padding: 10px; font-size: 18px; text-align: center"
+              />
+
+              <button id="hangmanButton" style="padding: 10px 18px; font-size: 18px">
+                Проверить
+              </button>
+
+              <p id="hangmanMessage"></p>
+
+              <p>
+                Ошибки:
+                <strong id="hangmanErrors">0</strong> / 6
+              </p>
+
+              <button id="hangmanRestart">Начать заново</button>
+            </div>
+          </div>
+
+          <script>
+            const canvas = document.querySelector('#hangmanCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const wordElement = document.querySelector('#hangmanWord');
+            const input = document.querySelector('#hangmanInput');
+            const button = document.querySelector('#hangmanButton');
+            const restart = document.querySelector('#hangmanRestart');
+            const message = document.querySelector('#hangmanMessage');
+            const errorsElement = document.querySelector('#hangmanErrors');
+
+            const word = 'JAVASCRIPT';
+
+            let guessedLetters = [];
+            let errors = 0;
+
+            function line(x1, y1, x2, y2) {
+              ctx.beginPath();
+              ctx.moveTo(x1, y1);
+              ctx.lineTo(x2, y2);
+              ctx.stroke();
+            }
+
+            function draw() {
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+              ctx.lineWidth = 5;
+              ctx.lineCap = 'round';
+
+              // 1. Основание
+              line(80, 350, 300, 350);
+
+              // 2. Стойка
+              if (errors >= 1) {
+                line(130, 350, 130, 50);
+              }
+
+              // 3. Верхняя перекладина
+              if (errors >= 2) {
+                line(130, 50, 400, 50);
+              }
+
+              // 4. Верёвка
+              if (errors >= 3) {
+                line(400, 50, 400, 100);
+              }
+
+              // 5. Голова
+              if (errors >= 4) {
+                ctx.beginPath();
+
+                ctx.arc(400, 140, 40, 0, Math.PI * 2);
+
+                ctx.stroke();
+              }
+
+              // 6. Тело
+              if (errors >= 5) {
+                line(400, 180, 400, 280);
+              }
+
+              // 7. Руки и ноги
+              if (errors >= 6) {
+                line(400, 210, 340, 250);
+                line(400, 210, 460, 250);
+
+                line(400, 280, 350, 330);
+                line(400, 280, 450, 330);
+              }
+            }
+
+            function updateWord() {
+              wordElement.textContent = word
+                .split('')
+                .map((letter) => (guessedLetters.includes(letter) ? letter : '_'))
+                .join(' ');
+            }
+
+            function guessLetter() {
+              const letter = input.value.toUpperCase();
+
+              input.value = '';
+
+              if (!letter || guessedLetters.includes(letter)) {
+                return;
+              }
+
+              guessedLetters.push(letter);
+
+              if (!word.includes(letter)) {
+                errors++;
+                errorsElement.textContent = errors;
+              }
+
+              updateWord();
+              draw();
+
+              // Победа
+              const win = word.split('').every((letter) => guessedLetters.includes(letter));
+
+              if (win) {
+                message.textContent = 'Победа! 🎉';
+
+                input.disabled = true;
+                button.disabled = true;
+
+                return;
+              }
+
+              // Поражение
+              if (errors >= 6) {
+                message.textContent = 'Игра окончена!';
+
+                wordElement.textContent = word.split('').join(' ');
+
+                input.disabled = true;
+                button.disabled = true;
+              }
+            }
+
+            function startGame() {
+              guessedLetters = [];
+              errors = 0;
+
+              input.disabled = false;
+              button.disabled = false;
+
+              errorsElement.textContent = '0';
+              message.textContent = '';
+
+              updateWord();
+              draw();
+
+              input.focus();
+            }
+
+            button.addEventListener('click', guessLetter);
+
+            input.addEventListener('keydown', (event) => {
+              if (event.key === 'Enter') {
+                guessLetter();
+              }
+            });
+
+            restart.addEventListener('click', startGame);
+
+            startGame();
+          </script>
+        </section>
+
+        <!-- 71 -->
+        <section class="slide">
+          <h2>Рисуем график на Canvas</h2>
+
+          <p>Canvas можно использовать не только для рисунков, но и для отображения данных.</p>
+
+          <p>Например, построим столбчатый график продаж за несколько месяцев.</p>
+
+          <pre><code class="language-javascript">
+const data = [30, 50, 40, 70, 60];
+  </code></pre>
+
+          <p>Каждое число определяет высоту своего столбца.</p>
+        </section>
+
+        <!-- 72 -->
+        <section class="slide">
+          <h2>Как нарисовать столбец?</h2>
+
+          <p>Для столбца используем прямоугольник.</p>
+
+          <pre><code class="language-javascript">
+ctx.fillRect(
+  x,
+  500 - value (точка от которой счтаем высоту столбца),
+  50,
+  value (высота столбца)
+);
+  </code></pre>
+
+          <p>Значение показателя определяет высоту столбца.</p>
+
+          <p>Чем больше value — тем выше столбец.</p>
+        </section>
+
+        <!-- 73 -->
+        <section class="slide">
+          <h2>Рисуем все данные</h2>
+
+          <p>Проходим по массиву данных циклом. Для каждого значения создаём свой столбец.</p>
+
+          <pre><code class="language-javascript">
+data.forEach((value, index) => {
+
+  const x = 50 + index * 80;
+
+  ctx.fillRect(
+    x,
+    500 - value,
+    50,
+    value
+  );
+
+});
+  </code></pre>
+
+  <p>const x = 50 + index * 80; — определяет горизонтальное положение столбца, 50 — отступ слева, 80 — расстояние между столбцами.
+  </p>
+        </section>
+
+        <!-- 74 -->
+        <section class="slide">
+          <h2>Функция drawChart()</h2>
+
+          <p>Вынесем построение графика в отдельную функцию.</p>
+
+          <pre><code class="language-javascript">
+function drawChart() {
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  data.forEach((value, index) => {
+
+    const x = 50 + index * 80;
+
+    ctx.fillRect(
+      x,
+      500 - value,
+      50,
+      value
+    );
+
+  });
+}
+  </code></pre>
+
+          <p>Перед каждой новой отрисовкой Canvas очищается.</p>
+        </section>
+
+        <!-- 75 -->
+        <section class="slide">
+          <h2>Изменяем данные</h2>
+
+          <p>Если изменить значение в массиве, график можно построить заново. Для этого нужно слушать события изменения ползунков.</p>
+
+          <pre><code class="language-javascript">
+data[0] = 80;
+
+drawChart();
+  </code></pre>
+
+          <p>Было значение 30 — стало 80.</p>
+
+          <p>Canvas очищается и рисует новый график.</p>
+        </section>
+
+        <!-- 76 -->
+        <section class="slide">
+          <h2>Строим график</h2>
+
+          <p>Данные хранятся в массиве. Для каждого значения рисуем свой столбец.</p>
+
+          <pre><code class="language-javascript">
+const data = [100, 200, 150, 300, 250];
+
+const canvas =
+  document.querySelector("#chartCanvas");
+
+const ctx =
+  canvas.getContext("2d");
+
+
+function drawChart() {
+
+  // Очищаем Canvas
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+  ...
+  </code></pre>
+        </section>
+
+                <!-- 77 -->
+        <section class="slide">
+
+          
+
+          <pre><code class="language-javascript">
+...
+  // Рисуем оси
+  ctx.beginPath();
+
+  ctx.moveTo(50, 450);
+  ctx.lineTo(550, 450);
+
+  ctx.moveTo(50, 450);
+  ctx.lineTo(50, 50);
+
+  ctx.stroke();
+
+
+  // Рисуем столбцы
+  data.forEach((value, index) => {
+
+    const x = 70 + index * 90;
+    const y = 450 - value;
+
+    ctx.fillRect(x, y, 50, value);
+  });
+}
+
+drawChart();
+  </code></pre>
+        </section>
+
+        <!-- 78 -->
+        <section class="slide">
+          <h2>Слушаем изменения ползунков</h2>
+
+          <p>Каждый ползунок изменяет своё значение в массиве <code>data</code>.</p>
+
+          <pre><code class="language-javascript">
+const inputs =
+  document.querySelectorAll(".chart-input");
+
+inputs.forEach((input, index) => {
+  input.addEventListener("input", () => {
+    // Меняем значение в массиве
+    data[index] = Number(input.value);
+    // Строим график заново
+    drawChart();
+  });
+});
+  </code></pre>
+
+          <p><code>index</code> связывает ползунок с соответствующим элементом массива:</p>
+
+          <pre><code class="language-javascript">
+0 → data[0] → Январь
+1 → data[1] → Февраль
+2 → data[2] → Март
+3 → data[3] → Апрель
+4 → data[4] → Май
+  </code></pre>
+        </section>
+
+        <!-- 30 -->
+        <!-- 30 -->
+        <section class="slide">
+          <h2>Интерактивный график</h2>
+
+          <div style="display: flex; justify-content: center; gap: 30px; align-items: center">
+            <canvas id="chartCanvas" width="500" height="500"></canvas>
+
+            <div>
+              <p>Январь</p>
+              <input id="value1" type="range" min="10" max="400" value="100" />
+
+              <p>Февраль</p>
+              <input id="value2" type="range" min="10" max="400" value="200" />
+
+              <p>Март</p>
+              <input id="value3" type="range" min="10" max="400" value="150" />
+
+              <p>Апрель</p>
+              <input id="value4" type="range" min="10" max="400" value="300" />
+
+              <p>Май</p>
+              <input id="value5" type="range" min="10" max="400" value="250" />
+            </div>
+          </div>
+
+          <script>
+            const chartCanvas = document.querySelector('#chartCanvas');
+
+            const chartCtx = chartCanvas.getContext('2d');
+
+            const inputs = [
+              document.querySelector('#value1'),
+              document.querySelector('#value2'),
+              document.querySelector('#value3'),
+              document.querySelector('#value4'),
+              document.querySelector('#value5'),
+            ];
+
+            // Названия месяцев
+            const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май'];
+
+            function drawChart() {
+              // Очищаем canvas
+              chartCtx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+
+              // Рисуем оси
+              chartCtx.beginPath();
+
+              chartCtx.moveTo(40, 450);
+              chartCtx.lineTo(480, 450);
+
+              chartCtx.moveTo(40, 450);
+              chartCtx.lineTo(40, 50);
+
+              chartCtx.stroke();
+
+              // Рисуем столбцы
+              inputs.forEach((input, index) => {
+                const value = Number(input.value);
+
+                const x = 60 + index * 80;
+                const y = 450 - value;
+
+                // Столбец
+                chartCtx.fillRect(x, y, 50, value);
+
+                // Подпись месяца
+                chartCtx.font = '14px Arial';
+                chartCtx.textAlign = 'center';
+
+                chartCtx.fillText(months[index], x + 25, 475);
+              });
+            }
+
+            // При изменении ползунка
+            // строим график заново
+            inputs.forEach((input) => {
+              input.addEventListener('input', drawChart);
+            });
+
+            // Первый запуск
+            drawChart();
+          </script>
+        </section>
+
+        <!--  -->
+        <section class="slide">
           <h2 style="margin: 0 auto; text-align: center">Canvas в реальных проектах</h2>
           <ul>
             <li>

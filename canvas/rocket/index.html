@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Рисуем ракету на Canvas</title>
+
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background: #f2f2f2;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        text-align: center;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      canvas {
+        background: rgb(255, 255, 255);
+        border: 2px solid #333;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Рисуем ракету на Canvas</h1>
+
+      <canvas id="canvas" width="500" height="500"></canvas>
+    </div>
+
+    <script>
+      const canvas = document.querySelector('#canvas');
+      const ctx = canvas.getContext('2d');
+
+      // Корпус ракеты
+      ctx.beginPath();
+
+      ctx.rect(200, 150, 100, 200);
+
+      ctx.stroke();
+
+      // Нос ракеты
+      //   ctx.beginPath();
+
+      //   ctx.moveTo(200, 150);
+      //   ctx.lineTo(250, 80);
+      //   ctx.lineTo(300, 150);
+
+      //   ctx.closePath();
+
+      //   ctx.stroke();
+
+      // Иллюминатор
+      //   ctx.beginPath();
+
+      //   ctx.arc(250, 210, 25, 0, Math.PI * 2);
+
+      //   ctx.stroke();
+
+      // Левое крыло
+      //   ctx.beginPath();
+
+      //   ctx.moveTo(200, 270);
+      //   ctx.lineTo(150, 330);
+      //   ctx.lineTo(200, 330);
+
+      //   ctx.closePath();
+
+      //   ctx.stroke();
+
+      // Правое крыло
+      //   ctx.beginPath();
+
+      //   ctx.moveTo(300, 270);
+      //   ctx.lineTo(350, 330);
+      //   ctx.lineTo(300, 330);
+
+      //   ctx.closePath();
+
+      //   ctx.stroke();
+
+      // Огонь
+      //   ctx.beginPath();
+
+      //   ctx.moveTo(220, 350);
+      //   ctx.lineTo(235, 420);
+      //   ctx.lineTo(250, 380);
+      //   ctx.lineTo(265, 420);
+      //   ctx.lineTo(280, 350);
+
+      //   ctx.closePath();
+
+      //   ctx.stroke();
+    </script>
+  </body>
+</html>
