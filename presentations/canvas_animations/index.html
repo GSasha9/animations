@@ -1696,130 +1696,18 @@ draw();</code></pre>
 
         <!-- 41 -->
         <section class="slide">
-          <h2>Видео + Canvas: эффект лупы</h2>
+          <h2>Видео + Canvas: эффекты</h2>
 
-          <video
-            id="catVideoL"
-            src="./video/cat.mp4"
-            width="1280"
-            height="720"
-            muted
-            loop
-            playsinline
-            style="display: none"
-          ></video>
-
-          <canvas
-            id="catCanvasL"
-            width="640"
-            height="360"
-            style="max-width: 100%; cursor: crosshair"
-          >
-          </canvas>
-
-          <script>
-            const videoL = document.getElementById('catVideoL');
-            const canvasL = document.getElementById('catCanvasL');
-            const ctxL = canvasL.getContext('2d');
-
-            // Положение мыши на Canvas
-            let mouseX = canvasL.width / 2;
-            let mouseY = canvasL.height / 2;
-
-            // Получаем координаты мыши
-            canvasL.addEventListener('mousemove', (event) => {
-              const rect = canvasL.getBoundingClientRect();
-
-              mouseX = ((event.clientX - rect.left) * canvasL.width) / rect.width;
-
-              mouseY = ((event.clientY - rect.top) * canvasL.height) / rect.height;
-            });
-
-            // Запускаем видео
-            videoL.play();
-
-            let animationStarted = false;
-
-            function draw() {
-              // Рисуем обычный кадр видео
-              ctxL.drawImage(videoL, 0, 0, canvasL.width, canvasL.height);
-
-              const radius = 70;
-              const zoom = 2;
-
-              /*
-               * Canvas: 640 × 360
-               * Video:  1280 × 720
-               *
-               * Поэтому координаты Canvas
-               * переводим в координаты исходного видео.
-               */
-
-              const scaleX = videoL.videoWidth / canvasL.width;
-
-              const scaleY = videoL.videoHeight / canvasL.height;
-
-              const videoX = mouseX * scaleX;
-              const videoY = mouseY * scaleY;
-
-              // Размер области, которую берём из видео
-              const sourceWidth = ((radius * 2) / zoom) * scaleX;
-
-              const sourceHeight = ((radius * 2) / zoom) * scaleY;
-
-              // Ограничиваем область лупы кругом
-              ctxL.save();
-
-              ctxL.beginPath();
-              ctxL.arc(mouseX, mouseY, radius, 0, Math.PI * 2);
-              ctxL.clip();
-
-              /*
-               * Берём небольшую область
-               * из исходного видео
-               * и увеличиваем её в 2 раза.
-               */
-              ctxL.drawImage(
-                videoL,
-
-                // Откуда берём
-                videoX - sourceWidth / 2,
-                videoY - sourceHeight / 2,
-                sourceWidth,
-                sourceHeight,
-
-                // Куда рисуем
-                mouseX - radius,
-                mouseY - radius,
-                radius * 2,
-                radius * 2,
-              );
-
-              ctxL.restore();
-
-              // Рамка лупы
-              ctxL.beginPath();
-              ctxL.arc(mouseX, mouseY, radius, 0, Math.PI * 2);
-
-              ctxL.strokeStyle = 'white';
-              ctxL.lineWidth = 4;
-              ctxL.stroke();
-
-              requestAnimationFrame(draw);
-            }
-
-            // Начинаем рисование после загрузки видео
-            videoL.addEventListener('loadeddata', () => {
-              if (!animationStarted) {
-                animationStarted = true;
-                requestAnimationFrame(draw);
-              }
-            });
-          </script>
+          <p>Можно выделять область видео и увеличивать её, создавая эффект лупы или пиксализации.</p>
+          <p>Реализацию можно посмотреть в папке материалов к занятиям</p>
+          <ul>
+            <li>canvas_pixelize.zip</li>
+            <li>canvas_magnifier.zip</li>
+          </ul>
 
           <p>
             <strong>
-              Видео → Canvas → выделяем область → увеличиваем → отображаем под лупой
+              Видео → Canvas → выделяем область → применяем эффект → отображаем
             </strong>
           </p>
         </section>
@@ -2656,8 +2544,10 @@ data.forEach((value, index) => {
 });
   </code></pre>
 
-  <p>const x = 50 + index * 80; — определяет горизонтальное положение столбца, 50 — отступ слева, 80 — расстояние между столбцами.
-  </p>
+          <p>
+            const x = 50 + index * 80; — определяет горизонтальное положение столбца, 50 — отступ
+            слева, 80 — расстояние между столбцами.
+          </p>
         </section>
 
         <!-- 74 -->
@@ -2693,7 +2583,10 @@ function drawChart() {
         <section class="slide">
           <h2>Изменяем данные</h2>
 
-          <p>Если изменить значение в массиве, график можно построить заново. Для этого нужно слушать события изменения ползунков.</p>
+          <p>
+            Если изменить значение в массиве, график можно построить заново. Для этого нужно слушать
+            события изменения ползунков.
+          </p>
 
           <pre><code class="language-javascript">
 data[0] = 80;
@@ -2735,11 +2628,8 @@ function drawChart() {
   </code></pre>
         </section>
 
-                <!-- 77 -->
+        <!-- 77 -->
         <section class="slide">
-
-          
-
           <pre><code class="language-javascript">
 ...
   // Рисуем оси
