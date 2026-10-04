@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Cursor Spotlight</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        background: #0b0d12;
+        color: white;
+      }
+
+      .page {
+        width: min(1100px, 90%);
+        margin: 0 auto;
+        padding: 80px 0;
+      }
+
+      header {
+        margin-bottom: 50px;
+      }
+
+      h1 {
+        margin: 0 0 15px;
+        font-size: 48px;
+      }
+
+      .subtitle {
+        margin: 0;
+        max-width: 650px;
+        color: #9ca3af;
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .card {
+        --mouse-x: 50%;
+        --mouse-y: 50%;
+
+        position: relative;
+        overflow: hidden;
+
+        min-height: 300px;
+        padding: 30px;
+
+        border: 1px solid #252936;
+        border-radius: 20px;
+
+        background: #13161d;
+      }
+
+      /* Свет от курсора */
+      .card::before {
+        content: '';
+
+        position: absolute;
+        inset: 0;
+
+        background: radial-gradient(
+          250px circle at var(--mouse-x) var(--mouse-y),
+          rgba(120, 180, 255, 0.25),
+          transparent 70%
+        );
+
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        pointer-events: none;
+      }
+
+      /* При наведении включаем spotlight */
+      .card:hover::before {
+        opacity: 1;
+      }
+
+      .card-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 45px;
+        height: 45px;
+
+        margin-bottom: 30px;
+
+        border-radius: 50%;
+        background: #202530;
+
+        color: #8ab4ff;
+        font-weight: bold;
+      }
+
+      h2 {
+        margin: 0 0 15px;
+        font-size: 26px;
+      }
+
+      .card p {
+        margin: 0;
+        color: #9ca3af;
+        line-height: 1.6;
+      }
+
+      .tag {
+        display: inline-block;
+
+        margin-top: 30px;
+        padding: 7px 12px;
+
+        border-radius: 20px;
+        background: #202530;
+
+        color: #cbd5e1;
+        font-size: 13px;
+      }
+
+      @media (max-width: 800px) {
+        .cards {
+          grid-template-columns: 1fr;
+        }
+
+        h1 {
+          font-size: 38px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="page">
+      <header>
+        <h1>Cursor Spotlight</h1>
+
+        <p class="subtitle">
+          Световой эффект следует за курсором внутри карточки. Координаты мыши передаются в CSS
+          через пользовательские переменные.
+        </p>
+      </header>
+
+      <section class="cards">
+        <article class="card">
+          <div class="card-content">
+            <div class="number">01</div>
+
+            <h2>JavaScript</h2>
+
+            <p>Получаем координаты курсора относительно конкретной карточки.</p>
+
+            <span class="tag">Mouse coordinates</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-content">
+            <div class="number">02</div>
+
+            <h2>CSS Variables</h2>
+
+            <p>Передаём координаты из JavaScript в CSS через пользовательские переменные.</p>
+
+            <span class="tag">--mouse-x / --mouse-y</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-content">
+            <div class="number">03</div>
+
+            <h2>Pseudo-element</h2>
+
+            <p>Псевдоэлемент создаёт свет, а radial-gradient определяет его форму.</p>
+
+            <span class="tag">::before</span>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      const cards = document.querySelectorAll('.card');
+
+      cards.forEach((card) => {
+        card.addEventListener('mousemove', (event) => {
+          const rect = card.getBoundingClientRect();
+
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        });
+      });
+    </script>
+  </body>
+</html>

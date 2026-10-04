@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Modern HTML</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+
+        display: grid;
+        place-items: center;
+
+        font-family: Arial, sans-serif;
+        background: #f3f4f6;
+        color: #222;
+      }
+
+      .container {
+        width: min(600px, 90%);
+        padding: 40px;
+
+        background: white;
+        border-radius: 20px;
+
+        text-align: center;
+
+        box-shadow: 0 10px 40px rgb(0 0 0 / 0.1);
+      }
+
+      button {
+        padding: 12px 20px;
+
+        border: 0;
+        border-radius: 10px;
+
+        background: #222;
+        color: white;
+
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background: #444;
+      }
+
+      /* ---------- */
+      /* DIALOG     */
+      /* ---------- */
+
+      dialog {
+        width: min(400px, 90%);
+
+        padding: 30px;
+
+        border: 0;
+        border-radius: 16px;
+
+        box-shadow: 0 20px 60px rgb(0 0 0 / 0.3);
+      }
+
+      dialog::backdrop {
+        background: rgb(0 0 0 / 0.65);
+      }
+
+      dialog h2 {
+        margin-top: 0;
+      }
+
+      .dialog-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+
+        margin-top: 25px;
+      }
+
+      /* ---------- */
+      /* POPOVER    */
+      /* ---------- */
+
+      [popover] {
+        padding: 20px;
+
+        border: 1px solid #ddd;
+        border-radius: 12px;
+
+        box-shadow: 0 10px 30px rgb(0 0 0 / 0.15);
+      }
+
+      .popover-content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .popover-content button {
+        background: white;
+        color: #222;
+        text-align: left;
+      }
+
+      .popover-content button:hover {
+        background: #f1f1f1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="container">
+      <h1>Современный HTML</h1>
+
+      <p>
+        Браузер уже умеет создавать некоторые интерактивные элементы без большого количества
+        JavaScript.
+      </p>
+
+      <!-- Открываем dialog -->
+      <button onclick="modal.showModal()">Открыть modal</button>
+
+      <!-- Открываем popover -->
+      <button popovertarget="info">Что такое popover?</button>
+    </main>
+
+    <!-- ==================== -->
+    <!-- MODAL                -->
+    <!-- ==================== -->
+
+    <dialog id="modal">
+      <h2>Удалить файл?</h2>
+
+      <p>Это действие нельзя отменить.</p>
+
+      <div class="dialog-actions">
+        <button onclick="modal.close()">Отмена</button>
+
+        <button onclick="modal.close()">Удалить</button>
+      </div>
+    </dialog>
+
+    <!-- ==================== -->
+    <!-- POPOVER              -->
+    <!-- ==================== -->
+
+    <div id="info" popover>
+      <div class="popover-content">
+        <strong>Popover</strong>
+
+        <span>
+          Это всплывающий элемент, который браузер умеет открывать и закрывать самостоятельно.
+        </span>
+
+        <button popovertarget="info">Закрыть</button>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scroll Parallax — City</title>
+
+    <style>
+      .parallax-scene {
+        position: relative;
+        height: 130vh;
+        overflow: hidden;
+      }
+
+      /* Дальний слой */
+      .parallax-background {
+        position: absolute;
+        inset: -10%;
+        z-index: 1;
+        filter: blur(3px);
+      }
+
+      .parallax-background img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Передний слой */
+      .parallax-foreground {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+      }
+
+      .parallax-foreground img {
+        position: absolute;
+        bottom: 50%;
+        left: 50%;
+        transform: translate(-50%, 50%);
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="parallax-scene">
+      <div class="parallax-background">
+        <img src="./img/city1.jpg" alt="" />
+      </div>
+
+      <div class="parallax-foreground">
+        <img src="./img/city.png" alt="" />
+      </div>
+    </section>
+
+    <script>
+      const background = document.querySelector('.parallax-background');
+
+      const foreground = document.querySelector('.parallax-foreground');
+
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+
+        // Дальний фон
+        const backgroundOffset = scrollY * 0.2;
+
+        // Передний план
+        const foregroundOffset = scrollY * 0.4;
+
+        background.style.transform = `translateY(${backgroundOffset}px)`;
+
+        foreground.style.transform = `translateY(${foregroundOffset}px)`;
+      });
+    </script>
+  </body>
+</html>

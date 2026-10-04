@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Sticky Storytelling</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        color: #111;
+      }
+
+      .story {
+        width: min(1200px, 90%);
+        margin: 0 auto;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 100px;
+      }
+
+      /* STICKY-БЛОК */
+
+      .visual {
+        position: sticky;
+        top: 0;
+
+        height: 100vh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .product {
+        width: 400px;
+        height: 500px;
+        max-width: 400px;
+
+        border-radius: 30px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 32px;
+        font-weight: bold;
+
+        background: #d8e5ff;
+
+        transition:
+          background 0.5s ease,
+          transform 0.5s ease;
+      }
+
+      /* ТЕКСТОВАЯ ЧАСТЬ */
+
+      .steps {
+        padding: 30vh 0;
+      }
+
+      .step {
+        min-height: 70vh;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        opacity: 0.3;
+
+        transition: opacity 0.4s ease;
+      }
+
+      .step.active {
+        opacity: 1;
+      }
+
+      .step-number {
+        margin-bottom: 15px;
+
+        font-size: 14px;
+        font-weight: bold;
+        color: #888;
+      }
+
+      .step h2 {
+        margin: 0 0 20px;
+
+        font-size: 48px;
+      }
+
+      .step p {
+        margin: 0;
+
+        max-width: 450px;
+
+        font-size: 20px;
+        line-height: 1.6;
+
+        color: #666;
+      }
+
+      @media (max-width: 800px) {
+        .story {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+
+        .visual {
+          position: sticky;
+          top: 0;
+
+          height: 50vh;
+
+          z-index: 2;
+        }
+
+        .product {
+          width: 250px;
+          height: 300px;
+        }
+
+        .steps {
+          padding: 0;
+        }
+
+        .step {
+          min-height: 70vh;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="story">
+      <!-- STICKY IMAGE -->
+
+      <div class="visual">
+        <div class="product" id="product">PRODUCT</div>
+      </div>
+
+      <!-- STORY -->
+
+      <div class="steps">
+        <section class="step active" data-state="1">
+          <div class="step-number">STEP 01</div>
+
+          <h2>Первый шаг</h2>
+
+          <p>
+            Изображение находится слева и остаётся на одном месте, пока пользователь прокручивает
+            страницу.
+          </p>
+        </section>
+
+        <section class="step" data-state="2">
+          <div class="step-number">STEP 02</div>
+
+          <h2>Второй шаг</h2>
+
+          <p>Когда этот блок попадает в область просмотра, изображение меняет своё состояние.</p>
+        </section>
+
+        <section class="step" data-state="3">
+          <div class="step-number">STEP 03</div>
+
+          <h2>Третий шаг</h2>
+
+          <p>Каждый следующий текстовый блок может запускать новое состояние изображения.</p>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const steps = document.querySelectorAll('.step');
+      const product = document.querySelector('#product');
+
+      const images = {
+        1: './img/cream.jpg',
+        2: './img/cream1.jpg',
+        3: './img/cream2.jpg',
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            steps.forEach((step) => {
+              step.classList.remove('active');
+            });
+
+            entry.target.classList.add('active');
+
+            const state = entry.target.dataset.state;
+
+            product.style.backgroundImage = `url("${images[state]}")`;
+            product.style.backgroundSize = 'cover';
+            product.style.backgroundPosition = 'center';
+
+            if (state === '1') {
+              product.style.transform = 'scale(1.1)';
+            }
+
+            if (state === '2') {
+              product.style.transform = 'scale(1.05)';
+            }
+
+            if (state === '3') {
+              product.style.transform = 'scale(1.1)';
+            }
+          });
+        },
+        {
+          threshold: 0.5,
+        },
+      );
+
+      steps.forEach((step) => {
+        observer.observe(step);
+      });
+    </script>
+  </body>
+</html>

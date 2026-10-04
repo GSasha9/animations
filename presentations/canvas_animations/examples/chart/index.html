@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Chart</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #0f172a;
+        font-family: Arial, sans-serif;
+      }
+
+      .wrap {
+        display: flex;
+        gap: 32px;
+        align-items: center;
+        justify-content: center;
+        width: min(92vw, 820px);
+        flex-wrap: wrap;
+      }
+
+      canvas {
+        display: block;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      }
+
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-width: 200px;
+      }
+
+      label {
+        font-size: 14px;
+        color: #e2e8f0;
+      }
+
+      input[type='range'] {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <canvas id="chartCanvas" width="500" height="500"></canvas>
+
+      <div class="controls">
+        <label>Январь <input id="value1" type="range" min="10" max="400" value="100" /></label>
+        <label>Февраль <input id="value2" type="range" min="10" max="400" value="200" /></label>
+        <label>Март <input id="value3" type="range" min="10" max="400" value="150" /></label>
+        <label>Апрель <input id="value4" type="range" min="10" max="400" value="300" /></label>
+        <label>Май <input id="value5" type="range" min="10" max="400" value="250" /></label>
+      </div>
+    </div>
+
+    <script>
+      const chartCanvas = document.querySelector('#chartCanvas');
+      const chartCtx = chartCanvas.getContext('2d');
+
+      const inputs = [
+        document.querySelector('#value1'),
+        document.querySelector('#value2'),
+        document.querySelector('#value3'),
+        document.querySelector('#value4'),
+        document.querySelector('#value5'),
+      ];
+
+      const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май'];
+
+      function drawChart() {
+        chartCtx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+
+        chartCtx.beginPath();
+        chartCtx.moveTo(40, 450);
+        chartCtx.lineTo(480, 450);
+        chartCtx.moveTo(40, 450);
+        chartCtx.lineTo(40, 50);
+        chartCtx.strokeStyle = '#1f2937';
+        chartCtx.lineWidth = 2;
+        chartCtx.stroke();
+
+        inputs.forEach((input, index) => {
+          const value = Number(input.value);
+
+          // x — позиция столбца по горизонтали, y — высота столбца от оси X
+          // каждый следующий столбец смещается на 80px вправо, а высота столбца зависит от значения input
+          const x = 60 + index * 80;
+          const y = 450 - value;
+
+          chartCtx.fillStyle = '#3b82f6';
+          chartCtx.fillRect(x, y, 50, value);
+
+          chartCtx.fillStyle = '#111827';
+          chartCtx.font = '14px Arial';
+          chartCtx.textAlign = 'center';
+          chartCtx.fillText(months[index], x + 25, 475);
+        });
+      }
+
+      inputs.forEach((input) => {
+        input.addEventListener('input', drawChart);
+      });
+
+      drawChart();
+    </script>
+  </body>
+</html>
