@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <h2>Навигация по странице с помощью якорей</h2>
+
+    <p class="anchor-intro">
+      Ссылка может вести не только на другую страницу, но и на конкретный элемент текущей страницы.
+    </p>
+
+    <div class="anchor-demo">
+      <nav class="anchor-nav">
+        <a href="#demo-about">About</a>
+        <a href="#demo-projects">Projects</a>
+        <a href="#demo-services">Services</a>
+        <a href="#demo-contact">Contact</a>
+      </nav>
+
+      <div class="anchor-scroll">
+        <div id="demo-about" class="anchor-section">
+          <h3>About</h3>
+
+          <p>Первый раздел страницы.</p>
+
+          <p>Пользователь может сразу перейти сюда, нажав на пункт навигации.</p>
+        </div>
+
+        <div id="demo-projects" class="anchor-section">
+          <h3>Projects</h3>
+
+          <p>Второй раздел.</p>
+
+          <p>Обратите внимание: у него есть <code>id="demo-projects"</code>.</p>
+        </div>
+
+        <div id="demo-services" class="anchor-section" style="min-height: 500px">
+          <h3>Services</h3>
+
+          <p>Третий раздел страницы.</p>
+        </div>
+
+        <div id="demo-contact" class="anchor-section">
+          <h3>Contact</h3>
+
+          <p>Последний раздел.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="anchor-callout">
+      <strong>Попробуйте нажать на About, Projects, Services или Contact.</strong>
+    </p>
+  </body>
+</html>

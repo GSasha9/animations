@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Video Controls</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 50px;
+
+        font-family: Arial, sans-serif;
+
+        background: #101114;
+        color: white;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        margin-bottom: 50px;
+      }
+
+      .example {
+        margin-bottom: 60px;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+      }
+
+      .standard-video {
+        width: 100%;
+        display: block;
+
+        border-radius: 16px;
+      }
+
+      .video-wrapper {
+        overflow: hidden;
+        border-radius: 16px;
+        background: black;
+      }
+
+      .custom-video {
+        width: 100%;
+        display: block;
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        background: #1b1d23;
+      }
+
+      .controls button {
+        border: 0;
+        border-radius: 8px;
+
+        padding: 8px 14px;
+
+        background: #333640;
+        color: white;
+
+        cursor: pointer;
+      }
+
+      .controls button:hover {
+        background: #454955;
+      }
+
+      .progress {
+        flex: 1;
+        cursor: pointer;
+      }
+
+      .volume {
+        width: 100px;
+      }
+
+      .time {
+        min-width: 90px;
+
+        font-size: 14px;
+        color: #aaa;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="container">
+      <h1>Видео на сайте</h1>
+
+      <section class="example">
+        <h2>1. Стандартные controls</h2>
+
+        <video
+          class="standard-video"
+          src="../../../../canvas/canvas_video/cat.mp4"
+          controls
+        ></video>
+
+        <p>Здесь элементы управления полностью предоставляет браузер.</p>
+      </section>
+
+      <!-- ======================== -->
+      <!-- 2. КАСТОМНЫЕ КОНТРОЛЫ    -->
+      <!-- ======================== -->
+
+      <section class="example">
+        <h2>2. Кастомные controls</h2>
+
+        <div class="video-wrapper">
+          <!-- Отдельное видео -->
+          <video
+            id="customVideo"
+            class="custom-video"
+            src="../../../../canvas/canvas_video/cat.mp4"
+          ></video>
+
+          <!-- Своя панель управления -->
+          <div class="controls">
+            <button id="play">▶ Play</button>
+
+            <button id="mute">🔊</button>
+
+            <input id="volume" class="volume" type="range" min="0" max="1" step="0.01" value="1" />
+
+            <input id="progress" class="progress" type="range" min="0" max="100" value="0" />
+
+            <span id="time" class="time"> 0:00 / 0:00 </span>
+          </div>
+        </div>
+
+        <p>Здесь интерфейс управления полностью создаём сами.</p>
+      </section>
+    </main>
+
+    <script>
+      const video = document.querySelector('#customVideo');
+
+      const playButton = document.querySelector('#play');
+
+      const muteButton = document.querySelector('#mute');
+
+      const volume = document.querySelector('#volume');
+
+      const progress = document.querySelector('#progress');
+
+      const time = document.querySelector('#time');
+
+      // ========================
+      // PLAY / PAUSE
+      // ========================
+
+      playButton.addEventListener('click', () => {
+        if (video.paused) {
+          video.play();
+
+          playButton.textContent = '⏸ Pause';
+        } else {
+          video.pause();
+
+          playButton.textContent = '▶ Play';
+        }
+      });
+
+      // ========================
+      // MUTE
+      // ========================
+
+      muteButton.addEventListener('click', () => {
+        video.muted = !video.muted;
+
+        muteButton.textContent = video.muted ? '🔇' : '🔊';
+      });
+
+      // ========================
+      // VOLUME
+      // ========================
+
+      volume.addEventListener('input', () => {
+        video.volume = volume.value;
+      });
+
+      // ========================
+      // PROGRESS
+      // ========================
+
+      video.addEventListener('timeupdate', () => {
+        if (!video.duration) {
+          return;
+        }
+
+        const percent = (video.currentTime / video.duration) * 100;
+
+        progress.value = percent;
+
+        updateTime();
+      });
+
+      progress.addEventListener('input', () => {
+        if (!video.duration) {
+          return;
+        }
+
+        const newTime = (progress.value / 100) * video.duration;
+
+        video.currentTime = newTime;
+      });
+
+      // ========================
+      // VIDEO METADATA
+      // ========================
+
+      video.addEventListener('loadedmetadata', () => {
+        updateTime();
+      });
+
+      // ========================
+      // TIME
+      // ========================
+
+      function updateTime() {
+        const current = formatTime(video.currentTime);
+
+        const duration = formatTime(video.duration);
+
+        time.textContent = `${current} / ${duration}`;
+      }
+
+      function formatTime(seconds) {
+        if (!Number.isFinite(seconds)) {
+          return '0:00';
+        }
+
+        const minutes = Math.floor(seconds / 60);
+
+        const remainingSeconds = Math.floor(seconds % 60);
+
+        return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
+      }
+    </script>
+  </body>
+</html>
